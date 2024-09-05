@@ -1,0 +1,54 @@
+name: Deploy Application
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
+      - name: Build Docker Image
+        run: docker build -t 04aj/volunteer-app-server ./server
+      - name: Publish Image to docker hub
+        run: docker push 04aj/volunteer-app-server:latest 
+ 
+  deploy-server:
+    needs: build-server
+    runs-on: self-hosted
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull 04aj/volunteer-app-server:latest 
+      - name: Delete old container
+        run: docker rm -f server-container  
+      - name: Run Docker Container
+        run: docker run -d -p 4000:4000 --name server-container -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' 04aj/volunteer-app-server
+  
+  build-client:
+    needs: deploy-server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
+      - name: Build Docker Image
+        run: docker build -t 04aj/volunteer-app-client --build-arg REACT_APP_NODE_ENV='production' --build-arg REACT_APP_SERVER_BASE_URL='${{ secrets.REACT_APP_SERVER_BASE_URL }}'  ./client
+      - name: Publish Image to docker hub
+        run: docker push 04aj/volunteer-app-client:latest 
+ 
+  deploy-client:
+    needs: build-client
+    runs-on: self-hosted 
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull 04aj/volunteer-app-client:latest 
+      - name: Delete old container
+        run: docker rm -f client-container
+      - name: Run Docker Container
+        run: docker run -d -p 3000:80 --name client-container 04aj/volunteer-app-client

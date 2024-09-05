@@ -1,0 +1,54 @@
+name: Deploy Dev
+
+on: 
+  push:
+    branches:
+      - features/**
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
+      - name: Build Docker Image
+        run: docker build -t 04aj/volunteer-app-server-dev ./server
+      - name: Publish Image to docker hub
+        run: docker push 04aj/volunteer-app-server-dev:latest 
+ 
+  deploy-server:
+    needs: build-server
+    runs-on: self-hosted 
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull 04aj/volunteer-app-server-dev:latest 
+      - name: Delete old container
+        run: docker rm -f server-dev-container  
+      - name: Run Docker Container
+        run: docker run -d -p 4001:4000 --name server-dev-container -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' 04aj/volunteer-app-server-dev
+  
+  build-client:
+    needs: deploy-server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
+      - name: Build Docker Image
+        run: docker build -t 04aj/volunteer-app-client-dev --build-arg REACT_APP_NODE_ENV='production' --build-arg REACT_APP_SERVER_BASE_URL='${{ secrets.REACT_APP_SERVER_BASE_URL_DEV }}'  ./client
+      - name: Publish Image to docker hub
+        run: docker push 04aj/volunteer-app-client-dev:latest 
+ 
+  deploy-client:
+    needs: build-client
+    runs-on: self-hosted 
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull 04aj/volunteer-app-client-dev:latest 
+      - name: Delete old container
+        run: docker rm -f client-dev-container
+      - name: Run Docker Container
+        run: docker run -d -p 3001:80 --name client-dev-container 04aj/volunteer-app-client-dev
