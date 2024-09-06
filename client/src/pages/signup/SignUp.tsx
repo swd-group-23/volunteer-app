@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import NavBar from '../../components/NavBar';
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import '../../index.css'
 import SignUpComponent from './SignUpComponent';
 
