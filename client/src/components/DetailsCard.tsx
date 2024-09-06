@@ -5,7 +5,7 @@ interface cardRequest {
     userInfo: UserInfo
 }
 
-const DetailsCardComponent: React.FC<cardRequest> = ({
+const DetailsCard: React.FC<cardRequest> = ({
     userInfo
 }) => {
     return (
@@ -18,4 +18,4 @@ const DetailsCardComponent: React.FC<cardRequest> = ({
     )
 }
 
-export default DetailsCardComponent
+export default DetailsCard
