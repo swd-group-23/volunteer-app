@@ -51,7 +51,6 @@ const events = [
 const AdminForm = () => {
   const {
     handleSubmit,
-    setValue,
     control,
     formState: { errors },
   } = useForm<Schema>({
