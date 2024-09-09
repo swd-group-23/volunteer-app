@@ -1,53 +1,146 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import NavBar from "../../components/NavBar";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/react";
-import * as z from "zod";
-import "../../index.css";
+import { Button, Textarea, Select, SelectItem} from '@nextui-org/react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const schema = z.object({
-  volunteer_name: z.string(),
-  matched_event: z.string(),
-});
+  volunteers: z.string().min(1, "Must select a volunteer"),
+  events: z.string().min(1, "Must select an event"),
+  notes: z.string().min(5, 'Please enter a reason for this pairing')
 
+});
 type Schema = z.infer<typeof schema>;
+const volunteers = [
+  {
+    label: 'Alan',
+    value: 'id1'
+    },
+  {
+    label: 'Alina',
+    value: 'id2'
+    },
+  {
+    label: 'Josh',
+    value: 'id3'
+    },
+  {
+    label: 'Jusvin',
+    value: 'id4'
+    }
+];
+
+const events = [
+  {
+    label: 'Houston Food Bank',
+    value: 'id1'
+    },
+  {
+    label: 'Homeless Shelter',
+    value: 'id2'
+    },
+  {
+    label: 'Public Library',
+    value: 'id3'
+    },
+  {
+    label: 'Blood Drive',
+    value: 'id4'
+    }
+];
 
 const AdminForm = () => {
-  const { register, handleSubmit, control } = useForm<Schema>({
+  const {
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
-  const names: string[] = ["Alan", "Alina", "Josh", "Jusvin"];
 
   const onSubmit = (data: Schema) => {
-    alert([data.volunteer_name, data.matched_event]);
+    alert(JSON.stringify(data));
   };
-  return (
-    <div className="m-3">
-      <h1 className="text-3xl">Admin Page</h1>
 
+  return (
+    <div className="flex flex-col gap-2 items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-3 w-40"
+        className="flex flex-col items-center gap-4 w-[100%]"
       >
-        <select {...register("volunteer_name")}>
-          {names.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-col mt-4 gap-4 w-96">
+        
+          <div className='flex flex-row gap-5'>
+              <Controller
+                name="volunteers"
+                control={control}
+                render={({ field }) => (
+                  <Select 
+                  errorMessage={errors.volunteers?.message}
+                  isInvalid={errors.volunteers ? true : false}
+                  label="Volunteer" 
+                  className="max-w-xl" {
+                  ...field}>
+                  {volunteers.map((volunteer) => (
+                    <SelectItem
+                      key={volunteer.value}
+                      value={volunteer.value}
+                      className='text-black'
+                    >
+                      {volunteer.label}
+                    </SelectItem>
+                  ))}
+            
+                </Select>
+                )}
+              />
 
-        <select {...register("matched_event")}>
-          {names.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+              <Controller
+                name="events"
+                control={control}
+                render={({ field }) => (
+                  <Select 
+                  errorMessage={errors.events?.message}
+                  isInvalid={errors.events ? true : false}
+                  label="Events" 
+                  className="max-w-xl" {
+                  ...field}>
+                  {events.map((event) => (
+                    <SelectItem
+                      key={event.value}
+                      value={event.value}
+                      className='text-black'
+                    >
+                      {event.label}
+                    </SelectItem>
+                  ))}
+            
+                </Select>
+                )}
+              />
 
-        <input type="submit" />
+          </div>
+       
+          <Controller
+            name="notes"
+            control={control}
+            render={({ field }) => (
+              <Textarea
+                label="Notes"
+                variant="bordered"
+                placeholder="Enter your message"
+                description="Please enter a reason for this pairing"
+                errorMessage={errors.notes?.message}
+                isInvalid={errors.notes ? true : false}
+                {...field}
+              />
+            )}
+          />
+        </div>
+
+        <Button type="submit" color="primary">
+          Submit
+        </Button>
       </form>
     </div>
   );

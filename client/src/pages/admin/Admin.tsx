@@ -11,9 +11,9 @@ if (rootElement) {
   root.render(
     <React.StrictMode>
       <main className="dark text-foreground bg-background">
-        <NavBar />
-        <h1 className="text-3xl">Admin Page</h1>
-        <AdminForm />
+          <NavBar />
+          <h1 className="text-3xl text-center">Admin Page</h1>
+          <AdminForm />
       </main>
     </React.StrictMode>
   );
