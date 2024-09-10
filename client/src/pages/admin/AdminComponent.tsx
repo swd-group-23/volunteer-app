@@ -48,7 +48,7 @@ const events = [
     }
 ];
 
-const AdminForm = () => {
+const AdminComponent = () => {
   const {
     handleSubmit,
     control,
@@ -145,4 +145,4 @@ const AdminForm = () => {
   );
 };
 
-export default AdminForm;
+export default AdminComponent;
