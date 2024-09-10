@@ -67,7 +67,7 @@ const skillsOptions = [
 export default function UserProfileForm() {
     const [formMessage, setFormMessage] = useState<string | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false); // Simple simulation for login check
-    const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false); // Profile completion state
+    //const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false); // Profile completion state
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, control, reset } = useForm();
 
@@ -102,11 +102,11 @@ export default function UserProfileForm() {
     if (!isAuthenticated) {
         return <p>Please log in to complete your profile.</p>; // Redirect or show login form
     }
-
+/*
     if (isProfileComplete) {
         return <p>Your profile is complete!</p>; // Profile completion message
     }
-
+*/
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2">
