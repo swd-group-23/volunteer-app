@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import NavBar from '../../components/NavBar';
 import '../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import ProfileManagementForm from './ProfileManagementForm';
 const rootElement = document.getElementById('root');
+
 
 if (rootElement) {
     const root = createRoot(rootElement);
