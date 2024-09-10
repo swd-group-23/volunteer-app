@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import NavBar from '../../components/NavBar';
 import '../../index.css'
+import LoginComponent from './LoginComponent';
 
 const rootElement = document.getElementById('root');
 
@@ -12,6 +13,7 @@ if (rootElement) {
            <main className='dark text-foreground bg-background'>
                 <NavBar/>
                 <h1 className='text-3xl'>Login Page</h1>
+                <LoginComponent/>
             </main>
         </React.StrictMode>
     );
