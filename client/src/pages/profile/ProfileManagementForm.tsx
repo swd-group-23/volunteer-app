@@ -2,6 +2,7 @@ import { Button, Input, Select, SelectItem} from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import DatePicker from 'react-datepicker';
 
 const schema = z.object({
   fullname: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
@@ -12,7 +13,7 @@ const schema = z.object({
   zip: z.string().min(5, 'Invalid zip code').max(8, 'zip is too long'),
   skills: z.string().min(1, 'Invalid skills'),
   preferences: z.string().min(1, 'Invalid preference').optional(),
-  availability: z.string().min(1, 'Invalid name'),
+  availability: z.array(z.date()).nonempty()
 });
 type Schema = z.infer<typeof schema>;
 
@@ -36,6 +37,7 @@ const ProfileManagementForm = () => {
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -43,8 +45,19 @@ const ProfileManagementForm = () => {
 
   const onSubmit = (data: Schema) => {
     console.log("Form Data:", data);
-  console.log("Form Errors:", errors);
+    console.log("Form Errors:", errors);
     alert(JSON.stringify(data));
+    reset({
+      fullname: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: '',
+      skills: '',
+      preferences: '',
+      availability: []
+    });
   };
 
   return (
@@ -203,20 +216,23 @@ const ProfileManagementForm = () => {
               />
             )}
           />
-
           <Controller
             name="availability"
             control={control}
-            render={({ field }) => (
-              <Input
-                label="Availability"
-                placeholder="enter availability"
-                variant="bordered"
-                onClear={() => setValue('availability', '')}
-                errorMessage={errors.availability?.message}
-                isInvalid={errors.availability? true : false}
-                {...field}
-              />
+            render={({ field: {onChange, value} }) => (
+              <>
+                  <h3 className='text-sm'>Availability</h3>
+                  <DatePicker
+                  selectedDates={value} 
+                  showIcon
+                  onChange={onChange} 
+                  selectsMultiple
+                  shouldCloseOnSelect={false}
+                  disabledKeyboardNavigation
+                />
+
+              </>
+           
             )}
           />
         </div>

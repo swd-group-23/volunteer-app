@@ -12,14 +12,12 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@nextui-org/react": "^2.4.6",
-    "@types/react-select": "^5.0.1",
     "axios": "^1.7.7",
     "framer-motion": "^11.5.4",
     "react": "^18.3.1",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
-    "react-select": "^5.8.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },

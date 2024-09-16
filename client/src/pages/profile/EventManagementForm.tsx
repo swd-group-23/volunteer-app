@@ -2,6 +2,7 @@ import { Button, Input, Select, SelectItem} from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import DatePicker from 'react-datepicker';
 
 const schema = z.object({
   eventname: z.string().min(1, 'Invalid name').max(100, 'Event Name is too long'),
@@ -9,7 +10,7 @@ const schema = z.object({
   location: z.string().min(1, 'Invalid address'),
   skills: z.string().min(1, 'Invalid skills'),
   urgency: z.string().min(1, 'Invalid preference').optional(),
-  date: z.string().min(1, 'Invalid name'),
+  date: z.date().nullable()
 });
 type Schema = z.infer<typeof schema>;
 
@@ -32,6 +33,7 @@ const EventManagementForm = () => {
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -39,8 +41,16 @@ const EventManagementForm = () => {
 
   const onSubmit = (data: Schema) => {
     console.log("Form Data:", data);
-  console.log("Form Errors:", errors);
+    console.log("Form Errors:", errors);
     alert(JSON.stringify(data));
+    reset({
+      eventname: '',
+      desc: '',
+      location: '',
+      skills: '',
+      urgency: '',
+      date: null
+    });
   };
 
   return (
@@ -153,16 +163,16 @@ const EventManagementForm = () => {
           <Controller
             name="date"
             control={control}
-            render={({ field }) => (
-              <Input
-                label="Event Date"
-                placeholder="enter date"
-                variant="bordered"
-                onClear={() => setValue('date', '')}
-                errorMessage={errors.date?.message}
-                isInvalid={errors.date? true : false}
-                {...field}
-              />
+            render={({ field: {onChange, value} }) => (
+              <>
+              <h3 className='text-sm'>Date</h3>
+              <DatePicker
+                selected={value} 
+                showIcon
+                onChange={onChange} 
+            />
+
+          </>
             )}
           />
         </div>
