@@ -109,6 +109,7 @@ const EventManagementForm = () => {
               errorMessage={errors.skills?.message}
               isInvalid={errors.skills ? true : false}
               label="Required Skills" 
+              selectionMode='multiple'
               className="max-w-xs" {
               ...field}>
               {skills.map((skill) => (
