@@ -4,6 +4,7 @@ import NavBar from '../../components/NavBar';
 import '../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import ProfileManagementForm from './ProfileManagementForm';
+import EventManagementForm from './EventManagementForm';
 
 const rootElement = document.getElementById('root');
 
@@ -14,7 +15,7 @@ if (rootElement) {
             <main className='dark text-foreground bg-background'>
                 <NavBar />
                 <ProfileManagementForm/>
-
+                <EventManagementForm />
             </main>
         </React.StrictMode>
     );
