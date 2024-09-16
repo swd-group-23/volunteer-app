@@ -23,6 +23,7 @@ const ProfileManagementForm = () => {
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -32,6 +33,17 @@ const ProfileManagementForm = () => {
     console.log("Form Data:", data);
     console.log("Form Errors:", errors);
     alert(JSON.stringify(data));
+    reset({
+      fullname: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: '',
+      skills: '',
+      preferences: '',
+      availability: []
+    });
   };
 
   return (
