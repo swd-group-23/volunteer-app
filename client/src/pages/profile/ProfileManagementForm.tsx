@@ -171,6 +171,7 @@ const ProfileManagementForm = () => {
               errorMessage={errors.skills?.message}
               isInvalid={errors.skills ? true : false}
               label="Select skills" 
+              selectionMode='multiple'
               className="max-w-xs" {
               ...field}>
               {skills.map((skill) => (
