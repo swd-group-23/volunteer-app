@@ -1,64 +1,34 @@
-import { Button, Textarea, Select, SelectItem} from '@nextui-org/react';
+import { Button, Textarea, Select, SelectItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { User } from '../../../types';
+import { volunteers, events } from '../../../data';
+import { useState } from 'react';
 
 const schema = z.object({
   volunteers: z.string().min(1, "Must select a volunteer"),
   events: z.string().min(1, "Must select an event"),
   notes: z.string().min(5, 'Please enter a reason for this pairing')
-
 });
 type Schema = z.infer<typeof schema>;
-const volunteers = [
-  {
-    label: 'Alan',
-    value: 'id1'
-    },
-  {
-    label: 'Alina',
-    value: 'id2'
-    },
-  {
-    label: 'Josh',
-    value: 'id3'
-    },
-  {
-    label: 'Jusvin',
-    value: 'id4'
-    }
-];
-
-const events = [
-  {
-    label: 'Houston Food Bank',
-    value: 'id1'
-    },
-  {
-    label: 'Homeless Shelter',
-    value: 'id2'
-    },
-  {
-    label: 'Public Library',
-    value: 'id3'
-    },
-  {
-    label: 'Blood Drive',
-    value: 'id4'
-    }
-];
 
 const AdminComponent = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
+    reset, // Import reset function from useForm
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
 
+  const [volunteer, setVolunteer] = useState<User>();
+
   const onSubmit = (data: Schema) => {
-    alert(JSON.stringify(data));
+    alert(JSON.stringify(data)); // Handle form submission logic
+    reset(); // Clear the form fields after successful submission
+    setVolunteer(undefined); // Optionally, clear selected volunteer
   };
 
   return (
@@ -68,78 +38,94 @@ const AdminComponent = () => {
         className="flex flex-col items-center gap-4 w-[100%]"
       >
         <div className="flex flex-col mt-4 gap-4 w-96">
-        
-          <div className='flex flex-row gap-5'>
-              <Controller
-                name="volunteers"
-                control={control}
-                render={({ field }) => (
-                  <Select 
-                  errorMessage={errors.volunteers?.message}
-                  isInvalid={errors.volunteers ? true : false}
-                  label="Volunteer" 
-                  className="max-w-xl" {
-                  ...field}>
-                  {volunteers.map((volunteer) => (
-                    <SelectItem
-                      key={volunteer.value}
-                      value={volunteer.value}
-                      className='text-black'
+          <h1 className="text-xl">Volunteer Matching Form</h1>
+
+          <Controller
+            name="volunteers"
+            control={control}
+            render={({ field }) => (
+              <Dropdown className="max-w-xl">
+                <DropdownTrigger>
+                  <Button variant="bordered">
+                    Select a Volunteer
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Dynamic Actions" items={volunteers} onAction={(key) => field.onChange(key)}>
+                  {(volunteer) => (
+                    <DropdownItem
+                      key={volunteer.id}
+                      color="default"
+                      className=""
+                      onClick={() => setVolunteer(volunteer)}
                     >
-                      {volunteer.label}
-                    </SelectItem>
-                  ))}
-            
-                </Select>
-                )}
-              />
+                      {volunteer.name}
+                    </DropdownItem>
+                  )}
+                </DropdownMenu>
+              </Dropdown>
+            )}
+          />
+          
+          {volunteer ? (
+            <div>
+              <h1 className="text-3xl font-bold">{volunteer.name}</h1>
+              <p className="text-md">Skills: {volunteer.skills.toString()}</p>
+              {volunteer.preferences ? <p className="text-md">Preferences: {volunteer.preferences}</p> : <></>}
 
               <Controller
                 name="events"
                 control={control}
                 render={({ field }) => (
-                  <Select 
-                  errorMessage={errors.events?.message}
-                  isInvalid={errors.events ? true : false}
-                  label="Events" 
-                  className="max-w-xl" {
-                  ...field}>
-                  {events.map((event) => (
-                    <SelectItem
-                      key={event.value}
-                      value={event.value}
-                      className='text-black'
-                    >
-                      {event.label}
-                    </SelectItem>
-                  ))}
-            
-                </Select>
+                  <Select
+                    errorMessage={errors.events?.message}
+                    isInvalid={errors.events ? true : false}
+                    label="Events"
+                    className="max-w-xl"
+                    {...field}
+                  >
+                    {events
+                      .filter(event => volunteer.availability.some(availableDate =>
+                        new Date(availableDate).toDateString() === new Date(event.dateTime).toDateString()
+                      ))
+                      .map((event) => (
+                        <SelectItem
+                          key={event.id}
+                          value={event.id}
+                          className="text-black"
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-md">{event.name}</span>
+                            <span className="text-small text-default-400">{event.description}</span>
+                            <span className="text-small text-default-500">Skills: {event.skills.toString()}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                  </Select>
                 )}
               />
 
-          </div>
-       
-          <Controller
-            name="notes"
-            control={control}
-            render={({ field }) => (
-              <Textarea
-                label="Notes"
-                variant="bordered"
-                placeholder="Enter your message"
-                description="Please enter a reason for this pairing"
-                errorMessage={errors.notes?.message}
-                isInvalid={errors.notes ? true : false}
-                {...field}
+              <Controller
+                name="notes"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    label="Notes"
+                    variant="bordered"
+                    placeholder="Enter your message"
+                    description="Please enter a reason for this pairing"
+                    errorMessage={errors.notes?.message}
+                    isInvalid={errors.notes ? true : false}
+                    {...field}
+                  />
+                )}
               />
-            )}
-          />
-        </div>
 
-        <Button type="submit" color="primary">
-          Submit
-        </Button>
+              <Button type="submit" color="primary">
+                Submit
+              </Button>
+            </div>
+          ) : <></>}
+        </div>
       </form>
     </div>
   );
