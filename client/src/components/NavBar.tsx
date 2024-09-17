@@ -1,8 +1,23 @@
 import { useState } from 'react'
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Badge} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 
+const notifications = [
+    {
+      id: 1,
+      description: 'Notification #1',
+    },
+    {
+      id: 2,
+      description: 'Notification #2',
+    },
+    {
+      id: 3,
+      description: 'Notification #3',
+    }
+  ];
 
-
+import { NotificationIcon } from '../assets/NotificationIcon';
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuItems = [
@@ -50,14 +65,30 @@ const NavBar = () => {
                 Sign Up
                 </Button>
             </NavbarItem>
+            <NavbarItem>
+                  <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
+                        <Badge color="danger" content={notifications.length} isInvisible={false} shape="circle">
+                            <NotificationIcon className="fill-current" size={30} />
+                        </Badge>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Profile Actions" variant="flat">
+                        {
+                            notifications.map((notification)=>(
+                                <DropdownItem key={notification.id}>
+                                    {notification.description}
+                                </DropdownItem>                            
+                            ))
+                        }
+                    </DropdownMenu>
+                </Dropdown>
+            </NavbarItem>
             </NavbarContent>
             <NavbarMenu>
             {menuItems.map((item, index) => (
                 <NavbarMenuItem key={`${item}-${index}`}>
                 <Link
-                    color={
-                    index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                    }
+                    color="foreground"
                     className="w-full"
                     href="#"
                     size="lg"
