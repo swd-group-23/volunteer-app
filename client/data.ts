@@ -1,4 +1,24 @@
 import { User, Event } from './types';
+export const states = [
+  { value: 'TX'},
+  { value: 'CA'},
+  { value: 'NY'},
+  // Add more states as needed
+];
+
+// Skills options for multi-select dropdown
+export const skills = [
+  { value: 'idk'},
+  { value: 'idk2'}
+  // Add more skills as needed
+];
+
+export const urgencys = [
+  { value: 'low'},
+  { value: 'medium'},
+  { value: 'high'}
+  // Add more skills as needed
+];
 
 export const volunteers: User[] = [
   {

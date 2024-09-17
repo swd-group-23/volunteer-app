@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
-
+import { skills,urgencys } from '../../../data';
 const schema = z.object({
   eventname: z.string().min(1, 'Invalid name').max(100, 'Event Name is too long'),
   desc: z.string().min(1, 'Invalid address'),
@@ -14,19 +14,6 @@ const schema = z.object({
 });
 type Schema = z.infer<typeof schema>;
 
-
-// Skills options for multi-select dropdown
-const skills = [
-    { value: 'idk'},
-    { value: 'idk2'}
-    // Add more skills as needed
-];
-const urgencys = [
-    { value: 'low'},
-    { value: 'medium'},
-    { value: 'high'}
-    // Add more skills as needed
-];
 
 const EventManagementForm = () => {
   const {

@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
-
+import { states,skills } from '../../../data';
 const schema = z.object({
   fullname: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
   address1: z.string().min(1, 'Invalid address').max(100, 'Address is too long'),
@@ -17,20 +17,6 @@ const schema = z.object({
 });
 type Schema = z.infer<typeof schema>;
 
-
-const states = [
-    { value: 'TX'},
-    { value: 'CA'},
-    { value: 'NY'},
-    // Add more states as needed
-];
-
-// Skills options for multi-select dropdown
-const skills = [
-    { value: 'idk'},
-    { value: 'idk2'}
-    // Add more skills as needed
-];
 
 const ProfileManagementForm = () => {
   const {
