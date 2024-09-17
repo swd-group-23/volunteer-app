@@ -1,8 +1,8 @@
 import React from 'react'
-import {UserInfo} from '../../types.ts';
+import {User} from '../../types.ts';
 
 interface cardRequest {
-    userInfo: UserInfo
+    userInfo: User
 }
 
 const DetailsCard: React.FC<cardRequest> = ({
