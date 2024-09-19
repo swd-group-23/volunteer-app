@@ -16,7 +16,7 @@ const NavBar = () => {
       "Volunteer"
     ];
     return (
-        <Navbar onMenuOpenChange={setIsMenuOpen} className='bg-primary-200'>
+        <Navbar onMenuOpenChange={setIsMenuOpen} className='z-50 bg-primary-200 '>
             <NavbarContent>
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}

@@ -13,7 +13,10 @@ if (rootElement) {
       <main className="green text-foreground bg-background">
           <NavBar />
           <h1 className="text-3xl text-center">Admin Page</h1>
-          <AdminComponent />
+          <div className="flex flex-row">
+            <AdminComponent />
+          </div>
+    
       </main>
     </React.StrictMode>
   );

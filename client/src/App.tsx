@@ -2,10 +2,8 @@ import NavBar from './components/NavBar';
 import './App.css'
 import { useUser } from './hooks/useUser';
 import {Modal, ModalContent, ModalHeader, ModalBody, Link, Button, useDisclosure} from "@nextui-org/react";
-import { useState } from 'react';
 import AdminComponent from './pages/admin/AdminComponent';
 import VolunteerComponent from './pages/volunteer/VolunteerComponent';
-import EventManagementForm from './pages/profile/EventManagementForm';
 
 
 function App() {
@@ -30,7 +28,7 @@ function App() {
                {
                 (user.userRole === 'admin') ?
                   <>
-                     <div className='flex flex-row'>
+                     <div>
                       <AdminComponent/>
 
                     </div>
