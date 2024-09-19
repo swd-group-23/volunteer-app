@@ -61,7 +61,7 @@ const NavBar = () => {
                 <Link href="/pages/login/">Login</Link>
             </NavbarItem>
             <NavbarItem>
-                <Button as={Link} color="primary" href="/pages/login/" variant="flat">
+                <Button as={Link} color="primary" href="/pages/signup/" variant="flat">
                 Sign Up
                 </Button>
             </NavbarItem>
