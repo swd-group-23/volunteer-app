@@ -10,7 +10,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <main className="dark text-foreground bg-background">
+      <main className="green text-foreground bg-background">
           <NavBar />
           <h1 className="text-3xl text-center">Admin Page</h1>
           <AdminComponent />

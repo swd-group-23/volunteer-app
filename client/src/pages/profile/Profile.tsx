@@ -12,7 +12,7 @@ if (rootElement) {
     const root = createRoot(rootElement);
     root.render(
         <React.StrictMode>
-            <main className='dark text-foreground bg-background'>
+            <main className='green text-foreground bg-background'>
                 <NavBar />
                 <ProfileManagementForm/>
                 <EventManagementForm />

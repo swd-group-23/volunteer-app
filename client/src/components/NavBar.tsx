@@ -27,7 +27,7 @@ const NavBar = () => {
       "Volunteer"
     ];
     return (
-        <Navbar onMenuOpenChange={setIsMenuOpen}>
+        <Navbar onMenuOpenChange={setIsMenuOpen} className='bg-primary-200'>
             <NavbarContent>
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -35,7 +35,7 @@ const NavBar = () => {
             />
             <NavbarBrand>
         
-                <a href="/" className="font-bold text-inherit">SWD</a>
+                <a href="/" className="font-bold text-inherit">Home</a>
             </NavbarBrand>
             </NavbarContent>
 
@@ -58,10 +58,10 @@ const NavBar = () => {
             </NavbarContent>
             <NavbarContent justify="end">
             <NavbarItem className="hidden lg:flex">
-                <Link href="/pages/login/">Login</Link>
+                <Link href="/pages/login/" className='text-foreground'>Login</Link>
             </NavbarItem>
             <NavbarItem>
-                <Button as={Link} color="primary" href="/pages/login/" variant="flat">
+                <Button as={Link} href="/pages/login/" variant="flat" className='bg-primary text-foreground'>
                 Sign Up
                 </Button>
             </NavbarItem>

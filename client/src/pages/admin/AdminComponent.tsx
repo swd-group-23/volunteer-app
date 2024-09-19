@@ -26,9 +26,9 @@ const AdminComponent = () => {
   const [volunteer, setVolunteer] = useState<User>();
 
   const onSubmit = (data: Schema) => {
-    alert(JSON.stringify(data)); // Handle form submission logic
-    reset(); // Clear the form fields after successful submission
-    setVolunteer(undefined); // Optionally, clear selected volunteer
+    alert(JSON.stringify(data));
+    reset(); 
+    setVolunteer(undefined);
   };
 
   return (
@@ -92,6 +92,7 @@ const AdminComponent = () => {
                           key={event.id}
                           value={event.id}
                           className="text-black"
+                          textValue={event.name}
                         >
                           <div className="flex flex-col">
                             <span className="text-md">{event.name}</span>
