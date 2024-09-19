@@ -1,4 +1,4 @@
-import { User, Event } from './types';
+import { User, Event, History } from './types';
 
 export const volunteers: User[] = [
   {
@@ -121,3 +121,53 @@ export const events: Event[] = [
     urgency: 'high'
   }
 ];
+
+export const history: History[] = [
+{
+  id: '1',
+  eventName: 'Houston Food Bank', 
+  eventDescription: 'To provide food assistance to those in need and alleviate hunger in the community.',
+  location: '535 Portwall St, Houston, TX 77029',
+  skills: ['lift heavy objects', 'stand'], 
+  urgency: 'Medium',
+  eventDate: new Date('2024-03-12'),
+  status: ['Participated']
+
+},
+{
+  id: '2',
+  eventName: 'Homeless Shelter', 
+  eventDescription: 'Providing meals, shelter, and support services for individuals experiencing homelessness.',
+  location: '101 Homeless Way, Houston, TX 77001',
+  skills: ['empathy', 'teamwork', 'basic problem-solving'], 
+  urgency: 'High',
+  eventDate: new Date('2024-04-05'),
+  status: ['Participated']
+
+}, 
+{
+  id: '3',
+  eventName: 'Public Library', 
+  eventDescription: 'Hosting a reading event for children in the community to promote literacy and education.',
+  location: '4500 Library Ln, Houston, TX 77002',
+  skills: ['communication', 'patience', 'working with children'], 
+  urgency: 'Low',
+  eventDate: new Date('2024-04-20'),
+  status: ['Canceled']
+
+},
+{
+  id: '4',
+  eventName: 'Blood Drive', 
+  eventDescription: 'Organizing a blood donation drive to support local hospitals and medical facilities.',
+  location: '500 Donation Dr, Houston, TX 77003',
+  skills: ['organization', 'attention to detail'], 
+  urgency: 'High',
+  eventDate: new Date('2024-05-01'),
+  status: ['No show']
+
+}
+
+];
+
+

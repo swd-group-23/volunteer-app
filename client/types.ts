@@ -25,3 +25,15 @@ export interface Event {
     skills: string[];
     urgency: string;
 };
+
+export interface History {
+    id: string;
+    eventName: string;
+    eventDescription: string;
+    location: string;
+    skills: string[];
+    urgency: string;
+    eventDate: Date;
+    status: string[];
+
+};

@@ -1,5 +1,6 @@
 //Add table here
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+import { history } from "../../../data";
 
 
 const VolunteerComponent = () => {
@@ -27,7 +28,30 @@ const VolunteerComponent = () => {
         <TableColumn>STATUS</TableColumn>
       </TableHeader>
       <TableBody>
-        <TableRow key="1">
+
+      {
+
+        history.map((event) => (
+          <TableRow key={event.id}>
+            <TableCell>{event.eventName}</TableCell>
+            <TableCell>{event.eventDescription}</TableCell>
+            <TableCell>{event.location}</TableCell>
+            <TableCell>{event.skills}</TableCell>
+            <TableCell>{event.urgency}</TableCell>
+            <TableCell>{event.eventDate.toLocaleDateString()}</TableCell>
+            <TableCell>{event.status}</TableCell>
+        </TableRow>
+        ))
+
+      }
+
+
+
+
+
+
+        
+       {/*<TableRow key="1">
           <TableCell>Houston Food Bank</TableCell>
           <TableCell>To provide food assistance to those in need and alleviate hunger in the community.</TableCell>
           <TableCell>535 Portwall St, Houston, TX 77029</TableCell>
@@ -62,7 +86,7 @@ const VolunteerComponent = () => {
           <TableCell>High</TableCell>
           <TableCell>May 1, 2024</TableCell>
           <TableCell>No show</TableCell>
-        </TableRow>
+          </TableRow>*/}
       </TableBody>
     </Table>
     </>
