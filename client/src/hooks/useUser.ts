@@ -3,9 +3,9 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware'
 
 interface User {
-    userId?: number;
+    userId?: string | null;
     userRole: 'volunteer' | 'admin' | 'na';
-    setUserId: (id: number | undefined) => void;
+    setUserId: (id: string | null) => void;
     setUserRole: (role: 'volunteer' | 'admin' | 'na') => void;
 
 
@@ -18,7 +18,7 @@ export const useUser = create<User>()(
         (set) => ({
             userId: undefined,
             userRole: 'na',
-            setUserId: (id: number | undefined) => set({ userId: id }),
+            setUserId: (id: string | null) => set({ userId: id }),
             setUserRole: (role: 'volunteer' | 'admin' | 'na') => set({ userRole: role }),
         }),
         {

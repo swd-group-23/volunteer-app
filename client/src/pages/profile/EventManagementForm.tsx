@@ -33,7 +33,6 @@ const EventManagementForm = () => {
     handleSubmit,
     setValue,
     control,
-    reset,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -43,14 +42,6 @@ const EventManagementForm = () => {
     console.log("Form Data:", data);
     console.log("Form Errors:", errors);
     alert(JSON.stringify(data));
-    reset({
-      eventname: '',
-      desc: '',
-      location: '',
-      skills: '',
-      urgency: '',
-      date: null
-    });
   };
 
   return (

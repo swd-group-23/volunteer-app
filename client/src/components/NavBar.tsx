@@ -1,24 +1,13 @@
 import { useState } from 'react'
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Badge} from "@nextui-org/react";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
-
-const notifications = [
-    {
-      id: 1,
-      description: 'Notification #1',
-    },
-    {
-      id: 2,
-      description: 'Notification #2',
-    },
-    {
-      id: 3,
-      description: 'Notification #3',
-    }
-  ];
-
 import { NotificationIcon } from '../assets/NotificationIcon';
+import { useUser } from '../hooks/useUser';
+import { notifications } from '../../data';
+
+
 const NavBar = () => {
+    const user = useUser();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuItems = [
       "Login",
@@ -57,13 +46,25 @@ const NavBar = () => {
             </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
-            <NavbarItem className="hidden lg:flex">
+            {(user.userId)?
+            <div></div> :
+            <NavbarItem className="flex">
                 <Link href="/pages/login/" className='text-foreground'>Login</Link>
             </NavbarItem>
+            }
+        
             <NavbarItem>
-                <Button as={Link} href="/pages/signup/" variant="flat" className='bg-primary text-foreground'>
-                Sign Up
-                </Button>
+                {
+                    (user.userId) ?
+                    <Button onClick={() => {user.setUserId(null); user.setUserRole('na');}} href="/pages/signup/" variant="flat" className='bg-primary text-foreground'>
+                        Sign Out
+                    </Button>:
+                    <Button as={Link} href="/pages/signup/" variant="flat" className='bg-primary text-foreground'>
+                        Sign Up
+                    </Button>
+
+                }
+          
             </NavbarItem>
             <NavbarItem>
                   <Dropdown placement="bottom-end">

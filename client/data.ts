@@ -121,3 +121,19 @@ export const events: Event[] = [
     urgency: 'high'
   }
 ];
+
+
+export const notifications = [
+  {
+    id: 1,
+    description: 'Notification #1',
+  },
+  {
+    id: 2,
+    description: 'Notification #2',
+  },
+  {
+    id: 3,
+    description: 'Notification #3',
+  }
+];

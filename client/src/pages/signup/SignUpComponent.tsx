@@ -12,7 +12,7 @@ import React from "react";
 
 const schema = z.object({
   email: z.string().email('Invalid email address').min(1),
-  password: z.string().min(8, "Must have a valid password"),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
   confirmPassword:  z.string().min(8, "Must confirm your password")
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
