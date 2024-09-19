@@ -61,7 +61,7 @@ const NavBar = () => {
                 <Link href="/pages/login/" className='text-foreground'>Login</Link>
             </NavbarItem>
             <NavbarItem>
-                <Button as={Link} href="/pages/login/" variant="flat" className='bg-primary text-foreground'>
+                <Button as={Link} href="/pages/signup/" variant="flat" className='bg-primary text-foreground'>
                 Sign Up
                 </Button>
             </NavbarItem>

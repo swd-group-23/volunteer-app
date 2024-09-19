@@ -12,13 +12,17 @@ import React from "react";
 
 const schema = z.object({
   email: z.string().email('Invalid email address').min(1),
-  password: z.string().min(8, "Must have a valid password")
+  password: z.string().min(8, "Must have a valid password"),
+  confirmPassword:  z.string().min(8, "Must confirm your password")
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 type Schema = z.infer<typeof schema>;
 
 
-const LoginComponent = () => {
+const SignUpComponent = () => {
   const {
     handleSubmit,
     setValue,
@@ -39,7 +43,7 @@ const LoginComponent = () => {
     const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <div className="flex flex-col gap-2 items-center justify-center h-screen overflow-auto">
-      <h2 className='text-xl'>Login</h2>
+      <h2 className='text-xl'>Sign Up</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-start gap-4"
@@ -91,16 +95,45 @@ const LoginComponent = () => {
             )}
           />
 
+            <Controller
+            name="confirmPassword"
+            control={control}
+            render={({ field }) => (
+                <Input
+                label="Confirm Password"
+                variant="bordered"
+                placeholder="Re-enter your password"
+                endContent={
+                  <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                    {isVisible ? (
+                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                    ) : (
+                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                    )}
+                  </button>
+                }
+                type={isVisible ? "text" : "password"}
+                className="max-w-xs"
+
+                onClear={() => setValue('password', '')}
+                errorMessage={errors.confirmPassword?.message}
+                isInvalid={errors.confirmPassword? true : false}
+                {...field}
+
+              />
+            )}
+          />
+
         </div>
 
         
 
         <Button type="submit" color="primary">
-          Login
+          Sign Up
         </Button>
       </form>
     </div>
   );
 };
 
-export default LoginComponent;
+export default SignUpComponent;
