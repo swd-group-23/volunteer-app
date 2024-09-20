@@ -2,8 +2,8 @@ import { Button, Textarea, Select, SelectItem, Dropdown, DropdownTrigger, Dropdo
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '../../../types';
-import { volunteers, events } from '../../../data';
+import { User } from '../../types';
+import { volunteers, events } from '../../data';
 import { useState } from 'react';
 
 const schema = z.object({
@@ -13,7 +13,7 @@ const schema = z.object({
 });
 type Schema = z.infer<typeof schema>;
 
-const AdminComponent = () => {
+const VolunteerMatchingForm = () => {
   const {
     handleSubmit,
     control,
@@ -26,19 +26,19 @@ const AdminComponent = () => {
   const [volunteer, setVolunteer] = useState<User>();
 
   const onSubmit = (data: Schema) => {
-    alert(JSON.stringify(data)); // Handle form submission logic
-    reset(); // Clear the form fields after successful submission
-    setVolunteer(undefined); // Optionally, clear selected volunteer
+    alert(JSON.stringify(data));
+    reset(); 
+    setVolunteer(undefined);
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center">
+    <div className="flex flex-col gap-2 items-center overflow-auto mt-10">
+      <h1 className="text-xl">Volunteer Matching Form</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-4 w-[100%]"
       >
         <div className="flex flex-col mt-4 gap-4 w-96">
-          <h1 className="text-xl">Volunteer Matching Form</h1>
 
           <Controller
             name="volunteers"
@@ -92,6 +92,7 @@ const AdminComponent = () => {
                           key={event.id}
                           value={event.id}
                           className="text-black"
+                          textValue={event.name}
                         >
                           <div className="flex flex-col">
                             <span className="text-md">{event.name}</span>
@@ -131,4 +132,4 @@ const AdminComponent = () => {
   );
 };
 
-export default AdminComponent;
+export default VolunteerMatchingForm;

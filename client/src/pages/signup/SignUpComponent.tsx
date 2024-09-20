@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {EyeFilledIcon} from "../../assets/EyeFilledIcon";
 import {EyeSlashFilledIcon} from "../../assets/EyeSlashFilledIcon";
-import { useUser } from '../../hooks/useUser';
 import React from "react";
+import { useUser } from '../../hooks/useUser';
 
 
 
@@ -13,13 +13,17 @@ import React from "react";
 
 const schema = z.object({
   email: z.string().email('Invalid email address').min(1),
-  password: z.string().min(8, "Password must be at least 8 characters long")
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+  confirmPassword:  z.string().min(8, "Passwords do not match")
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 type Schema = z.infer<typeof schema>;
 
 
-const LoginComponent = () => {
+const SignUpComponent = () => {
   const user = useUser();
   const {
     handleSubmit,
@@ -31,19 +35,9 @@ const LoginComponent = () => {
   });
 
   const onSubmit = (data: Schema) => {
-    if(data.email.includes("admin")){
-      user.setUserId('1234');
-      user.setUserRole('admin');
-      window.location.href = "/"
-    }
-    else if (data.email.includes("volunteer")){
-      user.setUserId('1234');
+      user.setUserId(data.email);
       user.setUserRole('volunteer');
-      window.location.href = "/"
-    }
-    else{
-      alert("Invalid login!")
-    }
+      window.location.href = "/";
   };
 
 
@@ -53,7 +47,7 @@ const LoginComponent = () => {
     const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <div className="flex flex-col gap-2 items-center justify-center h-96">
-      <h2 className='text-xl'>Login</h2>
+      <h2 className='text-xl'>Sign Up</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-start gap-4"
@@ -67,8 +61,7 @@ const LoginComponent = () => {
                 label="Email"
                 placeholder="Enter your email"
                 variant="bordered"
-                description="admin@gmail.com or volunteer@gmail.com"
-                onClear={() => setValue('email', '')}
+                description="We'll never share your email with anyone else."
                 errorMessage={errors.email?.message}
                 isInvalid={errors.email ? true : false}
                 {...field}
@@ -103,16 +96,45 @@ const LoginComponent = () => {
             )}
           />
 
+            <Controller
+            name="confirmPassword"
+            control={control}
+            render={({ field }) => (
+                <Input
+                label="Confirm Password"
+                variant="bordered"
+                placeholder="Re-enter your password"
+                endContent={
+                  <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                    {isVisible ? (
+                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                    ) : (
+                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                    )}
+                  </button>
+                }
+                type={isVisible ? "text" : "password"}
+                className="max-w-xs"
+
+                onClear={() => setValue('password', '')}
+                errorMessage={errors.confirmPassword?.message}
+                isInvalid={errors.confirmPassword? true : false}
+                {...field}
+
+              />
+            )}
+          />
+
         </div>
 
         
 
         <Button type="submit" color="primary">
-          Login
+          Sign Up
         </Button>
       </form>
     </div>
   );
 };
 
-export default LoginComponent;
+export default SignUpComponent;
