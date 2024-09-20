@@ -95,8 +95,6 @@ const LoginComponent = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className="max-w-xs"
-
-                onClear={() => setValue('password', '')}
                 errorMessage={errors.password?.message}
                 isInvalid={errors.password? true : false}
                 {...field}

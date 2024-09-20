@@ -41,7 +41,7 @@ const EventManagementForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center h-screen overflow-auto mt-10">
+    <div className="flex flex-col gap-2 items-center overflow-auto mt-10">
       <h2 className='text-xl'>Event Management Form</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}

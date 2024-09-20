@@ -2,8 +2,8 @@ import { Button, Textarea, Select, SelectItem, Dropdown, DropdownTrigger, Dropdo
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '../../../types';
-import { volunteers, events } from '../../../data';
+import { User } from '../../types';
+import { volunteers, events } from '../../data';
 import { useState } from 'react';
 
 const schema = z.object({
@@ -13,7 +13,7 @@ const schema = z.object({
 });
 type Schema = z.infer<typeof schema>;
 
-const AdminComponent = () => {
+const VolunteerMatchingForm = () => {
   const {
     handleSubmit,
     control,
@@ -32,7 +32,7 @@ const AdminComponent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center h-screen overflow-auto mt-10">
+    <div className="flex flex-col gap-2 items-center overflow-auto mt-10">
       <h1 className="text-xl">Volunteer Matching Form</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -132,4 +132,4 @@ const AdminComponent = () => {
   );
 };
 
-export default AdminComponent;
+export default VolunteerMatchingForm;

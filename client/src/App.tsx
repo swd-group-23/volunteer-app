@@ -3,19 +3,14 @@ import './App.css'
 import { useUser } from './hooks/useUser';
 import {Modal, ModalContent, ModalHeader, ModalBody, Link, Button, useDisclosure} from "@nextui-org/react";
 import 'react-datepicker/dist/react-datepicker.css';
-import AdminComponent from './pages/admin/AdminComponent';
-import VolunteerComponent from './pages/volunteer/VolunteerComponent';
+import VolunteerMatchingForm from './components/VolunteerMatchingForm';
+import VolunteerHistory from './components/VolunteerHistory';
 import EventManagementForm from './components/EventManagementForm';
 
 
 function App() {
   const user = useUser();
-  const {isOpen, onOpen, onClose} = useDisclosure();
-
-  const handleOpen = () => {
-    onOpen();
-  }
-  
+  const {onClose} = useDisclosure();
 
   return (
         <>
@@ -30,14 +25,14 @@ function App() {
                {
                 (user.userRole === 'admin') ?
                   <>
-                    <div className='flex flex-row justify-around gap-3'>
+                    <div className='flex flex-row justify-around gap-3 mb-6'>
                       <EventManagementForm/>
-                      <AdminComponent/>
+                      <VolunteerMatchingForm/>
                     </div>
-                    <VolunteerComponent/>
+                    <VolunteerHistory/>
                   </> :
                   <>
-                    <VolunteerComponent/>
+                  <VolunteerHistory/>
                   </>
                }
                
@@ -54,7 +49,7 @@ function App() {
                       <Button as={Link} href="/pages/login/" variant="flat" className='bg-[#21ec8a] text-foreground'>
                           Login
                       </Button>
-                      <Button as={Link} href="/pages/signup/" variant="flat" className='bg-[#0A8871] text-foreground'>
+                      <Button as={Link} href="/pages/signup/" variant="flat" className='bg-[#10A97E] text-foreground'>
                           Sign Up
                       </Button>
                     </div>

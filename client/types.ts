@@ -26,6 +26,19 @@ export interface Event {
     urgency: string;
 };
 
+export interface History {
+    id: string;
+    eventName: string;
+    eventDescription: string;
+    location: string;
+    skills: string[];
+    urgency: string;
+    eventDate: Date;
+    status: string[];
+
+};
+
+
 export const states = [
     { value: 'AL'}, { value: 'AK'}, { value: 'AZ'}, { value: 'AR'}, 
     { value: 'CA'}, { value: 'CO'}, { value: 'CT'}, { value: 'DE'}, 

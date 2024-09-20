@@ -12,7 +12,6 @@ if (rootElement) {
         <React.StrictMode>
            <main className='green text-foreground bg-background'>
                 <NavBar/>
-                <h1 className='text-3xl'>Sign Up Page</h1>
                 <SignUpComponent/>
             </main>
         </React.StrictMode>

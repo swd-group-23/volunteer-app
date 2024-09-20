@@ -23,31 +23,18 @@ const NavBar = () => {
                 className="sm:hidden"
             />
             <NavbarBrand>
-        
                 <a href="/" className="font-bold text-inherit">Home</a>
             </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavbarItem>
-                <Link color="foreground" href="/pages/profile/">
-                Profile
-                </Link>
-            </NavbarItem>
-            <NavbarItem>
-                <Link color="foreground" href="/pages/admin/">
-                Admin
-                </Link>
-            </NavbarItem>
-            <NavbarItem>
-                <Link color="foreground" href="/pages/volunteer/">
-                Volunteer
-                </Link>
-            </NavbarItem>
-            </NavbarContent>
+       
             <NavbarContent justify="end">
             {(user.userId)?
-            <div></div> :
+            <NavbarItem>
+                <Link color="foreground" href="/pages/profile/">
+                    Profile
+                </Link>
+            </NavbarItem> :
             <NavbarItem className="flex">
                 <Link href="/pages/login/" className='text-foreground'>Login</Link>
             </NavbarItem>
@@ -56,7 +43,7 @@ const NavBar = () => {
             <NavbarItem>
                 {
                     (user.userId) ?
-                    <Button onClick={() => {user.setUserId(null); user.setUserRole('na');}} href="/pages/signup/" variant="flat" className='bg-primary text-foreground'>
+                    <Button onClick={() => {user.setUserId(null); user.setUserRole('na'); window.location.href='/'}} variant="flat" className='bg-primary text-foreground'>
                         Sign Out
                     </Button>:
                     <Button as={Link} href="/pages/signup/" variant="flat" className='bg-primary text-foreground'>
