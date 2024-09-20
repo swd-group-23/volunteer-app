@@ -35,7 +35,7 @@ const SignUpComponent = () => {
   });
 
   const onSubmit = (data: Schema) => {
-      user.setUserId('1234');
+      user.setUserId(data.email);
       user.setUserRole('volunteer');
       window.location.href = "/";
   };
