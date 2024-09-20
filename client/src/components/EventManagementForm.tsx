@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
-import { skills,urgencys } from '../../../types';
+import { skills,urgencys } from '../../types';
 const schema = z.object({
   eventname: z.string().min(1, 'Invalid name').max(100, 'Event Name is too long'),
   desc: z.string().min(1, 'Invalid address'),
@@ -41,7 +41,7 @@ const EventManagementForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center h-screen overflow-auto">
+    <div className="flex flex-col gap-2 items-center h-screen overflow-auto mt-10">
       <h2 className='text-xl'>Event Management Form</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}

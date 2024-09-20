@@ -4,7 +4,7 @@ import NavBar from '../../components/NavBar';
 import '../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import ProfileManagementForm from './ProfileManagementForm';
-import EventManagementForm from './EventManagementForm';
+import EventManagementForm from '../../components/EventManagementForm';
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -13,8 +13,10 @@ if (rootElement) {
         <React.StrictMode>
             <main className='green text-foreground bg-background'>
                 <NavBar />
-                <ProfileManagementForm/>
-                <EventManagementForm/>
+                <div className='flex flex-col'>
+                    <EventManagementForm/>
+                    <ProfileManagementForm/>
+                </div>
             </main>
         </React.StrictMode>
     );

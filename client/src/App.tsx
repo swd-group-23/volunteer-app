@@ -2,8 +2,10 @@ import NavBar from './components/NavBar';
 import './App.css'
 import { useUser } from './hooks/useUser';
 import {Modal, ModalContent, ModalHeader, ModalBody, Link, Button, useDisclosure} from "@nextui-org/react";
+import 'react-datepicker/dist/react-datepicker.css';
 import AdminComponent from './pages/admin/AdminComponent';
 import VolunteerComponent from './pages/volunteer/VolunteerComponent';
+import EventManagementForm from './components/EventManagementForm';
 
 
 function App() {
@@ -28,9 +30,9 @@ function App() {
                {
                 (user.userRole === 'admin') ?
                   <>
-                     <div>
+                    <div className='flex flex-row justify-around gap-3'>
+                      <EventManagementForm/>
                       <AdminComponent/>
-
                     </div>
                     <VolunteerComponent/>
                   </> :

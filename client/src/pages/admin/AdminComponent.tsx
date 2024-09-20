@@ -32,13 +32,13 @@ const AdminComponent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center">
+    <div className="flex flex-col gap-2 items-center h-screen overflow-auto mt-10">
+      <h1 className="text-xl">Volunteer Matching Form</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-4 w-[100%]"
       >
         <div className="flex flex-col mt-4 gap-4 w-96">
-          <h1 className="text-xl">Volunteer Matching Form</h1>
 
           <Controller
             name="volunteers"
