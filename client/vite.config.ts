@@ -16,10 +16,8 @@ export default defineConfig({
       input: {
         main: resolve(root, 'index.html'),
         login: resolve(root, 'pages', 'login', 'index.html'),
-        profile: resolve(root, 'pages', 'profile', 'index.html'),
-        admin: resolve(root, 'pages', 'admin', 'index.html'),
-        volunteer: resolve(root, 'pages', 'volunteer', 'index.html')
-
+        signup: resolve(root, 'pages', 'signup', 'index.html'),
+        profile: resolve(root, 'pages', 'profile', 'index.html')
       }
     }
   }

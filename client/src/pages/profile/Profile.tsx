@@ -4,18 +4,17 @@ import NavBar from '../../components/NavBar';
 import '../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import ProfileManagementForm from './ProfileManagementForm';
-import EventManagementForm from './EventManagementForm';
-
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
     const root = createRoot(rootElement);
     root.render(
         <React.StrictMode>
-            <main className='dark text-foreground bg-background'>
+            <main className='green text-foreground bg-background'>
                 <NavBar />
-                <ProfileManagementForm/>
-                <EventManagementForm />
+                <div className='flex flex-col'>
+                    <ProfileManagementForm/>
+                </div>
             </main>
         </React.StrictMode>
     );
