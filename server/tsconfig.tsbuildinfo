@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/handlers/users.ts","./src/models/users.model.ts","./src/routes/users.ts","./src/tests/handlers/users.test.ts","./src/tests/mocks/index.ts"],"version":"5.6.2"}
