@@ -1,9 +1,9 @@
-import { Button, Input, Select, SelectItem} from '@nextui-org/react';
+import { Button, Input, Select, SelectItem, Textarea} from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
-
+import { states,skills } from '../../../types';
 const schema = z.object({
   fullname: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
   address1: z.string().min(1, 'Invalid address').max(100, 'Address is too long'),
@@ -18,26 +18,11 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 
-const states = [
-    { value: 'TX'},
-    { value: 'CA'},
-    { value: 'NY'},
-    // Add more states as needed
-];
-
-// Skills options for multi-select dropdown
-const skills = [
-    { value: 'idk'},
-    { value: 'idk2'}
-    // Add more skills as needed
-];
-
 const ProfileManagementForm = () => {
   const {
     handleSubmit,
     setValue,
     control,
-    reset,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -47,28 +32,16 @@ const ProfileManagementForm = () => {
     console.log("Form Data:", data);
     console.log("Form Errors:", errors);
     alert(JSON.stringify(data));
-    reset({
-      fullname: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      skills: '',
-      preferences: '',
-      availability: []
-    });
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center h-screen overflow-auto">
+    <div className="flex flex-col gap-2 items-center justify-center h-max mt-4">
       <h2 className='text-xl'>Profile Management Form</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-start gap-4"
+        className="flex flex-col items-start gap-4 mt-4"
       >
-        <div className="flex flex-col mt-4 w-full max-w-xs gap-4">
-          <Controller
+           <Controller
             name="fullname"
             control={control}
             render={({ field }) => (
@@ -76,7 +49,6 @@ const ProfileManagementForm = () => {
                 label="Full Name"
                 placeholder="enter name"
                 variant="bordered"
-                description="We'll never share your information with anyone else."
                 onClear={() => setValue('fullname', '')}
                 errorMessage={errors.fullname?.message}
                 isInvalid={errors.fullname ? true : false}
@@ -84,6 +56,7 @@ const ProfileManagementForm = () => {
               />
             )}
           />
+        <div className="grid grid-cols-2 w-96 gap-4">
 
 
           <Controller
@@ -205,7 +178,7 @@ const ProfileManagementForm = () => {
             name="preferences"
             control={control}
             render={({ field }) => (
-              <Input
+              <Textarea
                 label="Preferences"
                 placeholder="enter preferance"
                 variant="bordered"
@@ -220,7 +193,7 @@ const ProfileManagementForm = () => {
             name="availability"
             control={control}
             render={({ field: {onChange, value} }) => (
-              <>
+              <div className='z-40'>
                   <h3 className='text-sm'>Availability</h3>
                   <DatePicker
                   selectedDates={value} 
@@ -231,7 +204,7 @@ const ProfileManagementForm = () => {
                   disabledKeyboardNavigation
                 />
 
-              </>
+              </div>
            
             )}
           />

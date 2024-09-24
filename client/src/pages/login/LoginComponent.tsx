@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {EyeFilledIcon} from "../../assets/EyeFilledIcon";
 import {EyeSlashFilledIcon} from "../../assets/EyeSlashFilledIcon";
+import { useUser } from '../../hooks/useUser';
 import React from "react";
 
 
@@ -12,13 +13,14 @@ import React from "react";
 
 const schema = z.object({
   email: z.string().email('Invalid email address').min(1),
-  password: z.string().min(8, "Must have a valid password")
+  password: z.string().min(8, "Password must be at least 8 characters long")
 });
 
 type Schema = z.infer<typeof schema>;
 
 
 const LoginComponent = () => {
+  const user = useUser();
   const {
     handleSubmit,
     setValue,
@@ -29,7 +31,19 @@ const LoginComponent = () => {
   });
 
   const onSubmit = (data: Schema) => {
-    alert(JSON.stringify(data));
+    if(data.email.includes("admin")){
+      user.setUserId('1234');
+      user.setUserRole('admin');
+      window.location.href = "/"
+    }
+    else if (data.email.includes("volunteer")){
+      user.setUserId('1234');
+      user.setUserRole('volunteer');
+      window.location.href = "/"
+    }
+    else{
+      alert("Invalid login!")
+    }
   };
 
 
@@ -38,7 +52,7 @@ const LoginComponent = () => {
 
     const toggleVisibility = () => setIsVisible(!isVisible);
   return (
-    <div className="flex flex-col gap-2 items-center justify-center h-screen overflow-auto">
+    <div className="flex flex-col gap-2 items-center justify-center h-96">
       <h2 className='text-xl'>Login</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -53,7 +67,7 @@ const LoginComponent = () => {
                 label="Email"
                 placeholder="Enter your email"
                 variant="bordered"
-                description="We'll never share your email with anyone else."
+                description="admin@gmail.com or volunteer@gmail.com"
                 onClear={() => setValue('email', '')}
                 errorMessage={errors.email?.message}
                 isInvalid={errors.email ? true : false}
@@ -81,8 +95,6 @@ const LoginComponent = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className="max-w-xs"
-
-                onClear={() => setValue('password', '')}
                 errorMessage={errors.password?.message}
                 isInvalid={errors.password? true : false}
                 {...field}
