@@ -2,9 +2,10 @@ import { Button, Textarea, Select, SelectItem, Dropdown, DropdownTrigger, Dropdo
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '../../types';
-import { volunteers, events } from '../../data';
-import { useState } from 'react';
+import { Volunteer } from '../../types';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { events } from '../../data';
 
 const schema = z.object({
   volunteers: z.string().min(1, "Must select a volunteer"),
@@ -23,7 +24,24 @@ const VolunteerMatchingForm = () => {
     resolver: zodResolver(schema),
   });
 
-  const [volunteer, setVolunteer] = useState<User>();
+  const [volunteer, setVolunteer] = useState<Volunteer>();
+  const [volunteers, setVolunteers] = useState<Volunteer[]>();
+  
+  useEffect(() => {
+    axios.get<Volunteer[]>(`http://localhost:4000/api/volunteers`)
+        .then(response => {
+
+            if (response.data) {
+                console.log(response.data);
+                setVolunteers(response.data);
+            }
+
+        })
+        .catch(error => {
+            alert(error);
+        })
+}
+    , []);
 
   const onSubmit = (data: Schema) => {
     alert(JSON.stringify(data));
