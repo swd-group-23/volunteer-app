@@ -45,48 +45,6 @@ const VolunteerComponent = () => {
 
       }
 
-
-
-
-
-
-        
-       {/*<TableRow key="1">
-          <TableCell>Houston Food Bank</TableCell>
-          <TableCell>To provide food assistance to those in need and alleviate hunger in the community.</TableCell>
-          <TableCell>535 Portwall St, Houston, TX 77029</TableCell>
-          <TableCell>Capability to stand, lift, and move boxes</TableCell>
-          <TableCell>Medium</TableCell>
-          <TableCell>March 12, 2024</TableCell>
-          <TableCell>Participated</TableCell>
-        </TableRow>
-        <TableRow key="2">
-          <TableCell>Homeless Shelter</TableCell>
-          <TableCell>Providing meals, shelter, and support services for individuals experiencing homelessness.</TableCell>
-          <TableCell>101 Homeless Way, Houston, TX 77001</TableCell>
-          <TableCell>Empathy, teamwork, basic problem-solving</TableCell>
-          <TableCell>High</TableCell>
-          <TableCell>April 5, 2024</TableCell>
-          <TableCell>Participated</TableCell>
-        </TableRow>
-        <TableRow key="3">
-          <TableCell>Public Library</TableCell>
-          <TableCell>Hosting a reading event for children in the community to promote literacy and education.</TableCell>
-          <TableCell>4500 Library Ln, Houston, TX 77002</TableCell>
-          <TableCell>Communication, patience, working with children</TableCell>
-          <TableCell>Low</TableCell>
-          <TableCell>April 20, 2024</TableCell>
-          <TableCell>Canceled</TableCell>
-        </TableRow>
-        <TableRow key="4">
-          <TableCell>Blood Drive</TableCell>
-          <TableCell>Organizing a blood donation drive to support local hospitals and medical facilities.</TableCell>
-          <TableCell>500 Donation Dr, Houston, TX 77003</TableCell>
-          <TableCell>Organizational skills, attention to detail</TableCell>
-          <TableCell>High</TableCell>
-          <TableCell>May 1, 2024</TableCell>
-          <TableCell>No show</TableCell>
-          </TableRow>*/}
       </TableBody>
     </Table>
     </>
