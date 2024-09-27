@@ -19,5 +19,5 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
     return response.status(201).send({
         id: 1, 
         username: 'test',
-        email: 'test@gmail.com'})
+        email: 'brown@gmail.com'})
 }
