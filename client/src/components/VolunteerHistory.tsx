@@ -1,12 +1,12 @@
 //Add table here
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
-import { history } from "../../../data";
+import { history } from "../../data";
 
 
-const VolunteerComponent = () => {
+const VolunteerHistory = () => {
   return (
     <>
-    <div style = {{textAlign: 'center', marginBottom: '20px'}}>Volunteer History</div>
+      <h2 className='text-xl text-center m-2'>Volunteer History</h2>
 
     <Table aria-label="Example static collection table"
              style={{ 
@@ -15,14 +15,14 @@ const VolunteerComponent = () => {
               margin: '0 auto',        // Center the table horizontally
               tableLayout: 'fixed',    // Force table layout to respect width and column sizes
               overflow: 'hidden',      // Hide any overflow content
-              border: '1px solid #ddd' // Optional: Add a border for clarity
+              border: '1px solid #ddd', // Optional: Add a border for clarity
             }}
     >
       <TableHeader>
         <TableColumn>EVENT NAME</TableColumn>
         <TableColumn>EVENT DESCRIPTION</TableColumn>
         <TableColumn>LOCATION</TableColumn>
-        <TableColumn>REQUIRED SKILLS</TableColumn>
+        <TableColumn width={250}>REQUIRED SKILLS</TableColumn>
         <TableColumn>URGENCY</TableColumn>
         <TableColumn>EVENT DATE</TableColumn>
         <TableColumn>STATUS</TableColumn>
@@ -36,7 +36,7 @@ const VolunteerComponent = () => {
             <TableCell>{event.eventName}</TableCell>
             <TableCell>{event.eventDescription}</TableCell>
             <TableCell>{event.location}</TableCell>
-            <TableCell>{event.skills}</TableCell>
+            <TableCell>{event.skills.toString()}</TableCell>
             <TableCell>{event.urgency}</TableCell>
             <TableCell>{event.eventDate.toLocaleDateString()}</TableCell>
             <TableCell>{event.status}</TableCell>
@@ -44,7 +44,6 @@ const VolunteerComponent = () => {
         ))
 
       }
-
       </TableBody>
     </Table>
     </>
@@ -52,4 +51,4 @@ const VolunteerComponent = () => {
 }
 
 
-export default VolunteerComponent
+export default VolunteerHistory

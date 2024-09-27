@@ -2,9 +2,10 @@ import { Button, Textarea, Select, SelectItem, Dropdown, DropdownTrigger, Dropdo
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '../../../types';
-import { volunteers, events } from '../../../data';
-import { useState } from 'react';
+import { Volunteer } from '../../types';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { events } from '../../data';
 
 const schema = z.object({
   volunteers: z.string().min(1, "Must select a volunteer"),
@@ -13,7 +14,7 @@ const schema = z.object({
 });
 type Schema = z.infer<typeof schema>;
 
-const AdminComponent = () => {
+const VolunteerMatchingForm = () => {
   const {
     handleSubmit,
     control,
@@ -23,22 +24,39 @@ const AdminComponent = () => {
     resolver: zodResolver(schema),
   });
 
-  const [volunteer, setVolunteer] = useState<User>();
+  const [volunteer, setVolunteer] = useState<Volunteer>();
+  const [volunteers, setVolunteers] = useState<Volunteer[]>();
+  
+  useEffect(() => {
+    axios.get<Volunteer[]>(`http://localhost:4000/api/volunteers`)
+        .then(response => {
+
+            if (response.data) {
+                console.log(response.data);
+                setVolunteers(response.data);
+            }
+
+        })
+        .catch(error => {
+            alert(error);
+        })
+}
+    , []);
 
   const onSubmit = (data: Schema) => {
-    alert(JSON.stringify(data)); // Handle form submission logic
-    reset(); // Clear the form fields after successful submission
-    setVolunteer(undefined); // Optionally, clear selected volunteer
+    alert(JSON.stringify(data));
+    reset(); 
+    setVolunteer(undefined);
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center">
+    <div className="flex flex-col gap-2 items-center overflow-auto mt-10">
+      <h1 className="text-xl">Volunteer Matching Form</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-4 w-[100%]"
       >
         <div className="flex flex-col mt-4 gap-4 w-96">
-          <h1 className="text-xl">Volunteer Matching Form</h1>
 
           <Controller
             name="volunteers"
@@ -92,6 +110,7 @@ const AdminComponent = () => {
                           key={event.id}
                           value={event.id}
                           className="text-black"
+                          textValue={event.name}
                         >
                           <div className="flex flex-col">
                             <span className="text-md">{event.name}</span>
@@ -131,4 +150,4 @@ const AdminComponent = () => {
   );
 };
 
-export default AdminComponent;
+export default VolunteerMatchingForm;
