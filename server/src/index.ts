@@ -18,7 +18,8 @@ const options: cors.CorsOptions = {
     preflightContinue: false,
   };
   
-//use cors middleware
+//middleware
+app.use(express.json());
 app.use(cors(options));
 
 app.get('/test', (req, res) => {

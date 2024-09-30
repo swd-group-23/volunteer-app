@@ -13,3 +13,15 @@ export interface Volunteer {
     preferences?: string;
     availability: Date[];
 };
+
+
+export interface MatchVolunteerRequest {
+    volunteerId: string;
+    eventId: string;
+}
+
+export interface MatchVolunteerResponse{
+    volunteer_name: string;
+    event_name: string;
+    event_time: Date;
+}
