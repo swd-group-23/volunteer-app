@@ -22,6 +22,8 @@ jobs:
     needs: build-server
     runs-on: self-hosted 
     steps:
+      - name: Clean up docker system
+        run: docker system prune -af
       - name: Pull image from docker hub
         run: docker pull 04aj/volunteer-app-server-dev:latest 
       - name: Delete old container
@@ -38,7 +40,7 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
       - name: Build Docker Image
-        run: docker build -t 04aj/volunteer-app-client-dev --build-arg REACT_APP_NODE_ENV='production' --build-arg REACT_APP_SERVER_BASE_URL='${{ secrets.REACT_APP_SERVER_BASE_URL_DEV }}'  ./client
+        run: docker build -t 04aj/volunteer-app-client-dev --build-arg REACT_APP_NODE_ENV='production' --build-arg VITE_REACT_APP_SERVER_BASE_URL_TEST='${{ secrets.VITE_REACT_APP_SERVER_BASE_URL_TEST }}'  ./client
       - name: Publish Image to docker hub
         run: docker push 04aj/volunteer-app-client-dev:latest 
  

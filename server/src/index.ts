@@ -5,7 +5,6 @@ import cors from 'cors';
 
 const app = express();
 
-//options for cors midddleware
 const options: cors.CorsOptions = {
     allowedHeaders: [
       'Origin',
@@ -14,7 +13,6 @@ const options: cors.CorsOptions = {
       'Accept',
       'X-Access-Token',
     ],
-    credentials: true,
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
     origin: true,
     preflightContinue: false,
@@ -23,6 +21,9 @@ const options: cors.CorsOptions = {
 //use cors middleware
 app.use(cors(options));
 
+app.get('/test', (req, res) => {
+  res.send('Hello World');
+});
 app.use('/api/users', usersRouter)
 app.use('/api/volunteers', volunteersRouter)
 
