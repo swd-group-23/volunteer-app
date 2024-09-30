@@ -1,7 +1,8 @@
 export interface User {
-    id: number;
+    id: string;
     email: string;
-    username: string;
+    password: string;
+    role: 'volunteer' | 'admin';
 }
 
 export interface CreateUserRequest {
