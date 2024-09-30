@@ -6,7 +6,12 @@ export interface User {
 }
 
 export interface CreateUserRequest {
-    username: string;
+    email: string;
+    password: string;
+    role: 'volunteer' | 'admin';
+}
+
+export interface LoginUserRequest {
     email: string;
     password: string;
 }

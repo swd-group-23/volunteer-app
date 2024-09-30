@@ -11,13 +11,13 @@ export const users: User[] = [
   {
     id: '2',
     email: 'test2@gmail.com',
-    password: '1234',
+    password: '2345',
     role: 'admin'
   },
   {
     id: '3',
     email: 'test3@gmail.com',
-    password: '1234',
+    password: '3456',
     role: 'volunteer'
   },
 
