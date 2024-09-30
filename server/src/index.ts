@@ -1,6 +1,7 @@
 import express from 'express';
 import usersRouter from './routes/users'
 import volunteersRouter from './routes/volunteers'
+import notificationsRouter from './routes/notifications'
 import cors from 'cors';
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(cors(options));
 
 app.use('/api/users', usersRouter)
 app.use('/api/volunteers', volunteersRouter)
+app.use('/api/notifications', notificationsRouter)
 
 const PORT = 4000;
 

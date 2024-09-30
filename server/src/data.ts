@@ -1,4 +1,5 @@
 import { Volunteer } from "./models/volunteer.model";
+import { Notification } from "./models/notifications.model";
 
 
 export const volunteers: Volunteer[] = [
@@ -64,3 +65,27 @@ export const volunteers: Volunteer[] = [
   }
 ];
 
+export const notifications: Notification[] = [
+  {
+    id: "string",
+    userId: "string",
+    time: new Date('2024-12-01'),
+    eventId: "string",
+    message: "string",
+  },
+  {
+    id: "string1",
+    userId: "string1",
+    time: new Date('2024-12-01'),
+    eventId: "string1",
+    message: "string1",
+  },
+  {
+    id: "string2",
+    userId: "string2",
+    time: new Date('2024-12-01'),
+    eventId: "string2",
+    message: "string2",
+  },
+  
+  ];
