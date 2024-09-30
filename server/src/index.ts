@@ -1,6 +1,7 @@
 import express from 'express';
 import usersRouter from './routes/users'
 import volunteersRouter from './routes/volunteers'
+import eventsRouter from './routes/events'
 import cors from 'cors';
 
 const app = express();
@@ -18,7 +19,8 @@ const options: cors.CorsOptions = {
     preflightContinue: false,
   };
   
-//use cors middleware
+//middleware
+app.use(express.json());
 app.use(cors(options));
 
 app.get('/test', (req, res) => {
@@ -26,7 +28,7 @@ app.get('/test', (req, res) => {
 });
 app.use('/api/users', usersRouter)
 app.use('/api/volunteers', volunteersRouter)
-
+app.use('/api/events',eventsRouter)
 const PORT = 4000;
 
 app.options('*', cors(options));
