@@ -17,7 +17,7 @@ function App() {
         <>
           <NavBar/>
           <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>
-          <h2 className='text-2xl'>Environment: {env}</h2>
+          <h2 className='text-2xl'>Node environment: {env}</h2>
           <h2 className='text-xl'>Base url: {base_url}</h2>
           {
             (user.userId)? 
