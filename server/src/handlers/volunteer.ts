@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { volunteers } from "../data";
-import { CreateVolunteerRequest, MatchVolunteerRequest, Volunteer } from "../models/volunteer.model";
+import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, Volunteer } from "../models/volunteer.model";
 
 export function getVolunteers(request: Request, response: Response<Volunteer[]>) {
     return response.send(volunteers);
