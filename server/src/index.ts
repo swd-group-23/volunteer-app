@@ -2,6 +2,7 @@ import express from 'express';
 import usersRouter from './routes/users'
 import volunteersRouter from './routes/volunteers'
 import notificationsRouter from './routes/notifications'
+import eventsRouter from './routes/events'
 import cors from 'cors';
 
 const app = express();
@@ -28,6 +29,7 @@ app.get('/test', (req, res) => {
 });
 app.use('/api/users', usersRouter)
 app.use('/api/volunteers', volunteersRouter)
+app.use('/api/events',eventsRouter)
 app.use('/api/notifications', notificationsRouter)
 
 const PORT = 4000;
