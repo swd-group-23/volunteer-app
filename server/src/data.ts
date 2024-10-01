@@ -1,5 +1,7 @@
 import { User } from "./models/users.model";
 import { Volunteer } from "./models/volunteer.model";
+import { Notification } from "./models/notifications.model";
+
 import { History } from "./models/history.model";
 
 export const users: User[] = [
@@ -23,6 +25,7 @@ export const users: User[] = [
   },
 
 ]
+
 
 
 export const volunteers: Volunteer[] = [
@@ -88,6 +91,31 @@ export const volunteers: Volunteer[] = [
   }
 ];
 
+
+export const notifications: Notification[] = [
+  {
+    id: "string",
+    userId: "string",
+    time: new Date('2024-12-01'),
+    eventId: "string",
+    message: "string",
+  },
+  {
+    id: "string1",
+    userId: "string1",
+    time: new Date('2024-12-01'),
+    eventId: "string1",
+    message: "string1",
+  },
+  {
+    id: "string2",
+    userId: "string2",
+    time: new Date('2024-12-01'),
+    eventId: "string2",
+    message: "string2",
+  },
+   ];
+
 export const histories: History[] = [
   {
     id: '1',
@@ -137,5 +165,6 @@ export const histories: History[] = [
     status: ['No show']
   
   }
+
   
   ];
