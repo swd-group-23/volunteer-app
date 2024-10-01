@@ -6,11 +6,12 @@ export function getUsers(request: Request, response: Response<User[]>) {
     return response.send(users);
 }
 
-export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: Response<boolean>){
-    if(users.find((user) => user.email == request.body.email && user.password == request.body.password)){
-        return response.send(true);
+export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: Response<String>){
+    const user = users.find((user) => user.email == request.body.email && user.password == request.body.password);
+    if(user){
+        return response.send(user.id);
     }
-    return response.send(false);
+    return response.status(404).send("User not found");
 }
 
 export function getUsersById(request: Request<{id: number}>, response: Response<User>) { 
@@ -24,10 +25,17 @@ export function getUsersById(request: Request<{id: number}>, response: Response<
 
 export function createUser(request: Request<{}, {}, CreateUserRequest>, response: Response<User>){
     const newUser = request.body
-    return response.status(201).send({
-        id: Math.floor((Math.random() * 100) + 1).toString(),
-        email: newUser.email,
-        password: newUser.password,
-        role: newUser.role
-    });
+    console.log("Created new user: ", newUser);
+    if(newUser){
+        return response.status(201).send(
+            {
+                id: Math.floor((Math.random() * 100) + 1).toString(),
+                email: newUser.email,
+                password: newUser.password,
+                role: newUser.role
+            }
+    );
+    }
+    return response.status(404);
+
 }

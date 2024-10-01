@@ -11,13 +11,10 @@ import EventManagementForm from './components/EventManagementForm';
 function App() {
   const user = useUser();
   const {onClose} = useDisclosure();
-  const base_url = (import.meta.env.PROD) ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_TEST;
-
   return (
         <>
           <NavBar/>
-          <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>
-          <h2 className='text-xl'>Base url: {base_url}</h2>
+          <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>  
           {
             (user.userId)? 
 

@@ -45,6 +45,7 @@ export interface Event {
 
 export interface History {
     id: string;
+    userId: string;
     eventName: string;
     eventDescription: string;
     location: string;

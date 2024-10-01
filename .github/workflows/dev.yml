@@ -40,7 +40,7 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
       - name: Build Docker Image
-        run: docker build -t 04aj/volunteer-app-client-dev --build-arg REACT_APP_NODE_ENV='production' --build-arg VITE_REACT_APP_SERVER_BASE_URL_TEST='${{ secrets.VITE_REACT_APP_SERVER_BASE_URL_TEST }}'  ./client
+        run: docker build -t 04aj/volunteer-app-client-dev --build-arg VITE_REACT_APP_NODE_ENV='staging' --build-arg VITE_REACT_APP_SERVER_BASE_URL_STAGE='${{ secrets.VITE_REACT_APP_SERVER_BASE_URL_STAGE }}' ./client
       - name: Publish Image to docker hub
         run: docker push 04aj/volunteer-app-client-dev:latest 
  

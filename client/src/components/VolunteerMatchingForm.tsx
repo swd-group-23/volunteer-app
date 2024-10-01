@@ -26,7 +26,8 @@ const VolunteerMatchingForm = () => {
 
   const [volunteer, setVolunteer] = useState<Volunteer>();
   const [volunteers, setVolunteers] = useState<Volunteer[]>();
-  const base_url = (import.meta.env.PROD) ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_TEST;
+  const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
+  const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
 
   useEffect(() => {
     axios.get<Volunteer[]>(`${base_url}/api/volunteers`)
