@@ -1,5 +1,34 @@
+import { User } from "./models/users.model";
 import { Volunteer } from "./models/volunteer.model";
+import { Notification } from "./models/notifications.model";
+
 import { History } from "./models/history.model";
+
+
+
+import { Event } from "./models/events.model";
+
+export const users: User[] = [
+  {
+    id: '1',
+    email: 'test1@gmail.com',
+    password: '1234',
+    role: 'volunteer'
+  },
+  {
+    id: '2',
+    email: 'test2@gmail.com',
+    password: '2345',
+    role: 'admin'
+  },
+  {
+    id: '3',
+    email: 'test3@gmail.com',
+    password: '3456',
+    role: 'volunteer'
+  },
+
+]
 
 
 export const volunteers: Volunteer[] = [
@@ -65,6 +94,31 @@ export const volunteers: Volunteer[] = [
   }
 ];
 
+
+export const notifications: Notification[] = [
+  {
+    id: "string",
+    userId: "string",
+    time: new Date('2024-12-01'),
+    eventId: "string",
+    message: "string",
+  },
+  {
+    id: "string1",
+    userId: "string1",
+    time: new Date('2024-12-01'),
+    eventId: "string1",
+    message: "string1",
+  },
+  {
+    id: "string2",
+    userId: "string2",
+    time: new Date('2024-12-01'),
+    eventId: "string2",
+    message: "string2",
+  },
+   ];
+
 export const histories: History[] = [
   {
     id: '1',
@@ -114,5 +168,67 @@ export const histories: History[] = [
     status: ['No show']
   
   }
+
   
-  ];
+  ];export const events: Event[] = [
+  {
+    id: '1',
+    name: 'Houston Food Bank',
+    description: 'Feeding the community',
+    address: 'Portwall',
+    city: 'Houston',
+    state: 'Texas',
+    zip: 77546,
+    dateTime: new Date('2024-09-14'),
+    skills: ['packing', 'carrying'],
+    urgency: 'mild'
+  },
+  {
+    id: '2',
+    name: 'Homeless Shelter',
+    description: 'Feeding the homeless',
+    address: 'Portwall',
+    city: 'Houston',
+    state: 'Texas',
+    zip: 77546,
+    dateTime: new Date('2024-10-15'),
+    skills: ['packing', 'carrying'],
+    urgency: 'mild'
+  },
+  {
+    id: '3',
+    name: 'Public Library',
+    description: 'Knowledge for the community',
+    address: 'Portwall',
+    city: 'Houston',
+    state: 'Texas',
+    zip: 77546,
+    dateTime: new Date('2024-11-08'),
+    skills: ['organizing', 'helping'],
+    urgency: 'low'
+  },
+  {
+    id: '4',
+    name: 'Blood Drive',
+    description: 'Saving lives',
+    address: 'Portwall',
+    city: 'Houston',
+    state: 'Texas',
+    zip: 77546,
+    dateTime: new Date('2024-12-01'),
+    skills: ['packing', 'assisting'],
+    urgency: 'high'
+  },
+  {
+    id: '5',
+    name: 'Donation',
+    description: 'Donate',
+    address: 'Portwall',
+    city: 'Houston',
+    state: 'Texas',
+    zip: 77546,
+    dateTime: new Date('2024-12-01'),
+    skills: ['packing', 'assisting'],
+    urgency: 'high'
+  }
+]
