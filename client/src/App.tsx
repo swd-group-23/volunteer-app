@@ -11,14 +11,10 @@ import EventManagementForm from './components/EventManagementForm';
 function App() {
   const user = useUser();
   const {onClose} = useDisclosure();
-  const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
-  const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
   return (
         <>
           <NavBar/>
-          <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>
-          <h2 className='text-2xl'>Node environment: {env}</h2>
-          <h2 className='text-xl'>Base url: {base_url}</h2>
+          <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>  
           {
             (user.userId)? 
 
