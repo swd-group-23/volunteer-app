@@ -16,12 +16,13 @@ const options: cors.CorsOptions = {
       'X-Access-Token',
     ],
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-    origin: true,
+    origin: '*',
     preflightContinue: false,
   };
   
 //middleware
 app.use(express.json());
+app.options('*', cors(options));
 app.use(cors(options));
 
 app.get('/test', (req, res) => {
@@ -34,7 +35,6 @@ app.use('/api/notifications', notificationsRouter)
 
 const PORT = 4000;
 
-app.options('*', cors(options));
 
 app.listen(PORT, () => {
     console.log(`Running on Port ${PORT }`);
