@@ -1,15 +1,18 @@
 import { Request, Response } from "express";
-import { CreateUserRequest, LoginUserRequest, User } from "../models/users.model";
+import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User } from "../models/users.model";
 import { users } from "../data";
 
 export function getUsers(request: Request, response: Response<User[]>) {
     return response.send(users);
 }
 
-export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: Response<String>){
+export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: Response<LoginUserResponse | string>){
     const user = users.find((user) => user.email == request.body.email && user.password == request.body.password);
     if(user){
-        return response.send(user.id);
+        return response.send({
+            id: user.id,
+            role: user.role
+        });
     }
     return response.status(404).send("User not found");
 }
