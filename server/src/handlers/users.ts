@@ -27,14 +27,15 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
     const newUser = request.body
     console.log("Created new user: ", newUser);
     if(newUser){
-        return response.status(201).send(
-            {
-                id: Math.floor((Math.random() * 100) + 1).toString(),
-                email: newUser.email,
-                password: newUser.password,
-                role: newUser.role
-            }
-    );
+        const user = {
+            id: Math.floor((Math.random() * 100) + 1).toString(),
+            email: newUser.email,
+            password: newUser.password,
+            role: newUser.role
+        }
+        users.push(user);
+
+        return response.status(201).send(user);
     }
     return response.status(404);
 
