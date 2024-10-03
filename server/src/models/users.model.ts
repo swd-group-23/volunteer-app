@@ -1,11 +1,22 @@
 export interface User {
-    id: number;
+    id: string;
     email: string;
-    username: string;
+    password: string;
+    role: 'volunteer' | 'admin';
 }
 
 export interface CreateUserRequest {
-    username: string;
     email: string;
     password: string;
+    role: 'volunteer' | 'admin';
+}
+
+export interface LoginUserRequest {
+    email: string;
+    password: string;
+}
+
+export interface LoginUserResponse {
+    id: string;
+    role: 'volunteer' | 'admin';
 }

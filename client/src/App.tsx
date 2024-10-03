@@ -11,11 +11,10 @@ import EventManagementForm from './components/EventManagementForm';
 function App() {
   const user = useUser();
   const {onClose} = useDisclosure();
-
   return (
         <>
           <NavBar/>
-          <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>
+          <h1 className='text-3xl text-center font-bold mt-2'>Volunteer App</h1>  
           {
             (user.userId)? 
 

@@ -1,17 +1,9 @@
 export interface User {
     id: string;
-    name: string;
     email: string;
     password: string;
-    address1: string;
-    address2: string;
-    city: string;
-    state: string;
-    zip: number;
-    skills: string[];
-    preferences?: string;
-    availability: Date[];
-};
+    role: 'volunteer' | 'admin';
+}
 
 export interface Volunteer {
     id: string;
@@ -45,6 +37,7 @@ export interface Event {
 
 export interface History {
     id: string;
+    userId: string;
     eventName: string;
     eventDescription: string;
     location: string;
