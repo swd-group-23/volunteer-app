@@ -3,6 +3,7 @@ import usersRouter from './routes/users'
 import volunteersRouter from './routes/volunteers'
 import notificationsRouter from './routes/notifications'
 import eventsRouter from './routes/events'
+import historyRouter from './routes/history'
 
 const app = express();
 
