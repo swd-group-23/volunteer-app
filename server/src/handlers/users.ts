@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User } from "../models/users.model";
 import { users } from "../data";
 
@@ -20,7 +20,7 @@ export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: 
 export function getUsersById(request: Request<{id: number}>, response: Response<User>) { 
     const id = request.params.id
     const user = users.find((user) => user.id == id.toString())
-    if(id <= users.length - 1){
+    if(user){
         return response.send(user);
     }
     return response.status(404);
@@ -42,4 +42,16 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
     }
     return response.status(404);
 
+}
+
+export function deleteUser(request: Request<{id: number}>, response: Response<User>){
+    const id = request.params.id;
+
+    const user = users.find((user) => user.id == id.toString())
+    if(user){
+        const index = users.indexOf(user);
+        users.splice(index, 1);
+        return response.send(user);
+    }
+    return response.status(404);
 }
