@@ -11,15 +11,15 @@ import { Event } from "./models/events.model";
 export const users: User[] = [
   {
     id: '1',
-    email: 'test1@gmail.com',
-    password: '1234',
-    role: 'volunteer'
+    email: 'admin@gmail.com',
+    password: '12345678',
+    role: 'admin'
   },
   {
     id: '2',
-    email: 'test2@gmail.com',
-    password: '2345',
-    role: 'admin'
+    email: 'volunteer@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
   },
   {
     id: '3',

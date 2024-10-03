@@ -11,7 +11,7 @@ const DetailsCard: React.FC<cardRequest> = ({
     return (
         <div className="card my-2">
             <div className="card-body">
-                <h5>User Name : {userInfo.name} <br /><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Email : {userInfo.email}</h5>
+                <h5>Email : {userInfo.email} <br /><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Role : {userInfo.role}</h5>
 
             </div>
         </div>
