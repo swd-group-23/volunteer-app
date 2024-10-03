@@ -31,6 +31,7 @@ export const users: User[] = [
 ]
 
 
+
 export const volunteers: Volunteer[] = [
   {
     id: '1',
@@ -170,65 +171,4 @@ export const histories: History[] = [
   }
 
   
-  ];export const events: Event[] = [
-  {
-    id: '1',
-    name: 'Houston Food Bank',
-    description: 'Feeding the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
-    dateTime: new Date('2024-09-14'),
-    skills: ['packing', 'carrying'],
-    urgency: 'mild'
-  },
-  {
-    id: '2',
-    name: 'Homeless Shelter',
-    description: 'Feeding the homeless',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
-    dateTime: new Date('2024-10-15'),
-    skills: ['packing', 'carrying'],
-    urgency: 'mild'
-  },
-  {
-    id: '3',
-    name: 'Public Library',
-    description: 'Knowledge for the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
-    dateTime: new Date('2024-11-08'),
-    skills: ['organizing', 'helping'],
-    urgency: 'low'
-  },
-  {
-    id: '4',
-    name: 'Blood Drive',
-    description: 'Saving lives',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
-    dateTime: new Date('2024-12-01'),
-    skills: ['packing', 'assisting'],
-    urgency: 'high'
-  },
-  {
-    id: '5',
-    name: 'Donation',
-    description: 'Donate',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
-    dateTime: new Date('2024-12-01'),
-    skills: ['packing', 'assisting'],
-    urgency: 'high'
-  }
-]
+  ];
