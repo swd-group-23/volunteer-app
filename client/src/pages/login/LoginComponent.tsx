@@ -6,9 +6,12 @@ import {EyeFilledIcon} from "../../assets/EyeFilledIcon";
 import {EyeSlashFilledIcon} from "../../assets/EyeSlashFilledIcon";
 import { useUser } from '../../hooks/useUser';
 import React from "react";
+import axios from 'axios';
 
-
-
+interface LoginUserResponse {
+  id: string;
+  role: 'volunteer' | 'admin';
+}
 
 
 const schema = z.object({
@@ -29,21 +32,30 @@ const LoginComponent = () => {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+  const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
+  const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
 
   const onSubmit = (data: Schema) => {
-    if(data.email.includes("admin")){
-      user.setUserId('1234');
-      user.setUserRole('admin');
-      window.location.href = "/"
-    }
-    else if (data.email.includes("volunteer")){
-      user.setUserId('1234');
-      user.setUserRole('volunteer');
-      window.location.href = "/"
-    }
-    else{
-      alert("Invalid login!")
-    }
+      axios.post<LoginUserResponse> (`${base_url}/api/users/login`, {
+        email: data.email,
+        password: data.password
+      })
+          .then(response => {
+  
+              if (response) {
+                console.log(response.data);
+                user.setUserId(response.data.id);
+                user.setUserRole(response.data.role);
+                window.location.href = "/";
+
+              }
+  
+          })
+          .catch(() => {
+              alert("User not found!");
+          })
+  
+  
   };
 
 
@@ -83,6 +95,7 @@ const LoginComponent = () => {
                 <Input
                 label="Password"
                 variant="bordered"
+                description="Enter: 12345678"
                 placeholder="Enter your password"
                 endContent={
                   <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">

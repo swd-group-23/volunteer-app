@@ -15,3 +15,8 @@ export interface LoginUserRequest {
     email: string;
     password: string;
 }
+
+export interface LoginUserResponse {
+    id: string;
+    role: 'volunteer' | 'admin';
+}
