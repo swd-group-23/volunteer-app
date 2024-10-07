@@ -67,6 +67,7 @@ const SignUpComponent = () => {
               console.log(response.data);
               user.setUserId(response.data.id);
               user.setUserRole(response.data.role);
+              user.setUserEmail(data.email)
               // window.location.href = "/";
 
             }
