@@ -1,6 +1,8 @@
 import { Request, response, Response } from "express";
 import { CreateUserRequest, LoginUserRequest, LoginUserResponse, UpdateUserRequest, User } from "../models/users.model";
 import { users } from "../data";
+import {query, validationResult} from 'express-validator';
+
 
 export function getUsers(request: Request, response: Response<User[]>) {
     return response.send(users);
@@ -26,13 +28,24 @@ export function getUsersById(request: Request<{id: number}>, response: Response<
     return response.status(404).send("User not found");
 }
 
-export function createUser(request: Request<{}, {}, CreateUserRequest>, response: Response<User | String>){
+export function createUser(request: Request<{}, {}, CreateUserRequest>, response: Response<User | String | String[]>){
     const newUser = request.body
+    const result = validationResult(request);
+    console.log(result);
+    if(!newUser){
+        return response.status(400).send("No body!");
+    }
+    
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        return response.status(400).send(errors)
+    }
+
     const exist = users.find((user) => user.email == newUser.email)
     if(exist){
-        return response.status(403).send("Username already exists");
+        return response.status(400).send("Username already exists");
     }
-    else if(newUser){
+    else {
         console.log("Created new user: ", newUser);
         const user = {
             id: Math.floor((Math.random() * 100) + 1).toString(),
@@ -44,7 +57,6 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
 
         return response.status(201).send(user);
     }
-    return response.status(400);
 
 }
 

@@ -73,7 +73,7 @@ const SignUpComponent = () => {
 
         })
         .catch(() => {
-            alert("Invalid Signup!");
+            alert("Email already exists!");
         })
   };
 

@@ -32,6 +32,9 @@ export const mockCreateUserSuccess = {
     }
 } as Request<{}, {}, CreateUserRequest>;
 
+export const mockCreateUserFailure = {
+} as Request<{}, {}, CreateUserRequest>;
+
 export const mockCreateExistingUser = {
     body: {
         email: "admin@gmail.com",

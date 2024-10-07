@@ -1,7 +1,15 @@
+import { validationResult } from "express-validator";
 import { users } from "../../data";
-import { createUser, deleteUser, getUsers, getUsersById, loginUser } from "../../handlers/users"
+import { createUser, deleteUser, getUsers, getUsersById, loginUser, updateUser } from "../../handlers/users"
 import { mockRequest, mockResponse } from "../mocks";
-import { mockCreateExistingUser, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess, mockUpdateUserFailure, mockUpdateUserSuccess } from "../mocks/users";
+import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess, mockUpdateUserFailure, mockUpdateUserSuccess } from "../mocks/users";
+
+// jest.mock("express-validator", () => ({
+//     validationResult: jest.fn(() => ({
+//         isEmpty: jest.fn(() => false),
+//         array: jest.fn(() => [{msg: "Invalid field"}])
+//     }))
+// }))
 
 describe('getUsers', () =>{
     it('should return an array of users', () =>{
@@ -44,9 +52,13 @@ describe('createUser', () => {
         createUser(mockCreateUserSuccess, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(201);
     })
-    it('should call createUser with ', () =>{
+    it('should call createUser with 400 when a user already exists', () =>{
         createUser(mockCreateExistingUser, mockResponse);
-        expect(mockResponse.status).toHaveBeenCalledWith(403);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+    })
+    it('should call createUser with 400 when there are errors', () =>{
+        createUser(mockCreateUserFailure, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
     })
 })
 
@@ -57,19 +69,19 @@ describe('deleteUser', () =>{
     })
 
     it('should call deleteUser with 404 when user not found', () =>{
-        getUsersById(mockDeleteUserByIdRequestFailure, mockResponse);
+        deleteUser(mockDeleteUserByIdRequestFailure, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(404);
     });
 })
 
 describe('updateUser', () =>{
     it('should update a user by id', () =>{
-        deleteUser(mockUpdateUserSuccess, mockResponse);
+        updateUser(mockUpdateUserSuccess, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(200);
     })
 
     it('should call updateUser with 404 when user not found', () =>{
-        getUsersById(mockUpdateUserFailure, mockResponse);
+        updateUser(mockUpdateUserFailure, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(404);
     });
 })
