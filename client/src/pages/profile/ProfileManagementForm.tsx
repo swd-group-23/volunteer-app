@@ -4,8 +4,12 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
 import { states,skills } from '../../../types';
+import axios from 'axios';
+import { Volunteer } from '../../../types';
+import { useEffect, useState } from 'react';
+import { useUser } from '../../hooks/useUser';
 const schema = z.object({
-  fullname: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
+  name: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
   address1: z.string().min(1, 'Invalid address').max(100, 'Address is too long'),
   address2: z.string().min(1, 'Invalid address').max(100, 'Address is too long').optional(),
   city: z.string().min(1, 'Invalid city').max(100, 'City is too long'),
@@ -19,6 +23,7 @@ type Schema = z.infer<typeof schema>;
 
 
 const ProfileManagementForm = () => {
+  const user = useUser();
   const {
     handleSubmit,
     setValue,
@@ -27,11 +32,62 @@ const ProfileManagementForm = () => {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+  const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
+  const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
+  
+  const [volunteers, setVolunteers] = useState<Volunteer[]>();
+  const [volunteer, setVolunteer] = useState<Volunteer>();
+  useEffect(() => {
+    if(user.userRole == "admin"){
+      axios.get<Volunteer[]>(`${base_url}/api/volunteers`)
+          .then(response => {
 
+              if (response.data) {
+                  setVolunteers(response.data);
+              }
+
+          })
+          .catch(error => {
+            console.log(error);
+          })
+}else if(user.userRole=="volunteer"){
+  axios.get<Volunteer>(`${base_url}/api/volunteers/${user.userId}`)
+          .then(response => {
+
+              if (response.data) {
+                  setVolunteer(response.data);
+              }
+
+          })
+          .catch(error => {
+            console.log(error);
+          })
+  }
+} , [volunteers]);
   const onSubmit = (data: Schema) => {
-    console.log("Form Data:", data);
-    console.log("Form Errors:", errors);
-    alert(JSON.stringify(data));
+    axios.post<Volunteer> (`${base_url}/api/volunteers`, {
+      name: data.name,
+      address1: data.address1,
+      address2: data.address2,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      skills: data.skills,
+      preferences: data.preferences,
+      availability: data.availability,
+      email: user.userEmail
+    })
+    .then(response => {
+  
+      if (response) {
+        alert("Created Volunteer")
+      }
+
+  })
+  .catch(() => {
+      alert("error");
+  })
+    
   };
 
   return (
@@ -42,16 +98,16 @@ const ProfileManagementForm = () => {
         className="flex flex-col items-start gap-4 mt-4"
       >
            <Controller
-            name="fullname"
+            name="name"
             control={control}
             render={({ field }) => (
               <Input
                 label="Full Name"
                 placeholder="enter name"
                 variant="bordered"
-                onClear={() => setValue('fullname', '')}
-                errorMessage={errors.fullname?.message}
-                isInvalid={errors.fullname ? true : false}
+                onClear={() => setValue('name', '')}
+                errorMessage={errors.name?.message}
+                isInvalid={errors.name ? true : false}
                 {...field}
               />
             )}
@@ -214,6 +270,19 @@ const ProfileManagementForm = () => {
           Submit
         </Button>
       </form>
+      <div>
+        {
+            (volunteers && user.userRole=="admin") ? 
+            <ul className="list-disc">
+              {
+              volunteers.map((volunteer) => <li key={volunteer.id}>{volunteer.name}:{volunteer.email}</li>)
+              }
+          
+            </ul>
+           :
+            <></>
+          }
+      </div>
     </div>
   );
 };

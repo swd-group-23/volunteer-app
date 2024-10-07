@@ -27,6 +27,7 @@ export interface MatchVolunteerResponse{
 }
 export interface CreateVolunteerRequest {
     userId: string;
+    id: string;
     name: string;
     email: string;
     password: string;
