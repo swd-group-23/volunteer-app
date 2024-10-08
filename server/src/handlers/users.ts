@@ -1,7 +1,7 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { CreateUserRequest, LoginUserRequest, LoginUserResponse, UpdateUserRequest, User } from "../models/users.model";
 import { users } from "../data";
-import {query, validationResult} from 'express-validator';
+import {validationResult} from 'express-validator';
 
 
 export function getUsers(request: Request, response: Response<User[]>) {

@@ -1,4 +1,3 @@
-import { validationResult } from "express-validator";
 import { users } from "../../data";
 import { createUser, deleteUser, getUsers, getUsersById, loginUser, updateUser } from "../../handlers/users"
 import { mockRequest, mockResponse } from "../mocks";
