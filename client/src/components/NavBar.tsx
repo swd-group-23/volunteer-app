@@ -59,7 +59,15 @@ const NavBar = () => {
             {(user.userId)?
             <NavbarItem>
                 <Link color="foreground" href="/pages/profile/">
-                    Profile
+                    {(user.userRole=="admin")?
+                        <div>
+                            Volunteer Profiles
+                        </div>
+                        :
+                        <div>
+                            Profile
+                        </div>
+                    }
                 </Link>
             </NavbarItem> :
             <NavbarItem className="flex">
