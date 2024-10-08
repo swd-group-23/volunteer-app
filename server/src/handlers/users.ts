@@ -9,8 +9,13 @@ export function getUsers(request: Request, response: Response<User[]>) {
 }
 
 export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: Response<LoginUserResponse | string>){
+export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: Response<LoginUserResponse | string>){
     const user = users.find((user) => user.email == request.body.email && user.password == request.body.password);
     if(user){
+        return response.send({
+            id: user.id,
+            role: user.role
+        });
         return response.send({
             id: user.id,
             role: user.role
@@ -22,6 +27,7 @@ export function loginUser(request: Request<{}, {}, LoginUserRequest>, response: 
 export function getUsersById(request: Request<{id: number}>, response: Response<User | string>) { 
     const id = request.params.id
     const user = users.find((user) => user.id == id.toString())
+    if(user){
     if(user){
         return response.send(user);
     }
