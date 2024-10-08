@@ -20,3 +20,8 @@ export interface LoginUserResponse {
     id: string;
     role: 'volunteer' | 'admin';
 }
+
+export interface UpdateUserRequest {
+    email: string;
+    password: string;
+}

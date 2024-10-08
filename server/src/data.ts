@@ -1,11 +1,7 @@
 import { User } from "./models/users.model";
 import { Volunteer } from "./models/volunteer.model";
 import { Notification } from "./models/notifications.model";
-
 import { History } from "./models/history.model";
-
-
-
 import { Event } from "./models/events.model";
 
 export const users: User[] = [
@@ -28,8 +24,7 @@ export const users: User[] = [
     role: 'volunteer'
   },
 
-]
-
+];
 
 export const volunteers: Volunteer[] = [
   {
@@ -94,7 +89,6 @@ export const volunteers: Volunteer[] = [
   }
 ];
 
-
 export const notifications: Notification[] = [
   {
     id: "string",
@@ -117,7 +111,7 @@ export const notifications: Notification[] = [
     eventId: "string2",
     message: "string2",
   },
-   ];
+];
 
 export const histories: History[] = [
   {
@@ -170,7 +164,9 @@ export const histories: History[] = [
   }
 
   
-  ];export const events: Event[] = [
+];
+  
+export const events: Event[] = [
   {
     id: '1',
     name: 'Houston Food Bank',
@@ -231,4 +227,4 @@ export const histories: History[] = [
     skills: ['packing', 'assisting'],
     urgency: 'high'
   }
-]
+];
