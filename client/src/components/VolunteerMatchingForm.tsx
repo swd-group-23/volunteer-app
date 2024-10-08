@@ -7,6 +7,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { events } from '../../data';
 
+interface VolunteerMatchingRequest {
+  volunteer_id: string;
+  volunteer_name: string;
+  event_id: string;
+  event_name: string;
+  event_time: Date;
+  event_description: string;
+}
+
 const schema = z.object({
   volunteers: z.string().min(1, "Must select a volunteer"),
   events: z.string().min(1, "Must select an event"),
@@ -45,7 +54,22 @@ const VolunteerMatchingForm = () => {
     , []);
 
   const onSubmit = (data: Schema) => {
-    alert(JSON.stringify(data));
+    axios.post<VolunteerMatchingRequest> (`${base_url}/api/volunteers/match`, {
+      volunteerId: data.volunteers,
+      eventId: data.events
+    })
+        .then(response => {
+
+            if (response) {
+              console.log(response.data);
+            }
+
+        })
+        .catch(() => {
+            alert("Invalid Match!");
+        })
+
+
     reset(); 
     setVolunteer(undefined);
   };
