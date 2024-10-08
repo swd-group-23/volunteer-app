@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { volunteers } from "../data";
+import { events, volunteers } from "../data";
 import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, Volunteer } from "../models/volunteer.model";
 
 export function getVolunteers(request: Request, response: Response<Volunteer[]>) {
@@ -7,7 +7,7 @@ export function getVolunteers(request: Request, response: Response<Volunteer[]>)
 }
 
 export function getVolunteerById(request: Request<{id: string}>, response: Response<Volunteer | string>) { 
-    const volunteer = volunteers.find((volunteer) => volunteer.id == request.params.id);
+    const volunteer = volunteers.find((volunteer) => volunteer.userId == request.params.id);
     if(volunteer) {
         return response.send(volunteer);
     }
@@ -19,19 +19,27 @@ export function getVolunteerById(request: Request<{id: string}>, response: Respo
 export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerRequest>, response: Response<MatchVolunteerResponse>){
     const newMatch = request.body
     const volunteer = volunteers.find((volunteer) => volunteer.id == newMatch.volunteerId);
-    if(newMatch && volunteer){
+    const event = events.find((event) => event.id == newMatch.eventId)
+    if(newMatch && volunteer && event){
+        // add to histories data
         return response.status(201).send(
             {
+                volunteer_id: volunteer.id,
                 volunteer_name: volunteer.name,
-                event_name: "random",
-                event_time: new Date()
+                event_id: event.id,
+                event_name: event.name,
+                event_time: event.dateTime,
+                event_description: event.description
             }
-    );
+        );
     }
+
     return response.status(404);
 
 }export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer>){
     const newUser = request.body
+    console.log(newUser)
+    volunteers.push(newUser)
     return response.status(201).send({
         id: Math.floor((Math.random() * 100) + 1).toString(),
         userId: newUser.userId,

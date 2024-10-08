@@ -17,10 +17,10 @@ const schema = z.object({
   email: z.string().email('Invalid email address').min(1),
   password: z.string().min(8, "Password must be at least 8 characters long"),
   confirmPassword:  z.string().min(8, "Passwords do not match")
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 type Schema = z.infer<typeof schema>;
 
@@ -67,13 +67,14 @@ const SignUpComponent = () => {
               console.log(response.data);
               user.setUserId(response.data.id);
               user.setUserRole(response.data.role);
+              user.setUserEmail(data.email)
               // window.location.href = "/";
 
             }
 
         })
         .catch(() => {
-            alert("User not found!");
+            alert("Email already exists!");
         })
   };
 
