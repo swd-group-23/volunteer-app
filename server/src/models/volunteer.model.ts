@@ -21,9 +21,12 @@ export interface MatchVolunteerRequest {
 }
 
 export interface MatchVolunteerResponse{
+    volunteer_id: string;
     volunteer_name: string;
+    event_id: string;
     event_name: string;
     event_time: Date;
+    event_description: string;
 }
 export interface CreateVolunteerRequest {
     userId: string;
