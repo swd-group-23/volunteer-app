@@ -4,6 +4,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
 import { skills,urgencys } from '../../types';
+import axios from 'axios';
+import { Event } from '../../types';
+import { useEffect, useState } from 'react';
 const schema = z.object({
   eventname: z.string().min(1, 'Invalid name').max(100, 'Event Name is too long'),
   desc: z.string().min(1, 'Invalid address'),
@@ -24,12 +27,42 @@ const EventManagementForm = () => {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+  const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
+  const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
+  const [events, setEvents] = useState<Event[]>();
+  useEffect(() => {
+    axios.get<Event[]>(`${base_url}/api/events`)
+    .then(response => {
 
+        if (response.data) {
+            setEvents(response.data);
+        }
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  } , [events]);
   const onSubmit = (data: Schema) => {
-    console.log("Form Data:", data);
-    console.log("Form Errors:", errors);
-    alert(JSON.stringify(data));
-  };
+    axios.post<Event> (`${base_url}/api/events`, {
+      eventname: data.eventname,
+      desc: data.desc,
+      location: data.location,
+      skills: data.skills,
+      urgency: data.urgency,
+      date: data.date
+    })
+    .then(response => {
+  
+        if (response) {
+          console.log(response.data);
+        }
+
+    })
+    .catch(() => {
+        alert("error");
+    })
+    };
 
   return (
     <div className="flex flex-col gap-2 items-center overflow-auto mt-10">
@@ -157,6 +190,19 @@ const EventManagementForm = () => {
           Submit
         </Button>
       </form>
+      <div>
+          {
+              (events) ? 
+              <ul className="list-disc">
+                {
+                events.map((event) => <li key={event.id}>{event.name}:{event.description}</li>)
+                }
+            
+              </ul>
+            :
+              <></>
+            }
+        </div>
     </div>
   );
 };

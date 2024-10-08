@@ -7,7 +7,7 @@ export function getVolunteers(request: Request, response: Response<Volunteer[]>)
 }
 
 export function getVolunteerById(request: Request<{id: string}>, response: Response<Volunteer | string>) { 
-    const volunteer = volunteers.find((volunteer) => volunteer.id == request.params.id);
+    const volunteer = volunteers.find((volunteer) => volunteer.userId == request.params.id);
     if(volunteer) {
         return response.send(volunteer);
     }
@@ -38,6 +38,8 @@ export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerReques
 
 }export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer>){
     const newUser = request.body
+    console.log(newUser)
+    volunteers.push(newUser)
     return response.status(201).send({
         id: Math.floor((Math.random() * 100) + 1).toString(),
         userId: newUser.userId,

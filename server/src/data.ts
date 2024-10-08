@@ -31,7 +31,7 @@ export const volunteers: Volunteer[] = [
     id: '1',
     userId: '1',
     name: 'Alan',
-    email: 'aj@gmail.com',
+    email: 'alan@gmail.com',
     password: 'test',
     address1: '123',
     address2: 'drive',
@@ -46,7 +46,7 @@ export const volunteers: Volunteer[] = [
     id: '2',
     userId: '2',
     name: 'Alina',
-    email: 'aj@gmail.com',
+    email: 'alina@gmail.com',
     password: 'test',
     address1: '123',
     address2: 'drive',
@@ -61,7 +61,7 @@ export const volunteers: Volunteer[] = [
     id: '3',
     userId: '3',
     name: 'Josh',
-    email: 'aj@gmail.com',
+    email: 'josh@gmail.com',
     password: 'test',
     address1: '123',
     address2: 'drive',
@@ -76,7 +76,7 @@ export const volunteers: Volunteer[] = [
     id: '4',
     userId: '4',
     name: 'Jusvin',
-    email: 'aj@gmail.com',
+    email: 'jusvin@gmail.com',
     password: 'test',
     address1: '123',
     address2: 'drive',
@@ -95,21 +95,21 @@ export const notifications: Notification[] = [
     userId: "string",
     time: new Date('2024-12-01'),
     eventId: "string",
-    message: "string",
+    message: "Your Houston Food Bank Shift is coming up!",
   },
   {
     id: "string1",
     userId: "string1",
     time: new Date('2024-12-01'),
     eventId: "string1",
-    message: "string1",
+    message: "Your Alzheimer's Walk Shift is coming up!",
   },
   {
     id: "string2",
     userId: "string2",
     time: new Date('2024-12-01'),
     eventId: "string2",
-    message: "string2",
+    message: "Your Heart Smart Race Shift is coming up!",
   },
 ];
 
@@ -164,9 +164,11 @@ export const histories: History[] = [
   }
 
   
+
 ];
   
 export const events: Event[] = [
+
   {
     id: '1',
     name: 'Houston Food Bank',

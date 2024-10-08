@@ -14,3 +14,12 @@ export interface createNotif {
     message: string;
 };
 
+export interface GetNotificationsResponse{
+    id: string;
+    userId: string;
+    time: Date;
+    eventId: string;
+    eventName: string;
+    eventDate: Date;
+    message: string;
+};
