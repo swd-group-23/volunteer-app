@@ -63,7 +63,7 @@ const ProfileManagementForm = () => {
             console.log(error);
           })
   }
-} , [volunteers]);
+} , [volunteers,volunteer]);
   const onSubmit = (data: Schema) => {
     axios.post<Volunteer> (`${base_url}/api/volunteers`, {
       name: data.name,
