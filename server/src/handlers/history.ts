@@ -31,6 +31,36 @@ export function getHistoryById(request: Request<{ id: string }>, response: Respo
     }
 }
 
+export function getHistory(request: Request, response: Response<GetHistoryResponse[] | string>) {
+    if (histories.length > 0) {
+        const historyResponse: GetHistoryResponse[] = histories.map((record) => {
+            const volunteer = volunteers.find((v) => v.id === record.volunteerId);
+            const event = events.find((e) => e.id === record.eventId);
+
+            return {
+                id: record.id,
+                volunteerId: record.volunteerId,
+                volunteerName: volunteer ? volunteer.name : "Unknown",
+                eventName: event ? event.name : "Unknown",
+                eventDescription: event ? event.description : "No description",
+                location: event ? event.address : "Unknown", //theres address in event but not in history
+                skills: event ? event.skills : [],
+                urgency: event ? event.urgency : "Unknown",
+                eventDate: event ? event.dateTime : new Date(),
+                status: record.status
+            };
+        });
+        
+        return response.send(historyResponse);
+    } else {
+        return response.status(404).send('Event History not found');
+    }
+}
+
+
+
+
+
 
 
 

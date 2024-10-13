@@ -4,11 +4,13 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { History } from '../../types';
+import { useUser } from "../hooks/useUser";
 
 
 const VolunteerHistory = () => {
-
+  const user = useUser();
   const [history, setHistory] = useState<History[]>([]);
+  const [allhistory, setallHistory] = useState<History[]>([]);
 
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') 
@@ -17,8 +19,8 @@ const VolunteerHistory = () => {
   : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
 
   useEffect(() => {
-
-    axios.get<History[]>(`${base_url}/api/history`)
+    if(user.userRole == 'volunteer'){
+      axios.get<History[]>(`${base_url}/api/history/${user.userId}`) 
       .then(response => {
         if(response.data){
           setHistory(response.data);
@@ -28,6 +30,19 @@ const VolunteerHistory = () => {
         console.log(base_url);
         alert(error);
       });
+    }
+    else if(user.userRole == 'admin'){
+      axios.get<History[]>(`${base_url}/api/history`) 
+      .then(response => {
+        if(response.data){
+          setallHistory(response.data);
+        }
+      })
+      .catch(error => {
+        console.log(base_url);
+        alert(error);
+      });
+    }
       
   }, [base_url]);
 
@@ -59,7 +74,7 @@ const VolunteerHistory = () => {
       <TableBody>
 
       {
-
+        (user.userRole == 'volunteer')? 
         history.map((event) => (
           <TableRow key={event.id}>
             <TableCell>{event.volunteerId}</TableCell>
@@ -69,7 +84,21 @@ const VolunteerHistory = () => {
             <TableCell>{event.location}</TableCell>
             <TableCell>{event.skills.toString()}</TableCell>
             <TableCell>{event.urgency}</TableCell>
-            <TableCell>{event.eventDate.toLocaleDateString()}</TableCell>
+            <TableCell>{event.eventDate.toString()}</TableCell>
+            <TableCell>{event.status}</TableCell>
+        </TableRow>
+        ))
+        : 
+        allhistory.map((event) => (
+          <TableRow key={event.id}>
+            <TableCell>{event.volunteerId}</TableCell>
+            <TableCell>{event.volunteerName}</TableCell>
+            <TableCell>{event.eventName}</TableCell>
+            <TableCell>{event.eventDescription}</TableCell>
+            <TableCell>{event.location}</TableCell>
+            <TableCell>{event.skills.toString()}</TableCell>
+            <TableCell>{event.urgency}</TableCell>
+            <TableCell>{event.eventDate.toString()}</TableCell>
             <TableCell>{event.status}</TableCell>
         </TableRow>
         ))
