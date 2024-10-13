@@ -1,15 +1,17 @@
 import {Router} from "express";
-import { getUsers, getUsersById, createUser, loginUser, deleteUser} from "../handlers/users";
+import { getUsers, getUsersById, createUser, loginUser, deleteUser, updateUser} from "../handlers/users";
+import {checkSchema} from 'express-validator';
+import { createUserValidationSchema } from "../utils/validationSchemas";
 
 
 const router = Router();
 
 router.get('/', getUsers);
-router.get('/login', loginUser);
-router.get('/:id', getUsersById);
 router.post('/login', loginUser);
-router.post('/', createUser);
+router.get('/:id', getUsersById);
+router.post('/', checkSchema(createUserValidationSchema), createUser);
 router.delete('/:id', deleteUser);
+router.patch('/:id', updateUser)
 
 
-export default router;
+export default router;  

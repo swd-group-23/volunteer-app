@@ -28,8 +28,7 @@ export const users: User[] = [
     role: 'volunteer'
   },
 
-]
-
+];
 
 export const volunteers: Volunteer[] = [
   {
@@ -94,28 +93,27 @@ export const volunteers: Volunteer[] = [
   }
 ];
 
-
 export const notifications: Notification[] = [
   {
     id: "string",
     userId: "string",
     time: new Date('2024-12-01'),
     eventId: "string",
-    message: "string",
+    message: "Your Houston Food Bank Shift is coming up!",
   },
   {
     id: "string1",
     userId: "string1",
     time: new Date('2024-12-01'),
     eventId: "string1",
-    message: "string1",
+    message: "Your Alzheimer's Walk Shift is coming up!",
   },
   {
     id: "string2",
     userId: "string2",
     time: new Date('2024-12-01'),
     eventId: "string2",
-    message: "string2",
+    message: "Your Heart Smart Race Shift is coming up!",
   },
    ];
 

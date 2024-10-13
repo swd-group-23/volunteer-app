@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json tsconfig.json ./
 RUN npm install
 COPY . .
+RUN npm run test
 RUN npm run build
 WORKDIR /app/dist
 EXPOSE 4000
