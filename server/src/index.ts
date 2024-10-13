@@ -3,6 +3,7 @@ import usersRouter from './routes/users'
 import volunteersRouter from './routes/volunteers'
 import notificationsRouter from './routes/notifications'
 import eventsRouter from './routes/events'
+import historyRouter from './routes/history'
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/volunteers', volunteersRouter)
 app.use('/api/events',eventsRouter)
 app.use('/api/notifications', notificationsRouter)
+app.use('/api/history', historyRouter)
 
 const PORT = 4000;
 

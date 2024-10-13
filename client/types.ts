@@ -37,7 +37,8 @@ export interface Event {
 
 export interface History {
     id: string;
-    userId: string;
+    volunteerId: string;
+    volunteerName: string;
     eventName: string;
     eventDescription: string;
     location: string;
