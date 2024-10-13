@@ -66,7 +66,8 @@ export const events: Event[] = [
 export const history: History[] = [
 {
   id: '1',
-  userId: '1',
+  volunteerId: '1',
+  volunteerName: 'Alan',
   eventName: 'Houston Food Bank', 
   eventDescription: 'To provide food assistance to those in need and alleviate hunger in the community.',
   location: '535 Portwall St, Houston, TX 77029',
@@ -78,7 +79,8 @@ export const history: History[] = [
 },
 {
   id: '2',
-  userId: '2',
+  volunteerId: '2',
+  volunteerName: 'Alina',
   eventName: 'Homeless Shelter', 
   eventDescription: 'Providing meals, shelter, and support services for individuals experiencing homelessness.',
   location: '101 Homeless Way, Houston, TX 77001',
@@ -90,7 +92,8 @@ export const history: History[] = [
 }, 
 {
   id: '3',
-  userId: '1',
+  volunteerId: '1',
+  volunteerName: 'Alan',
   eventName: 'Public Library', 
   eventDescription: 'Hosting a reading event for children in the community to promote literacy and education.',
   location: '4500 Library Ln, Houston, TX 77002',
@@ -102,7 +105,8 @@ export const history: History[] = [
 },
 {
   id: '4',
-  userId: '3',
+  volunteerId: '3',
+  volunteerName: 'Josh',
   eventName: 'Blood Drive', 
   eventDescription: 'Organizing a blood donation drive to support local hospitals and medical facilities.',
   location: '500 Donation Dr, Houston, TX 77003',
