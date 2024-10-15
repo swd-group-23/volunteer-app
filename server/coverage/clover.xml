@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1728322954370" clover="3.2.0">
-  <project timestamp="1728322954370" name="All files">
-    <metrics statements="67" coveredstatements="65" conditionals="10" coveredconditionals="9" methods="13" coveredmethods="12" elements="90" coveredelements="86" complexity="0" loc="67" ncloc="67" packages="3" files="4" classes="4"/>
+<coverage generated="1728954600643" clover="3.2.0">
+  <project timestamp="1728954600643" name="All files">
+    <metrics statements="83" coveredstatements="81" conditionals="12" coveredconditionals="11" methods="17" coveredmethods="16" elements="112" coveredelements="108" complexity="0" loc="83" ncloc="83" packages="3" files="6" classes="6"/>
     <package name="src">
       <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="data.ts" path="C:\volunteer-app\server\src\data.ts">
+      <file name="data.ts" path="/Users/jusvin_mac/archived classes/volunteer-app/server/src/data.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
-        <line num="116" count="1" type="stmt"/>
-        <line num="169" count="1" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
+        <line num="120" count="2" type="stmt"/>
+        <line num="209" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.handlers">
-      <metrics statements="48" coveredstatements="46" conditionals="10" coveredconditionals="9" methods="12" coveredmethods="11"/>
-      <file name="users.ts" path="C:\volunteer-app\server\src\handlers\users.ts">
+      <metrics statements="58" coveredstatements="56" conditionals="12" coveredconditionals="11" methods="16" coveredmethods="15"/>
+      <file name="notifications.ts" path="/Users/jusvin_mac/archived classes/volunteer-app/server/src/handlers/notifications.ts">
+        <metrics statements="10" coveredstatements="10" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+      </file>
+      <file name="users.ts" path="/Users/jusvin_mac/archived classes/volunteer-app/server/src/handlers/users.ts">
         <metrics statements="48" coveredstatements="46" conditionals="10" coveredconditionals="9" methods="12" coveredmethods="11"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -68,14 +81,23 @@
       </file>
     </package>
     <package name="src.tests.mocks">
-      <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-      <file name="index.ts" path="C:\volunteer-app\server\src\tests\mocks\index.ts">
+      <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="/Users/jusvin_mac/archived classes/volunteer-app/server/src/tests/mocks/index.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="9" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="12" type="stmt"/>
       </file>
-      <file name="users.ts" path="C:\volunteer-app\server\src\tests\mocks\users.ts">
+      <file name="notifications.ts" path="/Users/jusvin_mac/archived classes/volunteer-app/server/src/tests/mocks/notifications.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+      </file>
+      <file name="users.ts" path="/Users/jusvin_mac/archived classes/volunteer-app/server/src/tests/mocks/users.ts">
         <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>

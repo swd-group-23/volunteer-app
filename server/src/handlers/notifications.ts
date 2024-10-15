@@ -28,7 +28,7 @@ export function createNotifications(request: Request<{}, {}, createNotif>, respo
         message: 'your event starts now'})
 }
 
-export function deleteNotification(
+/*export function deleteNotification(
     request: Request<{ id: string }>, 
     response: Response
 ): Response {
@@ -45,3 +45,4 @@ export function deleteNotification(
     return response.status(204).send();
 }
 
+*/
