@@ -16,7 +16,7 @@ describe('getNotifications', () =>{
 describe('getNotifsById', () =>{
     it('should get a notification by id', () =>{
         getNotifsById(mockGetNotifByIdRequestSuccess, mockResponse);
-        expect(mockResponse.send).toHaveBeenCalledWith(notifications[0]);
+        expect(mockResponse.send).toHaveBeenCalledWith(notifications);
     })
 
     it('should call getNotifsById with 404 when user not found', () =>{

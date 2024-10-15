@@ -8,9 +8,10 @@ export function getNotifications(request: Request, response: Response<Notificati
     return response.send(notifications);
 }
 
-export function getNotifsById(request: Request<{id: string}>, response: Response<Notification | string>) { 
-    const notif = notifications.find((notif) => notif.id == request.params.id);
-    if(notif) {
+export function getNotifsById(request: Request<{id: string}>, response: Response<Notification[] | string>) { 
+    const notif = notifications.filter((n) => n.userId === request.params.id);
+    
+    if(notif.length > 0) {
         return response.send(notif);
     }
     else{
