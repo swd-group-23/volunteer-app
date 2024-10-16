@@ -16,8 +16,11 @@ export function getEventsById(request: Request<{id: number}>, response: Response
 }
 
 
-export function createEvent(request: Request<{}, {}, CreateEventRequest>, response: Response<Event>){
+export function createEvent(request: Request<{}, {}, CreateEventRequest>, response: Response<Event | String | String[]>){
     const newUser = request.body
+    if(!newUser){
+        return response.status(400).send("No Body!");
+    }
     return response.status(201).send({
         id: Math.floor((Math.random() * 100) + 1).toString(),
         name: newUser.name,
@@ -32,14 +35,15 @@ export function createEvent(request: Request<{}, {}, CreateEventRequest>, respon
     });
 }
 
-export function deleteEventByIndex(request: Request<{}, {}, { index: number }>, response: Response) {
-    const { index } = request.body;  // Destructure the index from the request body
-
-    if (index >= 0 && index < events.length) {  // Ensure the index is valid
-        events.splice(index, 1);  // Remove the event at the given index
-        return response.status(200).send({ message: "Event deleted successfully" });
+export function deleteEventByIndex(request: Request<{id: number}>, response: Response<Event | string>){
+    const id = request.params.id;  // Destructure the index from the request body
+  
+    const event = events.find((event) => event.id == id.toString())
+    if(event){
+        const index = events.indexOf(event);
+        events.splice(index, 1);
+        return response.status(200).send(event);
     }
-
-    return response.status(404).send({ message: "Invalid index, event not found" });
+    return response.status(404);
 }
 
