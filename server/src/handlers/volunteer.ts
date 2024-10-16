@@ -39,10 +39,15 @@ export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerReques
 
 }export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer | String | String[]>){
     const newUser = request.body
-    //const result = validationResult(request)
+    const result = validationResult(request)
     if(!newUser){
         return response.status(400).send("No Body!");
     }
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        return response.status(400).send(errors)
+    }
+
     volunteers.push(newUser)
     return response.status(201).send({
         id: Math.floor((Math.random() * 100) + 1).toString(),
