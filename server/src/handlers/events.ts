@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateEventRequest, Event } from "../models/events.model";
 import { events } from "../data";
+import { validationResult } from "express-validator";
 
 export function getEvents(request: Request, response: Response<Event[]>) {
     return response.send(events);
@@ -18,8 +19,13 @@ export function getEventsById(request: Request<{id: number}>, response: Response
 
 export function createEvent(request: Request<{}, {}, CreateEventRequest>, response: Response<Event | String | String[]>){
     const newUser = request.body
+    const result = validationResult(request);
     if(!newUser){
         return response.status(400).send("No Body!");
+    }
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        return response.status(400).send(errors)
     }
     return response.status(201).send({
         id: Math.floor((Math.random() * 100) + 1).toString(),
