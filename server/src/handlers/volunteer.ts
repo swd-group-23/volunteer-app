@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { events, volunteers } from "../data";
 import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, Volunteer } from "../models/volunteer.model";
+import { validationResult } from "express-validator";
 
 export function getVolunteers(request: Request, response: Response<Volunteer[]>) {
     return response.send(volunteers);
@@ -36,9 +37,17 @@ export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerReques
 
     return response.status(404);
 
-}export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer>){
+}export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer | String | String[]>){
     const newUser = request.body
-    console.log(newUser)
+    const result = validationResult(request)
+    if(!newUser){
+        return response.status(400).send("No Body!");
+    }
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        return response.status(400).send(errors)
+    }
+
     volunteers.push(newUser)
     return response.status(201).send({
         id: Math.floor((Math.random() * 100) + 1).toString(),
