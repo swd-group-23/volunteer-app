@@ -1,8 +1,8 @@
 import { validationResult } from "express-validator";
 import { notifications, users } from "../../data";
-import { getNotifications, getNotifsById, createNotifications} from "../../handlers/notifications"
+import { getNotifications, getNotifsById, createNotifications,deleteNotification} from "../../handlers/notifications"
 import { mockRequest, mockResponse } from "../mocks";
-import { mockCreateNotifSuccess,mockCreateNotifFailure, mockGetNotifByIdRequestSuccess,mockGetNotifByIdRequestFailure, mockGetNotifSuccess,mockGetNotifFailure} from "../mocks/notifications";
+import { mockCreateNotifSuccess,mockCreateNotifFailure, mockGetNotifByIdRequestSuccess,mockGetNotifByIdRequestFailure, mockDeleteNotifByIdRequestSuccess,mockDeleteNotifByIdRequestFailure} from "../mocks/notifications";
 
 
 
@@ -34,4 +34,16 @@ describe('createNotifications', () => {
         createNotifications(mockCreateNotifFailure, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(404);
     })
+})
+
+describe('deleteNotification', () =>{
+    it('should delete a notification by id', () =>{
+        deleteNotification(mockDeleteNotifByIdRequestSuccess, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(204);
+    })
+
+    it('should call deleteNotification with 404 when notification not found', () =>{
+        deleteNotification(mockDeleteNotifByIdRequestFailure, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+    });
 })

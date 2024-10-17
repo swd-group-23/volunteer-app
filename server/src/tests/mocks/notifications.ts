@@ -4,31 +4,31 @@ import { createNotif, Notification} from "../../models/notifications.model";
 
   export const mockGetNotifSuccess = {
     body: {
-        id: "string",
-        userId: "string",
+        id: "1",
+        userId: "1",
         time: new Date('2024-12-01'),
-        eventId: "string",
-        message: "string",
+        eventId: "1",
+        message: "Your Houston Food Bank Shift is coming up!",
     }
 } as Request<{}, {}, Notification>;
 
 
 export const mockGetNotifFailure = {
     body: {
-        id: "",
-        userId: "",
+        id: "300",
+        userId: "300",
         time: new Date('2024-12-01'),
-        eventId: "",
-        message: "",
+        eventId: "300",
+        message: "Your Houston Food Bank Shift is coming up!",
     }
 } as Request<{}, {}, Notification>;
 
 export const mockGetNotifByIdRequestSuccess = {
-    params: { id: "string" },
+    params: { id: "1" },
   } as Request<{ id: string }>;
 
 export const mockGetNotifByIdRequestFailure = {
-    params: { id: "" },
+    params: { id: "200" },
 } as Request<{ id: string }>;
 
 export const mockCreateNotifSuccess = {
@@ -43,3 +43,11 @@ export const mockCreateNotifSuccess = {
 
 export const mockCreateNotifFailure = {
 } as Request<{}, {}, createNotif>;
+
+export const mockDeleteNotifByIdRequestSuccess = {
+    params: { id: '1' },
+  } as Request<{ id: string }>;
+
+export const mockDeleteNotifByIdRequestFailure = {
+    params: { id: '100' },
+} as Request<{ id: string }>;

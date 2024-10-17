@@ -95,26 +95,64 @@ export const volunteers: Volunteer[] = [
 
 export const notifications: Notification[] = [
   {
-    id: "string",
-    userId: "string",
+    id: "1",
+    userId: "1",
     time: new Date('2024-12-01'),
-    eventId: "string",
+    eventId: "1",
     message: "Your Houston Food Bank Shift is coming up!",
   },
   {
-    id: "string1",
-    userId: "string1",
+    id: "2",
+    userId: "1",
     time: new Date('2024-12-01'),
-    eventId: "string1",
-    message: "Your Alzheimer's Walk Shift is coming up!",
+    eventId: "2",
+    message: "Your Homeless Shelter Shift is coming up!",
   },
   {
-    id: "string2",
-    userId: "string2",
+    id: "3",
+    userId: "2",
     time: new Date('2024-12-01'),
-    eventId: "string2",
-    message: "Your Heart Smart Race Shift is coming up!",
+    eventId: "3",
+    message: "Your Shift at the Public Library is coming up!",
   },
+  {
+    id: "4",
+    userId: "2",
+    time: new Date('2024-12-01'),
+    eventId: "1",
+    message: "Your Houston Food Bank Shift is coming up!",
+  },
+  {
+    id: "5",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "3",
+    message: "Your Shift at the Public Library is coming up!",
+  },
+
+  {
+    id: "6",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "4",
+    message: "Your Blood Drive Shift is coming up!",
+  },
+  {
+    id: "7",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "5",
+    message: "Your Donation Shift is coming up!",
+  },
+  {
+    id: "8",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "5",
+    message: "Donation Shift is coming up!",
+  },
+
+
    ];
 
    export const histories: History[] = [
