@@ -102,3 +102,19 @@ describe('getHistory', () =>{
         expect(mockResponse.send).toHaveBeenCalledWith(expectedGetHistoryResponse);
     })
 })
+/*
+describe('getHistory', () => {
+
+    it('should return an array of histories', () => {
+        getHistory(mockRequest, mockResponse);
+        expect(mockResponse.send).toHaveBeenCalledWith(expectedGetHistoryResponse);
+    });
+
+    it('should return 404 when no histories are found', () => {
+        (histories as any).length = 0; 
+        getHistory(mockRequest, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        expect(mockResponse.send).toHaveBeenCalledWith('Event History not found');
+    });
+});*/
+
