@@ -65,6 +65,7 @@ const ProfileManagementForm = () => {
   }
 } , [volunteers,volunteer]);
   const onSubmit = (data: Schema) => {
+    
     axios.post<Volunteer> (`${base_url}/api/volunteers`, {
       name: data.name,
       address1: data.address1,
@@ -77,6 +78,7 @@ const ProfileManagementForm = () => {
       availability: data.availability,
       email: user.userEmail
     })
+      
     .then(response => {
   
       if (response) {
@@ -88,6 +90,7 @@ const ProfileManagementForm = () => {
       alert("error");
   })
     
+   //alert(data.name)
   };
 
   return (
@@ -103,13 +106,15 @@ const ProfileManagementForm = () => {
             render={({ field }) => (
               <Input
                 label="Full Name"
-                placeholder="enter name"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={field.value || volunteer?.name || ''}  // Use field's value or volunteer name
                 variant="bordered"
-                onClear={() => setValue('name', '')}
+                onClear={() => setValue('name', '')}  // Clear the field when needed
                 errorMessage={errors.name?.message}
-                isInvalid={errors.name ? true : false}
-                {...field}
+                isInvalid={!!errors.name}  // Indicate if there is an error
               />
+
+
             )}
           />
         <div className="grid grid-cols-2 w-96 gap-4">
@@ -120,14 +125,16 @@ const ProfileManagementForm = () => {
             control={control}
             render={({ field }) => (
               <Input
-                label="Address 1"
-                placeholder="enter address"
+                label="Full Name"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={field.value || volunteer?.address1 || ''}  // Use field's value or volunteer name
                 variant="bordered"
-                onClear={() => setValue('address1', '')}
-                errorMessage={errors.address1?.message}
-                isInvalid={errors.address1? true : false}
-                {...field}
+                onClear={() => setValue('name', '')}  // Clear the field when needed
+                errorMessage={errors.name?.message}
+                isInvalid={!!errors.name}  // Indicate if there is an error
               />
+
+
             )}
           />
 
@@ -137,13 +144,14 @@ const ProfileManagementForm = () => {
             render={({ field }) => (
               <Input
                 label="Address 2"
-                placeholder="enter address"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={field.value || volunteer?.address2 || ''}  // Use field's value or volunteer address2
                 variant="bordered"
-                onClear={() => setValue('address2', '')}
+                onClear={() => setValue('address2', '')}  // Clear the field when needed
                 errorMessage={errors.address2?.message}
-                isInvalid={errors.address2 ? true : false}
-                {...field}
+                isInvalid={!!errors.address2}  // Indicate if there is an error
               />
+
             )}
           />
 
@@ -153,13 +161,14 @@ const ProfileManagementForm = () => {
             render={({ field }) => (
               <Input
                 label="City"
-                placeholder="enter city"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={field.value || volunteer?.city || ''}  // Use field's value or volunteer city
                 variant="bordered"
-                onClear={() => setValue('city', '')}
+                onClear={() => setValue('city', '')}  // Clear the field when needed
                 errorMessage={errors.city?.message}
-                isInvalid={errors.city ? true : false}
-                {...field}
+                isInvalid={!!errors.city}  // Indicate if there is an error
               />
+
             )}
           />
 
@@ -193,13 +202,15 @@ const ProfileManagementForm = () => {
             render={({ field }) => (
               <Input
                 label="Zip-Code"
-                placeholder="enter zip code"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={String(field.value || volunteer?.zip || '')}  // Ensure the value is a string
                 variant="bordered"
-                onClear={() => setValue('zip', '')}
+                onClear={() => setValue('zip', '')}  // Clear the field when needed
                 errorMessage={errors.zip?.message}
-                isInvalid={errors.zip ? true : false}
-                {...field}
+                isInvalid={!!errors.zip}  // Indicate if there is an error
               />
+
+
             )}
           />
 
@@ -236,13 +247,14 @@ const ProfileManagementForm = () => {
             render={({ field }) => (
               <Textarea
                 label="Preferences"
-                placeholder="enter preferance"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={field.value || volunteer?.preferences || ''}  // Use field's value or volunteer preferences
                 variant="bordered"
-                onClear={() => setValue('preferences', '')}
+                onClear={() => setValue('preferences', '')}  // Clear the field when needed
                 errorMessage={errors.preferences?.message}
-                isInvalid={errors.preferences ? true : false}
-                {...field}
+                isInvalid={!!errors.preferences}  // Indicate if there is an error
               />
+
             )}
           />
           <Controller
