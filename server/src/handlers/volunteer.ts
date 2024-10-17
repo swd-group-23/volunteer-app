@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { events, volunteers } from "../data";
+import { events, histories, volunteers } from "../data";
 import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, Volunteer } from "../models/volunteer.model";
 import { validationResult } from "express-validator";
 
@@ -19,9 +19,16 @@ export function getVolunteerById(request: Request<{id: string}>, response: Respo
 
 export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerRequest>, response: Response<MatchVolunteerResponse>){
     const newMatch = request.body
+    if(!newMatch){
+        return response.status(404);
+    }
     const volunteer = volunteers.find((volunteer) => volunteer.id == newMatch.volunteerId);
     const event = events.find((event) => event.id == newMatch.eventId)
     if(newMatch && volunteer && event){
+        const history = histories.find((history) => history.eventId==newMatch.eventId && history.volunteerId==newMatch.volunteerId)
+        if(history){
+            return response.status(400);
+        }
         // add to histories data
         return response.status(201).send(
             {

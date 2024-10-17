@@ -1,7 +1,7 @@
 import { volunteers } from "../../data";
-import { createVolunteer, getVolunteerById, getVolunteers} from "../../handlers/volunteer";
+import { createVolunteer, getVolunteerById, getVolunteers, postVolunteerMatch} from "../../handlers/volunteer";
 import { mockRequest,mockResponse } from "../mocks";
-import { mockCreateExistingVolunteer, mockCreateVolunteerFailure, mockCreateVolunteerSuccess, mockGetVolunteerByIdRequestFailure, mockGetVolunteerByIdRequestSuccess } from "../mocks/volunteers";
+import { mockCreateExistingVolunteer, mockCreateVolunteerFailure, mockCreateVolunteerSuccess, mockGetVolunteerByIdRequestFailure, mockGetVolunteerByIdRequestSuccess, mockMatchVolunteerRequestDuplicate, mockMatchVolunteerRequestFailure, mockMatchVolunteerRequestFailure2, mockMatchVolunteerRequestSuccess } from "../mocks/volunteers";
 
 describe('getVolunteers', () =>{
     it('should return an array of volunteers', () =>{
@@ -34,6 +34,25 @@ describe('createUser', () => {
     })
     it('should call createVolunteer with 400 when there are errors', () =>{
         createVolunteer(mockCreateVolunteerFailure, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+    })
+})
+
+describe('matchVolunteer', () => {
+    it('should match a volunteer given the corresponding data', () =>{
+        postVolunteerMatch(mockMatchVolunteerRequestSuccess, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(201);
+    })
+    it('should call matchVolunteer with 400 when there are errors', () =>{
+        postVolunteerMatch(mockMatchVolunteerRequestFailure, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+    })
+    it('should call matchVolunteer with 400 when there are errors', () =>{
+        postVolunteerMatch(mockMatchVolunteerRequestFailure2, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+    })
+    it('should call matchVolunteer with 400 when the volunteer is already matched for the event', () =>{
+        postVolunteerMatch(mockMatchVolunteerRequestDuplicate, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(400);
     })
 })

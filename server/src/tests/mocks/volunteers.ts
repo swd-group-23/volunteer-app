@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { CreateVolunteerRequest } from "../../models/volunteer.model";
+import { CreateVolunteerRequest, MatchVolunteerRequest } from "../../models/volunteer.model";
 
 export const mockGetVolunteerByIdRequestSuccess = {
     params: { id: "1" },
@@ -47,3 +47,28 @@ export const mockCreateExistingVolunteer = {
         availability: [new Date('2024-09-12'), new Date('2024-09-14')]
     }
 } as Request<{}, {}, CreateVolunteerRequest>;
+
+export const mockMatchVolunteerRequestSuccess  = {
+    body:{
+        volunteerId: '2',
+        eventId: '3'
+    }
+
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestFailure  = {
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestFailure2  = {
+    body:{
+        volunteerId: '2'
+    }
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestDuplicate  = {
+    body:{
+        volunteerId: '1',
+        eventId: '1'
+    }
+
+} as Request<{}, {}, MatchVolunteerRequest>;

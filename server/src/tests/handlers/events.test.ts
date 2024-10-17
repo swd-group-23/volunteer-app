@@ -52,3 +52,4 @@ describe('deleteEvent', () =>{
         expect(mockResponse.status).toHaveBeenCalledWith(404);
     });
 })
+
