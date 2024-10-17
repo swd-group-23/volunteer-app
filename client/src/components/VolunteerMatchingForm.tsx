@@ -72,6 +72,7 @@ const VolunteerMatchingForm = () => {
 
     reset(); 
     setVolunteer(undefined);
+    window.location.href='/';
   };
 
   return (

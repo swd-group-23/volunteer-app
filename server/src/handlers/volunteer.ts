@@ -30,6 +30,12 @@ export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerReques
             return response.status(400);
         }
         // add to histories data
+        histories.push({
+            id: Math.floor((Math.random() * 100) + 1).toString(),
+            volunteerId: volunteer.id,
+            eventId: event.id,
+            status: ["Scheduled"],
+        })
         return response.status(201).send(
             {
                 volunteer_id: volunteer.id,
