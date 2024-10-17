@@ -23,7 +23,8 @@ const NavBar = () => {
 
 
     useEffect(() => {
-        axios.get<Notification[]>(`${base_url}/api/notifications`)
+        if (user && user.userId){
+        axios.get<Notification[]>(`${base_url}/api/notifications/${user.userId}`)
             .then(response => {
                 if (response.data) {
                     setNotifications(response.data);
@@ -34,7 +35,7 @@ const NavBar = () => {
                 alert(error);
             })
     }
-        , []);
+ }, [user]);
 
     const menuItems = [
       "Login",
