@@ -48,4 +48,4 @@ VITE_REACT_APP_SERVER_BASE_URL_DEV = http://localhost:4000
 
 # Troubleshooting Tips
 - Ensure node and npm version is up to date
-    - [https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/](Resource)
+    - [Resource](https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/)
