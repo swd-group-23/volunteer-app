@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { events, volunteers } from "../data";
-import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, Volunteer } from "../models/volunteer.model";
+import { events, histories, volunteers } from "../data";
+import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, UpdateVolunteerRequest, Volunteer } from "../models/volunteer.model";
+import { validationResult } from "express-validator";
 
 export function getVolunteers(request: Request, response: Response<Volunteer[]>) {
     return response.send(volunteers);
@@ -18,10 +19,23 @@ export function getVolunteerById(request: Request<{id: string}>, response: Respo
 
 export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerRequest>, response: Response<MatchVolunteerResponse>){
     const newMatch = request.body
+    if(!newMatch){
+        return response.status(404);
+    }
     const volunteer = volunteers.find((volunteer) => volunteer.id == newMatch.volunteerId);
     const event = events.find((event) => event.id == newMatch.eventId)
     if(newMatch && volunteer && event){
+        const history = histories.find((history) => history.eventId==newMatch.eventId && history.volunteerId==newMatch.volunteerId)
+        if(history){
+            return response.status(400);
+        }
         // add to histories data
+        histories.push({
+            id: Math.floor((Math.random() * 100) + 1).toString(),
+            volunteerId: volunteer.id,
+            eventId: event.id,
+            status: ["Scheduled"],
+        })
         return response.status(201).send(
             {
                 volunteer_id: volunteer.id,
@@ -36,12 +50,22 @@ export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerReques
 
     return response.status(404);
 
-}export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer>){
+}
+
+export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<Volunteer | String | String[]>){
     const newUser = request.body
-    console.log(newUser)
-    volunteers.push(newUser)
-    return response.status(201).send({
-        id: Math.floor((Math.random() * 100) + 1).toString(),
+    const result = validationResult(request)
+    if(!newUser){
+        return response.status(400).send("No Body!");
+    }
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        console.log(errors);
+        return response.status(400).send(errors)
+    }
+
+    const volunteer = {
+        id: volunteers.length.toString(),
         userId: newUser.userId,
         name: newUser.name,
         email: newUser.email,
@@ -54,5 +78,31 @@ export function postVolunteerMatch(request: Request<{}, {}, MatchVolunteerReques
         skills: newUser.skills,
         preferences: newUser.preferences,
         availability: newUser.availability
-    });
+    }
+    volunteers.push(volunteer)
+    return response.status(201).send(volunteer);
+}
+
+export function updateVolunteer(request: Request<{}, {}, UpdateVolunteerRequest>, response: Response<Volunteer>){
+    const updateVolunteer = request.body
+    const volunteer = volunteers.find((volunteer) => volunteer.userId == updateVolunteer.userId)
+    if(volunteer){
+        const index = volunteers.indexOf(volunteer);
+        volunteers[index] = {
+            ...volunteer,
+            name: updateVolunteer.name,
+            email: updateVolunteer.email,
+            password: updateVolunteer.password,
+            address1: updateVolunteer.address1,
+            address2: updateVolunteer.address2,
+            city: updateVolunteer.city,
+            state: updateVolunteer.state,
+            zip: updateVolunteer.zip,
+            skills: updateVolunteer.skills,
+            preferences: updateVolunteer.preferences,
+            availability: updateVolunteer.availability
+        }
+        return response.status(200).send(volunteers[index]);
+    }
+    return response.status(404);
 }

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/tests/mocks/users.ts</title>
+    <title>Code coverage report for src/tests/mocks/notifications.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/tests/mocks</a> users.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/tests/mocks</a> notifications.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -118,23 +118,12 @@
 <a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,14 +138,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,60 +150,76 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request } from "express";
-import { CreateUserRequest, LoginUserRequest } from "../../models/users.model";
-&nbsp;
-export const mockGetUserByIdRequestSuccess = {
-    params: { id: 1 },
-  } as Request&lt;{ id: number }&gt;;
-&nbsp;
-export const mockGetUserByIdRequestFailure = {
-    params: { id: 200 },
-} as Request&lt;{ id: number }&gt;;
+import { createNotif, Notification} from "../../models/notifications.model";
 &nbsp;
 &nbsp;
-export const mockLoginUserSuccess = {
+  export const mockGetNotifSuccess = {
     body: {
-        email: "admin@gmail.com",
-        password: "12345678"
+        id: "1",
+        userId: "1",
+        time: new Date('2024-12-01'),
+        eventId: "1",
+        message: "Your Houston Food Bank Shift is coming up!",
     }
-} as Request&lt;{}, {}, LoginUserRequest&gt;;
+} as Request&lt;{}, {}, Notification&gt;;
 &nbsp;
-export const mockLoginUserFailure = {
+&nbsp;
+export const mockGetNotifFailure = {
     body: {
-        email: "admin@gmail.com",
-        password: "123"
+        id: "300",
+        userId: "300",
+        time: new Date('2024-12-01'),
+        eventId: "300",
+        message: "Your Houston Food Bank Shift is coming up!",
     }
-} as Request&lt;{}, {}, LoginUserRequest&gt;;
+} as Request&lt;{}, {}, Notification&gt;;
 &nbsp;
-export const mockCreateUserSuccess = {
+export const mockGetNotifByIdRequestSuccess = {
+    params: { id: "1" },
+  } as Request&lt;{ id: string }&gt;;
+&nbsp;
+export const mockGetNotifByIdRequestFailure = {
+    params: { id: "200" },
+} as Request&lt;{ id: string }&gt;;
+&nbsp;
+export const mockCreateNotifSuccess = {
     body: {
-        email: "mock@gmail.com",
-        password: "1234",
-        role: "volunteer"
+        id: "string",
+        userId: "string",
+        time: new Date('2024-12-01'),
+        eventId: "string",
+        message: "string",
     }
-} as Request&lt;{}, {}, CreateUserRequest&gt;;
+} as Request&lt;{}, {}, createNotif&gt;;
 &nbsp;
-export const mockCreateUserFailure = {
-} as Request&lt;{}, {}, CreateUserRequest&gt;;
+export const mockCreateNotifFailure = {
+} as Request&lt;{}, {}, createNotif&gt;;
 &nbsp;
-export const mockCreateExistingUser = {
-    body: {
-        email: "admin@gmail.com",
-        password: "12345678",
-        role: "admin"
-    }
-} as Request&lt;{}, {}, CreateUserRequest&gt;;
+export const mockDeleteNotifByIdRequestSuccess = {
+    params: { id: '1' },
+  } as Request&lt;{ id: string }&gt;;
 &nbsp;
-export const mockDeleteUserByIdRequestSuccess = {
-    params: { id: 2 },
-  } as Request&lt;{ id: number }&gt;;
-&nbsp;
-export const mockDeleteUserByIdRequestFailure = {
-    params: { id: 200 },
-} as Request&lt;{ id: number }&gt;;
-&nbsp;</pre></td></tr></table></pre>
+export const mockDeleteNotifByIdRequestFailure = {
+    params: { id: '100' },
+} as Request&lt;{ id: string }&gt;;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

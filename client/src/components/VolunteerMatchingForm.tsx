@@ -2,10 +2,9 @@ import { Button, Textarea, Select, SelectItem, Dropdown, DropdownTrigger, Dropdo
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Volunteer } from '../../types';
+import { Volunteer, Event } from '../../types';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { events } from '../../data';
 
 interface VolunteerMatchingRequest {
   volunteer_id: string;
@@ -35,6 +34,7 @@ const VolunteerMatchingForm = () => {
 
   const [volunteer, setVolunteer] = useState<Volunteer>();
   const [volunteers, setVolunteers] = useState<Volunteer[]>();
+  const [events, setEvents] = useState<Event[]>();
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
 
@@ -50,6 +50,17 @@ const VolunteerMatchingForm = () => {
         .catch(error => {
             console.log(error);
         })
+    axios.get<Event[]>(`${base_url}/api/events`)
+        .then(response => {
+
+          if (response.data) {
+            setEvents(response.data);
+          }
+
+      })
+      .catch(error => {
+          console.log(error);
+      })
 }
     , []);
 
@@ -72,6 +83,7 @@ const VolunteerMatchingForm = () => {
 
     reset(); 
     setVolunteer(undefined);
+    window.location.href='/';
   };
 
   return (
@@ -126,7 +138,9 @@ const VolunteerMatchingForm = () => {
                     className="max-w-xl"
                     {...field}
                   >
-                    {events
+                    {
+                      (events) ?
+                    events
                       .filter(event => volunteer.availability.some(availableDate =>
                         new Date(availableDate).toDateString() === new Date(event.dateTime).toDateString()
                       ))
@@ -143,7 +157,8 @@ const VolunteerMatchingForm = () => {
                             <span className="text-small text-default-500">Skills: {event.skills.toString()}</span>
                           </div>
                         </SelectItem>
-                      ))}
+                      )) : <></>
+                      }
                   </Select>
                 )}
               />

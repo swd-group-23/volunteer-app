@@ -27,8 +27,9 @@ const VolunteerHistory = () => {
         }
       })
       .catch(error => {
-        console.log(base_url);
-        alert(error);
+        if(error.response && error.response.status === 404){
+          setHistory([]);
+      }
       });
     }
     else if(user.userRole == 'admin'){

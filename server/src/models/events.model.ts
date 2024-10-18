@@ -22,3 +22,4 @@ export interface CreateEventRequest {
     skills: string[];
     urgency: string;
 };
+

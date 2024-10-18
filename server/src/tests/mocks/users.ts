@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { CreateUserRequest, LoginUserRequest } from "../../models/users.model";
 
 export const mockGetUserByIdRequestSuccess = {
@@ -49,20 +49,4 @@ export const mockDeleteUserByIdRequestSuccess = {
 
 export const mockDeleteUserByIdRequestFailure = {
     params: { id: 200 },
-} as Request<{ id: number }>;
-
-export const mockUpdateUserSuccess = {
-    params: { id: 3 },
-    body: {
-        email: "test3@gmail.com",
-        password: "update"
-    }
-  } as Request<{ id: number }>;
-
-export const mockUpdateUserFailure = {
-    params: { id: 200 },
-    body: {
-        email: "test3@gmail.com",
-        password: "update"
-    }
 } as Request<{ id: number }>;
