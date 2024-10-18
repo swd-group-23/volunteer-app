@@ -1,4 +1,4 @@
-import { Request,Response } from "express";
+import { Request } from "express";
 import { CreateVolunteerRequest, MatchVolunteerRequest } from "../../models/volunteer.model";
 
 export const mockGetVolunteerByIdRequestSuccess = {
@@ -72,3 +72,41 @@ export const mockMatchVolunteerRequestDuplicate  = {
     }
 
 } as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockUpdateVolunteerSuccess = {
+    params: { id: 1 },
+    body: {
+        userId: "1",
+        name: "Testing User Six",
+        email: "volunteer@gmail.com",
+        address1: "Testing new address",
+        address2: "testing2",
+        city: "Houston",
+        state: "AR",
+        zip: "77089",
+        skills: "Project Management",
+        preferences: "testing1234",
+        availability: [
+            "2024-10-19T05:00:00.000Z"
+        ]
+    }
+  } as Request<{ id: number }>;
+
+export const mockUpdateVolunteerFailure = {
+    params: { id: 200 },
+    body: {
+        userId: "1",
+        name: "Testing User",
+        email: "volunteer@gmail.com",
+        address1: "Testing new address",
+        address2: "testing2",
+        city: "Houston",
+        state: "AR",
+        zip: "77089",
+        skills: "Project Management",
+        preferences: "testing1234",
+        availability: [
+            "2024-10-19T05:00:00.000Z"
+        ]
+    }
+} as Request<{ id: number }>;

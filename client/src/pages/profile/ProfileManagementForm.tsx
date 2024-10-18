@@ -6,8 +6,8 @@ import DatePicker from 'react-datepicker';
 import { states,skills } from '../../../types';
 import axios from 'axios';
 import { Volunteer } from '../../../types';
-import { useEffect, useState } from 'react';
 import { useUser } from '../../hooks/useUser';
+
 const schema = z.object({
   name: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
   address1: z.string().min(1, 'Invalid address').max(100, 'Address is too long'),
@@ -21,8 +21,13 @@ const schema = z.object({
 });
 type Schema = z.infer<typeof schema>;
 
+interface volunteerRequest {
+  volunteer: Volunteer | undefined
+}
 
-const ProfileManagementForm = () => {
+const ProfileManagementForm: React.FC<volunteerRequest> = ({
+  volunteer
+}) => {
   const user = useUser();
   const {
     handleSubmit,
@@ -35,62 +40,55 @@ const ProfileManagementForm = () => {
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
   
-  const [volunteers, setVolunteers] = useState<Volunteer[]>();
-  const [volunteer, setVolunteer] = useState<Volunteer>();
-  useEffect(() => {
-    if(user.userRole == "admin"){
-      axios.get<Volunteer[]>(`${base_url}/api/volunteers`)
-          .then(response => {
-
-              if (response.data) {
-                  setVolunteers(response.data);
-              }
-
-          })
-          .catch(error => {
+    const onSubmit = (data: Schema) => {
+      if(volunteer){
+        axios.patch<Volunteer> (`${base_url}/api/volunteers`, {
+          userId: user.userId,
+          name: data.name,
+          address1: data.address1,
+          address2: data.address2,
+          city: data.city,
+          state: data.state,
+          zip: data.zip,
+          skills: data.skills,
+          preferences: data.preferences,
+          availability: data.availability,
+          email: user.userEmail
+        })
+        .then(response => {
+          if (response) {
+            alert("Updated Volunteer")
+          }
+        })
+        .catch(error => {
             console.log(error);
-          })
-}else if(user.userRole=="volunteer"){
-  axios.get<Volunteer>(`${base_url}/api/volunteers/${user.userId}`)
-          .then(response => {
-
-              if (response.data) {
-                  setVolunteer(response.data);
-              }
-
-          })
-          .catch(error => {
-            console.log(error);
-          })
-  }
-} , [volunteers,volunteer]);
-  const onSubmit = (data: Schema) => {
-    
-    axios.post<Volunteer> (`${base_url}/api/volunteers`, {
-      name: data.name,
-      address1: data.address1,
-      address2: data.address2,
-      city: data.city,
-      state: data.state,
-      zip: data.zip,
-      skills: data.skills,
-      preferences: data.preferences,
-      availability: data.availability,
-      email: user.userEmail
-    })
-      
-    .then(response => {
-  
-      if (response) {
-        alert("Created Volunteer")
+        })
       }
-
-  })
-  .catch(() => {
-      alert("error");
-  })
-    
-   //alert(data.name)
+      else{
+        axios.post<Volunteer> (`${base_url}/api/volunteers`, {
+          userId: user.userId,
+          name: data.name,
+          address1: data.address1,
+          address2: data.address2,
+          city: data.city,
+          state: data.state,
+          zip: data.zip,
+          skills: data.skills,
+          preferences: data.preferences,
+          availability: data.availability,
+          email: user.userEmail
+        })
+        .then(response => {
+          if (response) {
+            alert("Created Volunteer!")
+          }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+      }
+      
+        
   };
 
   return (
@@ -125,7 +123,7 @@ const ProfileManagementForm = () => {
             control={control}
             render={({ field }) => (
               <Input
-                label="Full Name"
+                label="Address 1"
                 {...field}  // Spread the field object from useController to use value and onChange
                 value={field.value || volunteer?.address1 || ''}  // Use field's value or volunteer name
                 variant="bordered"
@@ -177,11 +175,13 @@ const ProfileManagementForm = () => {
             control={control}
             render={({ field }) => (
               <Select 
+              {...field}
               errorMessage={errors.state?.message}
               isInvalid={errors.state ? true : false}
-              label="Select a state" 
-              className="max-w-xs" {
-              ...field}>
+              // defaultSelectedKeys={(volunteer) ? [volunteer.state]: [""]}
+              label="Select a state"
+              className="max-w-xs" 
+              >
               {states.map((state) => (
                 <SelectItem
                   key={state.value}
@@ -263,14 +263,17 @@ const ProfileManagementForm = () => {
             render={({ field: {onChange, value} }) => (
               <div className='z-40'>
                   <h3 className='text-sm'>Availability</h3>
-                  <DatePicker
-                  selectedDates={value} 
-                  showIcon
-                  onChange={onChange} 
-                  selectsMultiple
-                  shouldCloseOnSelect={false}
-                  disabledKeyboardNavigation
-                />
+                  <div className='border-2'>
+                    <DatePicker
+                    selectedDates={value} 
+                    showIcon
+                    onChange={onChange} 
+                    selectsMultiple
+                    shouldCloseOnSelect={false}
+                    disabledKeyboardNavigation
+                    />
+                  </div>
+         
 
               </div>
            
@@ -282,19 +285,6 @@ const ProfileManagementForm = () => {
           Submit
         </Button>
       </form>
-      <div>
-        {
-            (volunteers && user.userRole=="admin") ? 
-            <ul className="list-disc">
-              {
-              volunteers.map((volunteer) => <li key={volunteer.id}>{volunteer.name}:{volunteer.email}</li>)
-              }
-          
-            </ul>
-           :
-            <></>
-          }
-      </div>
     </div>
   );
 };

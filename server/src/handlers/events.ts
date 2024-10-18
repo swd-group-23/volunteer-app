@@ -28,7 +28,7 @@ export function createEvent(request: Request<{}, {}, CreateEventRequest>, respon
         return response.status(400).send(errors)
     }
     return response.status(201).send({
-        id: Math.floor((Math.random() * 100) + 1).toString(),
+        id: events.length.toString(),
         name: newUser.name,
         description: newUser.description,
         address: newUser.address,

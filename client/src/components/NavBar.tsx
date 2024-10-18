@@ -3,15 +3,10 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Navbar
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 import { NotificationIcon } from '../assets/NotificationIcon';
 import {useUser} from '../hooks/useUser';
+import { Notification } from '../../types';
 import axios from 'axios';
 
-interface Notification {
-    id: string;
-    userId: string;
-    eventId: string;
-    time: Date;
-    message: string;
-  }
+
 
 const NavBar = () => {
     const user = useUser();
@@ -23,7 +18,7 @@ const NavBar = () => {
 
 
     useEffect(() => {
-        if (user && user.userId){
+        if (user && user.userRole == 'volunteer'){
         axios.get<Notification[]>(`${base_url}/api/notifications/${user.userId}`)
             .then(response => {
                 if (response.data) {
@@ -31,11 +26,12 @@ const NavBar = () => {
                 }
             })
             .catch(error => {
-                console.log(base_url);
-                alert(error);
+                if(error.response && error.response.status === 404){
+                    setNotifications([])
+                }
             })
-    }
- }, [user]);
+            }
+        }, [user]);
 
     const menuItems = [
       "Login",

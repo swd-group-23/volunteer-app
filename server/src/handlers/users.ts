@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateUserRequest, LoginUserRequest, LoginUserResponse, UpdateUserRequest, User } from "../models/users.model";
+import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User } from "../models/users.model";
 import { users } from "../data";
 import {validationResult} from 'express-validator';
 
@@ -48,7 +48,7 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
     else {
         console.log("Created new user: ", newUser);
         const user = {
-            id: Math.floor((Math.random() * 100) + 1).toString(),
+            id: users.length.toString(),
             email: newUser.email,
             password: newUser.password,
             role: newUser.role
@@ -68,23 +68,6 @@ export function deleteUser(request: Request<{id: number}>, response: Response<Us
         const index = users.indexOf(user);
         users.splice(index, 1);
         return response.status(200).send(user);
-    }
-    return response.status(404);
-}
-
-export function updateUser(request: Request<{id: number}, {}, UpdateUserRequest>, response: Response<User>){
-    const id = request.params.id;
-    const updateUser = request.body
-
-    const user = users.find((user) => user.id == id.toString())
-    if(user){
-        const index = users.indexOf(user);
-        users[index] = {
-            ...user,
-            email: updateUser.email,
-            password: updateUser.password
-        }
-        return response.status(200).send(users[index]);
     }
     return response.status(404);
 }

@@ -1,7 +1,7 @@
 import { volunteers } from "../../data";
-import { createVolunteer, getVolunteerById, getVolunteers, postVolunteerMatch} from "../../handlers/volunteer";
+import { createVolunteer, getVolunteerById, getVolunteers, postVolunteerMatch, updateVolunteer} from "../../handlers/volunteer";
 import { mockRequest,mockResponse } from "../mocks";
-import { mockCreateExistingVolunteer, mockCreateVolunteerFailure, mockCreateVolunteerSuccess, mockGetVolunteerByIdRequestFailure, mockGetVolunteerByIdRequestSuccess, mockMatchVolunteerRequestDuplicate, mockMatchVolunteerRequestFailure, mockMatchVolunteerRequestFailure2, mockMatchVolunteerRequestSuccess } from "../mocks/volunteers";
+import { mockCreateExistingVolunteer, mockCreateVolunteerFailure, mockCreateVolunteerSuccess, mockGetVolunteerByIdRequestFailure, mockGetVolunteerByIdRequestSuccess, mockMatchVolunteerRequestDuplicate, mockMatchVolunteerRequestFailure, mockMatchVolunteerRequestFailure2, mockMatchVolunteerRequestSuccess, mockUpdateVolunteerFailure, mockUpdateVolunteerSuccess } from "../mocks/volunteers";
 
 describe('getVolunteers', () =>{
     it('should return an array of volunteers', () =>{
@@ -23,7 +23,7 @@ describe('getVolunteersById', () =>{
 })
 
 
-describe('createUser', () => {
+describe('creatVolunteer', () => {
     it('should create a volunteer given the corresponding data', () =>{
         createVolunteer(mockCreateVolunteerSuccess, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(201);
@@ -55,4 +55,16 @@ describe('matchVolunteer', () => {
         postVolunteerMatch(mockMatchVolunteerRequestDuplicate, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(400);
     })
+})
+
+describe('updateVolunteer', () =>{
+    it('should update a user by id', () =>{
+        updateVolunteer(mockUpdateVolunteerSuccess, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    })
+
+    it('should call updateUser with 404 when user not found', () =>{
+        updateVolunteer(mockUpdateVolunteerFailure, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+    });
 })

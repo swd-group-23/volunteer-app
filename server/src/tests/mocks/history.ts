@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 
 export const mockGetHistoryByIdRequestSuccess = {
   params: { id: '1' }, 

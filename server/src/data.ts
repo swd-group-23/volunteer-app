@@ -48,20 +48,32 @@ export const skills = [
 export const users: User[] = [
   {
     id: '1',
-    email: 'admin@gmail.com',
+    email: 'alan@gmail.com',
     password: '12345678',
-    role: 'admin'
+    role: 'volunteer'
   },
   {
     id: '2',
-    email: 'volunteer@gmail.com',
+    email: 'alina@gmail.com',
     password: '12345678',
     role: 'volunteer'
   },
   {
     id: '3',
-    email: 'test3@gmail.com',
-    password: '3456',
+    email: 'josh@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
+  },
+  {
+    id: '5',
+    email: 'admin@gmail.com',
+    password: '12345678',
+    role: 'admin'
+  },
+  {
+    id: '6',
+    email: 'volunteer@gmail.com',
+    password: '12345678',
     role: 'volunteer'
   },
 

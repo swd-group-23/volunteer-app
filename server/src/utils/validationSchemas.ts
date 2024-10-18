@@ -22,22 +22,6 @@ export const createUserValidationSchema = {
 }
 
 export const createVolunteerValidation = {
-    userId: {
-        notEmpty: {
-            errorMessage: "User ID cannot be empty",
-        },
-        isString: {
-            errorMessage: "User ID must be a string",
-        }
-    },
-    id: {
-        notEmpty: {
-            errorMessage: "ID cannot be empty",
-        },
-        isString: {
-            errorMessage: "ID must be a string",
-        }
-    },
     name: {
         notEmpty: {
             errorMessage: "Name cannot be empty",
@@ -55,18 +39,6 @@ export const createVolunteerValidation = {
         },
         isEmail: {
             errorMessage: "Email must be a valid email address",
-        }
-    },
-    password: {
-        notEmpty: {
-            errorMessage: "Password cannot be empty",
-        },
-        isLength: {
-            options: {
-                min: 8,
-                max: 100,
-            },
-            errorMessage: "Password must be at least 8 characters with a maximum of 100 characters",
         }
     },
     address1: {
@@ -118,13 +90,6 @@ export const createVolunteerValidation = {
     skills: {
         notEmpty: {
             errorMessage: "Skills cannot be empty",
-        },
-        isArray: {
-            errorMessage: "Skills must be an array of strings",
-        },
-        custom: {
-            options: (skills: string[]) => skills.every(skill => typeof skill === 'string'),
-            errorMessage: "Each skill must be a string",
         }
     },
     preferences: {
