@@ -1,7 +1,7 @@
 import { users } from "../../data";
 import { createUser, deleteUser, getUsers, getUsersById, loginUser } from "../../handlers/users"
 import { mockRequest, mockResponse } from "../mocks";
-import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess} from "../mocks/users";
+import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess1, mockDeleteUserByIdRequestSuccess2, mockDeleteUserByIdRequestSuccess3, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess} from "../mocks/users";
 
 // jest.mock("express-validator", () => ({
 //     validationResult: jest.fn(() => ({
@@ -62,10 +62,19 @@ describe('createUser', () => {
 })
 
 describe('deleteUser', () =>{
-    it('should delete a user by id', () =>{
-        deleteUser(mockDeleteUserByIdRequestSuccess, mockResponse);
+    it('should delete a user by id that is not a volunteer', () =>{
+        deleteUser(mockDeleteUserByIdRequestSuccess1, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(200);
     })
+    it('should delete a user by id that is a volunteer', () =>{
+        deleteUser(mockDeleteUserByIdRequestSuccess2, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    })
+    it('should delete a user by id that is a volunteer and has history', () =>{
+        deleteUser(mockDeleteUserByIdRequestSuccess3, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    })
+
 
     it('should call deleteUser with 404 when user not found', () =>{
         deleteUser(mockDeleteUserByIdRequestFailure, mockResponse);

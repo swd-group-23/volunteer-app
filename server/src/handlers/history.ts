@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { histories, volunteers, events, historyResponse } from "../data";
+import { histories, volunteers, events } from "../data";
 import { GetHistoryResponse } from "../models/history.model";
 
 export function getHistoryById(request: Request<{ id: string }>, response: Response<GetHistoryResponse[] | string>) {
@@ -17,7 +17,7 @@ export function getHistoryById(request: Request<{ id: string }>, response: Respo
                     volunteerName: volunteer.name,
                     eventName: event.name,
                     eventDescription: event.description,
-                    location: event.address, //theres address in event but not in history
+                    location: event.location,
                     skills: event.skills,
                     urgency: event.urgency,
                     eventDate: event.dateTime,
@@ -57,7 +57,7 @@ export function getHistory(request: Request, response: Response<GetHistoryRespon
                     volunteerName: volunteer.name,
                     eventName: event.name,
                     eventDescription: event.description,
-                    location: event.address, //theres address in event but not in history
+                    location: event.location,
                     skills: event.skills,
                     urgency: event.urgency,
                     eventDate: event.dateTime,

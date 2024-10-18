@@ -65,7 +65,7 @@ export function createVolunteer(request: Request<{}, {}, CreateVolunteerRequest>
     }
 
     const volunteer = {
-        id: volunteers.length.toString(),
+        id: (volunteers.length+1).toString(),
         userId: newUser.userId,
         name: newUser.name,
         email: newUser.email,

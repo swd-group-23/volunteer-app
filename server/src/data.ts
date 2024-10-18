@@ -65,6 +65,12 @@ export const users: User[] = [
     role: 'volunteer'
   },
   {
+    id: '4',
+    email: 'jusvin@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
+  },
+  {
     id: '5',
     email: 'admin@gmail.com',
     password: '12345678',
@@ -152,24 +158,24 @@ export const notifications: Notification[] = [
   },
   {
     id: "2",
-    userId: "1",
+    userId: "2",
     time: new Date('2024-12-01'),
     eventId: "2",
     message: "Your Homeless Shelter Shift is coming up!",
   },
   {
     id: "3",
-    userId: "2",
+    userId: "1",
     time: new Date('2024-12-01'),
     eventId: "3",
     message: "Your Shift at the Public Library is coming up!",
   },
   {
     id: "4",
-    userId: "2",
+    userId: "3",
     time: new Date('2024-12-01'),
     eventId: "1",
-    message: "Your Houston Food Bank Shift is coming up!",
+    message: "Your Shift at the Blood Drive is coming up!",
   },
   {
     id: "5",
@@ -177,30 +183,7 @@ export const notifications: Notification[] = [
     time: new Date('2024-12-01'),
     eventId: "3",
     message: "Your Shift at the Public Library is coming up!",
-  },
-
-  {
-    id: "6",
-    userId: "3",
-    time: new Date('2024-12-01'),
-    eventId: "4",
-    message: "Your Blood Drive Shift is coming up!",
-  },
-  {
-    id: "7",
-    userId: "3",
-    time: new Date('2024-12-01'),
-    eventId: "5",
-    message: "Your Donation Shift is coming up!",
-  },
-  {
-    id: "8",
-    userId: "3",
-    time: new Date('2024-12-01'),
-    eventId: "5",
-    message: "Donation Shift is coming up!",
-  },
-
+  }
 
    ];
 
@@ -296,10 +279,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '1',
     name: 'Houston Food Bank',
     description: 'Feeding the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Portwall, Houston, Texas. 77546',
     dateTime: new Date('2024-09-14'),
     skills: ['packing', 'carrying'],
     urgency: 'mild'
@@ -308,10 +288,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '2',
     name: 'Homeless Shelter',
     description: 'Feeding the homeless',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Westhiemer, Houston, Texas. 77546',
     dateTime: new Date('2024-10-15'),
     skills: ['packing', 'carrying'],
     urgency: 'mild'
@@ -320,10 +297,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '3',
     name: 'Public Library',
     description: 'Knowledge for the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Smith Street, Houston, Texas. 77546',
     dateTime: new Date('2024-11-08'),
     skills: ['organizing', 'helping'],
     urgency: 'low'
@@ -332,10 +306,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '4',
     name: 'Blood Drive',
     description: 'Saving lives',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Midtown, Houston, Texas. 77546',
     dateTime: new Date('2024-12-01'),
     skills: ['packing', 'assisting'],
     urgency: 'high'
@@ -344,10 +315,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '5',
     name: 'Donation',
     description: 'Donate',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Downtown, Houston, Texas. 77546',
     dateTime: new Date('2024-12-01'),
     skills: ['packing', 'assisting'],
     urgency: 'high'

@@ -35,6 +35,7 @@ const VolunteerMatchingForm = () => {
   const [volunteer, setVolunteer] = useState<Volunteer>();
   const [volunteers, setVolunteers] = useState<Volunteer[]>();
   const [events, setEvents] = useState<Event[]>();
+  const [event, setEvent] = useState<Event>();
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
 
@@ -79,6 +80,23 @@ const VolunteerMatchingForm = () => {
         .catch(() => {
             alert("Invalid Match!");
         })
+
+        axios.post<Notification> (`${base_url}/api/notifications`, {
+          userId: volunteer?.userId,
+          eventId: event?.id,
+          time: new Date(),
+          message: `You have been scheduled for the ${event?.name}!`
+        })
+            .then(response => {
+    
+                if (response) {
+                  console.log(response.data);
+                }
+    
+            })
+            .catch(() => {
+                alert("Could not send notification to user");
+            })
 
 
     reset(); 
@@ -150,6 +168,7 @@ const VolunteerMatchingForm = () => {
                           value={event.id}
                           className="text-black"
                           textValue={event.name}
+                          onClick={() => setEvent(event)}
                         >
                           <div className="flex flex-col">
                             <span className="text-md">{event.name}</span>

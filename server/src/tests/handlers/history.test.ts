@@ -1,3 +1,4 @@
+import { histories } from "../../data";
 import { getHistoryById, getHistory} from "../../handlers/history"
 import { History } from "../../models/history.model";
 import { mockRequest, mockResponse } from "../mocks";
@@ -11,7 +12,7 @@ const expectedResponse = [
         volunteerName: "Alan",
         eventName: "Houston Food Bank",
         eventDescription: "Feeding the community",
-        location: "Portwall",
+        location: "Portwall, Houston, Texas. 77546",
         skills: ["packing", "carrying"],
         urgency: "mild",
         eventDate: new Date("2024-09-14T00:00:00.000Z"),
@@ -23,7 +24,7 @@ const expectedResponse = [
         volunteerName: "Alan",
         eventName: "Public Library",
         eventDescription: "Knowledge for the community",
-        location: "Portwall",
+        location: "Smith Street, Houston, Texas. 77546",
         skills: ["organizing", "helping"],
         urgency: "low",
         eventDate: new Date("2024-11-08T00:00:00.000Z"),
@@ -38,7 +39,7 @@ const expectedGetHistoryResponse = [
         volunteerName: "Alan",
         eventName: "Houston Food Bank",
         eventDescription: "Feeding the community",
-        location: "Portwall",
+        location: "Portwall, Houston, Texas. 77546",
         skills: ["packing", "carrying"],
         urgency: "mild",
         eventDate: new Date("2024-09-14T00:00:00.000Z"),
@@ -50,7 +51,7 @@ const expectedGetHistoryResponse = [
         volunteerName: "Alina",
         eventName: "Homeless Shelter",
         eventDescription: "Feeding the homeless",
-        location: "Portwall",
+        location: "Westhiemer, Houston, Texas. 77546",
         skills: ["packing", "carrying"],
         urgency: "mild",
         eventDate: new Date("2024-10-15T00:00:00.000Z"),
@@ -62,7 +63,7 @@ const expectedGetHistoryResponse = [
         volunteerName: "Alan",
         eventName: "Public Library",
         eventDescription: "Knowledge for the community",
-        location: "Portwall",
+        location: "Smith Street, Houston, Texas. 77546",
         skills: ["organizing", "helping"],
         urgency: "low",
         eventDate: new Date("2024-11-08T00:00:00.000Z"),
@@ -74,7 +75,7 @@ const expectedGetHistoryResponse = [
         volunteerName: "Josh",
         eventName: "Blood Drive",
         eventDescription: "Saving lives",
-        location: "Portwall",
+        location: "Midtown, Houston, Texas. 77546",
         skills: ["packing", "assisting"],
         urgency: "high",
         eventDate: new Date("2024-12-01T00:00:00.000Z"),
@@ -99,6 +100,13 @@ describe('getHistory', () =>{
     it('should return an array of histories', () =>{
         getHistory(mockRequest, mockResponse);
         expect(mockResponse.send).toHaveBeenCalledWith(expectedGetHistoryResponse);
+    })
+    it('should return with 404 when histories is empty', () =>{
+        const originalHistories = [...histories];
+        histories.length = 0
+        getHistory(mockRequest, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        histories.push(...originalHistories);
     })
 })
 

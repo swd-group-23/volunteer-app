@@ -99,7 +99,7 @@ const VolunteerHistory = () => {
             <TableCell>{event.location}</TableCell>
             <TableCell>{event.skills.toString()}</TableCell>
             <TableCell>{event.urgency}</TableCell>
-            <TableCell>{event.eventDate.toString()}</TableCell>
+            <TableCell>{event.eventDate.toString().split('T')[0]}</TableCell>
             <TableCell>{event.status}</TableCell>
         </TableRow>
         ))

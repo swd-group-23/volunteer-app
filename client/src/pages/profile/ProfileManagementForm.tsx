@@ -1,9 +1,9 @@
-import { Button, Input, Select, SelectItem, Textarea} from '@nextui-org/react';
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Textarea, useDisclosure} from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DatePicker from 'react-datepicker';
-import { states,skills } from '../../../types';
+import { states,skills, User } from '../../../types';
 import axios from 'axios';
 import { Volunteer } from '../../../types';
 import { useUser } from '../../hooks/useUser';
@@ -39,7 +39,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
   });
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
-  
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const onSubmit = (data: Schema) => {
       if(volunteer){
         axios.patch<Volunteer> (`${base_url}/api/volunteers`, {
@@ -86,10 +86,21 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
         .catch(error => {
             console.log(error);
         })
-      }
-      
-        
+      }        
   };
+
+  const onDelete = () => {
+      axios.delete<User>(`${base_url}/api/users/${volunteer?.userId}`)
+      .then(response => {
+          if (response.data) {
+              alert("Deleted user " + volunteer?.name);
+              window.location.href = "/pages/profile/";
+          }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  } 
 
   return (
     <div className="flex flex-col gap-2 items-center justify-center h-max mt-4">
@@ -280,11 +291,40 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
             )}
           />
         </div>
-
-        <Button type="submit" color="primary">
-          Submit
-        </Button>
+          <div className='flex flex-row gap-3 '>
+            <Button type="submit" color="primary">
+              Submit
+            </Button>
+            {
+              (user.userRole == 'admin') ?
+              <Button color="danger" variant="bordered" onPress={onOpen}>
+                Delete user
+              </Button> : <></>
+            }
+          </div>
+     
       </form>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Delete {volunteer?.name}?</ModalHeader>
+              <ModalBody>
+              <p>This will delete the volunteer's history aswell</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="danger" onPress={onDelete}
+                  >
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

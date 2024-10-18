@@ -43,8 +43,14 @@ export const mockCreateExistingUser = {
     }
 } as Request<{}, {}, CreateUserRequest>;
 
-export const mockDeleteUserByIdRequestSuccess = {
-    params: { id: 2 },
+export const mockDeleteUserByIdRequestSuccess1 = {
+    params: { id: 6 },
+  } as Request<{ id: number }>;
+  export const mockDeleteUserByIdRequestSuccess2 = {
+    params: { id: 4 },
+  } as Request<{ id: number }>;
+  export const mockDeleteUserByIdRequestSuccess3 = {
+    params: { id: 1 },
   } as Request<{ id: number }>;
 
 export const mockDeleteUserByIdRequestFailure = {
