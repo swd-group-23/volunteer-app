@@ -20,7 +20,9 @@ Project for COSC 4353
 > The client directory requires a .env configuration file to run
 - cd into the client
     `cd ../client`
-- create a `.env` file in the root level of the client directory
+- cd into the `src` directory
+    `cd src`
+- create a `.env` file in the root level of the `src` directory
 - add the following information to the .env
 ```.env
 VITE_REACT_APP_NODE_ENV = development
@@ -43,3 +45,7 @@ VITE_REACT_APP_SERVER_BASE_URL_DEV = http://localhost:4000
     `cd ../server`
 - run the test script
     `npm run test`
+
+# Troubleshooting Tips
+- Ensure node and npm version is up to date
+    - [https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/](Resource)
