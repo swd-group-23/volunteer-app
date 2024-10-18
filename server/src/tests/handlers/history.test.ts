@@ -1,3 +1,4 @@
+import { histories } from "../../data";
 import { getHistoryById, getHistory} from "../../handlers/history"
 import { History } from "../../models/history.model";
 import { mockRequest, mockResponse } from "../mocks";
@@ -99,6 +100,13 @@ describe('getHistory', () =>{
     it('should return an array of histories', () =>{
         getHistory(mockRequest, mockResponse);
         expect(mockResponse.send).toHaveBeenCalledWith(expectedGetHistoryResponse);
+    })
+    it('should return with 404 when histories is empty', () =>{
+        const originalHistories = [...histories];
+        histories.length = 0
+        getHistory(mockRequest, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        histories.push(...originalHistories);
     })
 })
 

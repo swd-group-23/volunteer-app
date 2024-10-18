@@ -42,7 +42,7 @@ describe('createEvent', () => {
 })
 
 describe('deleteEvent', () =>{
-    it('should delete a event by id wihtout history', () =>{
+    it('should delete a event by id without history', () =>{
         deleteEventById(mockDeleteEventByIdRequestSuccess1, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(200);
     })

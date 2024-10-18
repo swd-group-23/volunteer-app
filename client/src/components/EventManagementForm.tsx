@@ -20,7 +20,6 @@ type Schema = z.infer<typeof schema>;
 const EventManagementForm = () => {
   const {
     handleSubmit,
-    setValue,
     control,
     reset,
     formState: { errors },

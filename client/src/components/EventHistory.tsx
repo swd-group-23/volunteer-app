@@ -28,6 +28,7 @@ const EventHistory = () => {
         .then(response => {
             if (response.data) {
                 alert("Deleted Event with ID " + id);
+                window.location.href = '/'
             }
         })
         .catch(error => {
