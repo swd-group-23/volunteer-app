@@ -48,7 +48,7 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
     else {
         console.log("Created new user: ", newUser);
         const user = {
-            id: users.length.toString(),
+            id: (users.length+1).toString(),
             email: newUser.email,
             password: newUser.password,
             role: newUser.role

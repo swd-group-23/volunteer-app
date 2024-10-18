@@ -22,7 +22,7 @@ export function getNotifsById(request: Request<{id: string}>, response: Response
 
 export function createNotifications(request: Request<{}, {}, createNotif>, response: Response<Notification>){
     return response.status(201).send({
-        id: "", 
+        id: (notifications.length+1).toString(), 
         userId: 'testUser',
         eventId: 'test',
         time: new Date(),

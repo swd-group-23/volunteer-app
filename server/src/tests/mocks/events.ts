@@ -14,10 +14,7 @@ export const mockCreateEventSuccess = {
     body: {
         name: 'mock event',
         description: 'mock',
-        address: 'street',
-        city: 'Houston',
-        state: 'Texas',
-        zip: 77546,
+        location: 'mock',
         dateTime: new Date('2024-09-14'),
         skills: ['mock1', 'mock2'],
         urgency: 'mock'
@@ -31,10 +28,7 @@ export const mockCreateExistingEvent = {
     body: {
         name: 'Houston Food Bank',
         description: 'Feeding the community',
-        address: 'Portwall',
-        city: 'Houston',
-        state: 'Texas',
-        zip: 77546,
+        location: 'Portwall, Houston, Texas. 77546',
         dateTime: new Date('2024-09-14'),
         skills: ['packing', 'carrying'],
         urgency: 'mild'

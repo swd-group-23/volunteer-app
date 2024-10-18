@@ -18,27 +18,26 @@ export function getEventsById(request: Request<{id: number}>, response: Response
 
 
 export function createEvent(request: Request<{}, {}, CreateEventRequest>, response: Response<Event | String | String[]>){
-    const newUser = request.body
+    const event = request.body
     const result = validationResult(request);
-    if(!newUser){
+    if(!event){
         return response.status(400).send("No Body!");
     }
     if(!result.isEmpty()){
         const errors = result.array().map((error) => error.msg)
         return response.status(400).send(errors)
     }
-    return response.status(201).send({
-        id: events.length.toString(),
-        name: newUser.name,
-        description: newUser.description,
-        address: newUser.address,
-        city: newUser.city,
-        state: newUser.state,
-        zip: newUser.zip,
-        dateTime: newUser.dateTime,
-        skills: newUser.skills,
-        urgency: newUser.urgency
-    });
+    const newEvent = {
+        id: (events.length+1).toString(),
+        name: event.name,
+        description: event.description,
+        location: event.location,
+        dateTime: event.dateTime,
+        skills: event.skills,
+        urgency: event.urgency
+    };
+    events.push(newEvent);
+    return response.status(201).send(newEvent);
 }
 
 export function deleteEventByIndex(request: Request<{id: number}>, response: Response<Event | string>){

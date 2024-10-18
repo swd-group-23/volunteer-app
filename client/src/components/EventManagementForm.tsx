@@ -23,6 +23,7 @@ const EventManagementForm = () => {
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -45,23 +46,24 @@ const EventManagementForm = () => {
   } , [events]);
   const onSubmit = (data: Schema) => {
     axios.post<Event> (`${base_url}/api/events`, {
-      eventname: data.eventname,
-      desc: data.desc,
+      name: data.eventname,
+      description: data.desc,
       location: data.location,
       skills: data.skills,
       urgency: data.urgency,
-      date: data.date
+      dateTime: data.date
     })
     .then(response => {
   
         if (response) {
-          console.log(response.data);
+          alert("Created Event!")
         }
 
     })
     .catch(() => {
         alert("error");
     })
+    reset(); 
     };
 
   return (
@@ -176,11 +178,12 @@ const EventManagementForm = () => {
             render={({ field: {onChange, value} }) => (
               <div className='z-40'>
                 <h3 className='text-sm'>Date</h3>
-                <DatePicker
+                <div className='border-2 w-min mb-2'>  
+                  <DatePicker
                   selected={value} 
                   showIcon
                   onChange={onChange} 
-                />
+                /></div>
               </div>
             )}
           />

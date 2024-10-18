@@ -129,77 +129,27 @@ export const createEventValidation = {
             errorMessage: "Event description must be a string",
         }
     },
-    address: {
+    location: {
         notEmpty: {
-            errorMessage: "Address cannot be empty",
+            errorMessage: "Location cannot be empty",
         },
         isString: {
-            errorMessage: "Address must be a string",
-        }
-    },
-    city: {
-        notEmpty: {
-            errorMessage: "City cannot be empty",
-        },
-        isString: {
-            errorMessage: "City must be a string",
-        }
-    },
-    state: {
-        notEmpty: {
-            errorMessage: "State cannot be empty",
-        },
-        isString: {
-            errorMessage: "State must be a string",
-        },
-        isLength: {
-            options: { min: 2, max: 2 },
-            errorMessage: "State must be a valid 2-letter abbreviation",
-        }
-    },
-    zip: {
-        notEmpty: {
-            errorMessage: "ZIP code cannot be empty",
-        },
-        isNumeric: {
-            errorMessage: "ZIP code must be a number",
-        },
-        isLength: {
-            options: { min: 5, max: 5 },
-            errorMessage: "ZIP code must be a 5-digit number",
+            errorMessage: "Location must be a string",
         }
     },
     dateTime: {
         notEmpty: {
             errorMessage: "Event date and time cannot be empty",
-        },
-        custom: {
-            options: (dateTime: string) => !isNaN(Date.parse(dateTime)),
-            errorMessage: "Event date and time must be a valid date",
         }
     },
     skills: {
         notEmpty: {
             errorMessage: "Skills cannot be empty",
-        },
-        isArray: {
-            errorMessage: "Skills must be an array of strings",
-        },
-        custom: {
-            options: (skills: string[]) => skills.every(skill => typeof skill === 'string'),
-            errorMessage: "Each skill must be a string",
         }
     },
     urgency: {
         notEmpty: {
             errorMessage: "Urgency level cannot be empty",
-        },
-        isString: {
-            errorMessage: "Urgency must be a string",
-        },
-        isIn: {
-            options: [["low", "medium", "high"]],
-            errorMessage: "Urgency must be one of: 'low', 'medium', 'high'",
         }
     }
 };
