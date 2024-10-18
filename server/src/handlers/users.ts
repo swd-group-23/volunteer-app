@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User } from "../models/users.model";
-import { users } from "../data";
+import { histories, users, volunteers } from "../data";
 import {validationResult} from 'express-validator';
 
 
@@ -67,6 +67,17 @@ export function deleteUser(request: Request<{id: number}>, response: Response<Us
     if(user){
         const index = users.indexOf(user);
         users.splice(index, 1);
+        const volunteer = volunteers.find((volunteer) => volunteer.userId == user.id)
+        if(volunteer){
+            const index = volunteers.indexOf(volunteer)
+            volunteers.splice(index, 1);
+            const history_list = histories.filter((history) => history.volunteerId == volunteer.id)
+            if(history_list){
+                history_list.map((history) => {
+                    histories.splice(histories.indexOf(history),1)
+                })
+            }
+        }
         return response.status(200).send(user);
     }
     return response.status(404);
