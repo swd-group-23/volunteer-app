@@ -1,42 +1,6 @@
-// handlers/history.ts
 import { Request, Response } from "express";
 import { histories, volunteers, events, historyResponse } from "../data";
-import { History, GetHistoryResponse } from "../models/history.model";
-
-/*
-export function getHistoryById(
-    request: Request<{ id: string }>,
-    response: Response<GetHistoryResponse[] | string>) {
-    const historyRecords = histories.filter(
-        (history) => history.volunteerId === request.params.id
-    );
-
-    if (historyRecords.length > 0) {
-        const historyResponse: GetHistoryResponse[] = historyRecords.map((record) => {
-            const volunteer = volunteers.find((v) => v.id === record.volunteerId);
-            const event = events.find((e) => e.id === record.eventId);
-
-            return {
-                id: record.id,
-                volunteerId: record.volunteerId,
-                volunteerName: volunteer ? volunteer.name : 'Unknown',
-                eventName: event ? event.name : 'Unknown',
-                eventDescription: event ? event.description : 'No description',
-                location: event ? event.address : 'Unknown',
-                skills: event ? event.skills : [],
-                urgency: event ? event.urgency : 'Unknown',
-                eventDate: event ? event.dateTime : new Date(),
-                status: record.status,
-            };
-        });
-
-        return response.send(historyResponse);
-    } else {
-        return response.status(404).send('Event History not found');
-    }
-}
-
-*/
+import { GetHistoryResponse } from "../models/history.model";
 
 export function getHistoryById(request: Request<{ id: string }>, response: Response<GetHistoryResponse[] | string>) {
     const historyRecords = histories.filter((history) => history.volunteerId === request.params.id);
@@ -46,18 +10,33 @@ export function getHistoryById(request: Request<{ id: string }>, response: Respo
             const volunteer = volunteers.find((v) => v.id === record.volunteerId);
             const event = events.find((e) => e.id === record.eventId);
 
-            return {
-                id: record.id,
-                volunteerId: record.volunteerId,
-                volunteerName: volunteer ? volunteer.name : "Unknown",
-                eventName: event ? event.name : "Unknown",
-                eventDescription: event ? event.description : "No description",
-                location: event ? event.address : "Unknown", //theres address in event but not in history
-                skills: event ? event.skills : [],
-                urgency: event ? event.urgency : "Unknown",
-                eventDate: event ? event.dateTime : new Date(),
-                status: record.status
-            };
+            if(event && volunteer){
+                return {
+                    id: record.id,
+                    volunteerId: record.volunteerId,
+                    volunteerName: volunteer.name,
+                    eventName: event.name,
+                    eventDescription: event.description,
+                    location: event.address, //theres address in event but not in history
+                    skills: event.skills,
+                    urgency: event.urgency,
+                    eventDate: event.dateTime,
+                    status: record.status
+                };
+            }else{
+                return {
+                    id: record.id,
+                    volunteerId: record.volunteerId,
+                    volunteerName: "Unknown",
+                    eventName:  "Unknown",
+                    eventDescription: "No description",
+                    location: "Unknown", //theres address in event but not in history
+                    skills: [],
+                    urgency: "Unknown",
+                    eventDate: new Date(),
+                    status: record.status
+                };
+            }
         });
         
         return response.send(historyResponse);
@@ -71,11 +50,11 @@ export function getHistory(request: Request, response: Response<GetHistoryRespon
         const historyResponse: GetHistoryResponse[] = histories.map((record) => {
             const volunteer = volunteers.find((v) => v.id === record.volunteerId);
             const event = events.find((e) => e.id === record.eventId);
-            if(event){
+            if(event && volunteer){
                 return {
                     id: record.id,
                     volunteerId: record.volunteerId,
-                    volunteerName: volunteer ? volunteer.name : "Unknown",
+                    volunteerName: volunteer.name,
                     eventName: event.name,
                     eventDescription: event.description,
                     location: event.address, //theres address in event but not in history
@@ -88,7 +67,7 @@ export function getHistory(request: Request, response: Response<GetHistoryRespon
                 return {
                     id: record.id,
                     volunteerId: record.volunteerId,
-                    volunteerName: volunteer ? volunteer.name : "Unknown",
+                    volunteerName: "Unknown",
                     eventName:  "Unknown",
                     eventDescription: "No description",
                     location: "Unknown", //theres address in event but not in history

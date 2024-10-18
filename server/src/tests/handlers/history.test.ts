@@ -1,6 +1,5 @@
-import { validationResult } from "express-validator";
-import { histories, historyResponse } from "../../data";
 import { getHistoryById, getHistory} from "../../handlers/history"
+import { History } from "../../models/history.model";
 import { mockRequest, mockResponse } from "../mocks";
 import { mockGetHistoryByIdRequestFailure, mockGetHistoryByIdRequestSuccess } from "../mocks/history";
 
@@ -102,6 +101,8 @@ describe('getHistory', () =>{
         expect(mockResponse.send).toHaveBeenCalledWith(expectedGetHistoryResponse);
     })
 })
+
+
 /*
 describe('getHistory', () => {
 
