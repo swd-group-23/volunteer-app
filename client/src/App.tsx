@@ -6,11 +6,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import VolunteerMatchingForm from './components/VolunteerMatchingForm';
 import VolunteerHistory from './components/VolunteerHistory';
 import EventManagementForm from './components/EventManagementForm';
-
+import EventHistory from './components/EventHistory';
 
 function App() {
   const user = useUser();
   const {onClose} = useDisclosure();
+
   return (
         <>
           <NavBar/>
@@ -28,6 +29,7 @@ function App() {
                       <EventManagementForm/>
                       <VolunteerMatchingForm/>
                     </div>
+                    <EventHistory/>
                     <VolunteerHistory/>
                   </> :
                   <>

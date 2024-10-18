@@ -6,7 +6,6 @@ import DatePicker from 'react-datepicker';
 import { skills,urgencys } from '../../types';
 import axios from 'axios';
 import { Event } from '../../types';
-import { useEffect, useState } from 'react';
 const schema = z.object({
   eventname: z.string().min(1, 'Invalid name').max(100, 'Event Name is too long'),
   desc: z.string().min(1, 'Invalid address'),
@@ -30,20 +29,7 @@ const EventManagementForm = () => {
   });
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
-  const [events, setEvents] = useState<Event[]>();
-  useEffect(() => {
-    axios.get<Event[]>(`${base_url}/api/events`)
-    .then(response => {
-
-        if (response.data) {
-            setEvents(response.data);
-        }
-
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  } , [events]);
+  
   const onSubmit = (data: Schema) => {
     axios.post<Event> (`${base_url}/api/events`, {
       name: data.eventname,
@@ -57,13 +43,14 @@ const EventManagementForm = () => {
   
         if (response) {
           alert("Created Event!")
+          reset({ eventname: "", desc: "", location: "", skills: "", urgency: "", date: null });
+          window.location.href='/';
         }
 
     })
     .catch(() => {
         alert("error");
     })
-    reset(); 
     };
 
   return (
@@ -82,7 +69,6 @@ const EventManagementForm = () => {
                 label="Event Name"
                 placeholder="enter event name"
                 variant="bordered"
-                onClear={() => setValue('eventname', '')}
                 errorMessage={errors.eventname?.message}
                 isInvalid={errors.eventname ? true : false}
                 {...field}
@@ -99,7 +85,6 @@ const EventManagementForm = () => {
                 label="Event Description"
                 placeholder="enter description"
                 variant="bordered"
-                onClear={() => setValue('desc', '')}
                 errorMessage={errors.desc?.message}
                 isInvalid={errors.desc? true : false}
                 {...field}
@@ -115,7 +100,6 @@ const EventManagementForm = () => {
                 label="Location"
                 placeholder="enter location"
                 variant="bordered"
-                onClear={() => setValue('location', '')}
                 errorMessage={errors.location?.message}
                 isInvalid={errors.location ? true : false}
                 {...field}
@@ -128,12 +112,13 @@ const EventManagementForm = () => {
             control={control}
             render={({ field }) => (
               <Select 
+              {...field}
+              value={field.value || []}
               errorMessage={errors.skills?.message}
               isInvalid={errors.skills ? true : false}
               label="Required Skills" 
               selectionMode='multiple'
-              className="max-w-xs" {
-              ...field}>
+              className="max-w-xs">
               {skills.map((skill) => (
                 <SelectItem
                   key={skill.value}
@@ -153,11 +138,12 @@ const EventManagementForm = () => {
             control={control}
             render={({ field }) => (
               <Select 
+              {...field}
+              value={field.value || []}
               errorMessage={errors.urgency?.message}
               isInvalid={errors.urgency? true : false}
               label="Urgency" 
-              className="max-w-xs" {
-              ...field}>
+              className="max-w-xs">
               {urgencys.map((urgency) => (
                 <SelectItem
                   key={urgency.value}
@@ -193,19 +179,6 @@ const EventManagementForm = () => {
           Submit
         </Button>
       </form>
-      <div>
-          {
-              (events) ? 
-              <ul className="list-disc">
-                {
-                events.map((event) => <li key={event.id}>{event.name}:{event.description}</li>)
-                }
-            
-              </ul>
-            :
-              <></>
-            }
-        </div>
     </div>
   );
 };

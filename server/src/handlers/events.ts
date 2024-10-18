@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CreateEventRequest, Event } from "../models/events.model";
-import { events } from "../data";
+import { events, histories } from "../data";
 import { validationResult } from "express-validator";
 
 export function getEvents(request: Request, response: Response<Event[]>) {
@@ -40,13 +40,17 @@ export function createEvent(request: Request<{}, {}, CreateEventRequest>, respon
     return response.status(201).send(newEvent);
 }
 
-export function deleteEventByIndex(request: Request<{id: number}>, response: Response<Event | string>){
-    const id = request.params.id;  // Destructure the index from the request body
+export function deleteEventById(request: Request<{id: number}>, response: Response<Event | string>){
+    const id = request.params.id; 
   
     const event = events.find((event) => event.id == id.toString())
     if(event){
         const index = events.indexOf(event);
         events.splice(index, 1);
+        const history_list = histories.filter((history) => history.eventId == event.id)
+        if(history_list){
+            history_list.map((history) => histories.splice(histories.indexOf(history), 1))
+        }
         return response.status(200).send(event);
     }
     return response.status(404);

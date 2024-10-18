@@ -14,9 +14,7 @@ const NavBar = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
     const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
-
-
-
+   
     useEffect(() => {
         if (user && user.userRole == 'volunteer'){
         axios.get<Notification[]>(`${base_url}/api/notifications/${user.userId}`)
@@ -32,6 +30,18 @@ const NavBar = () => {
             })
             }
         }, [user]);
+    
+    const onDelete = (id: string) => {
+        axios.delete<Notification>(`${base_url}/api/notifications/${id}`)
+        .then(_ => {
+            alert("Deleted Notification with ID " + id);
+            window.location.href = '/'
+            
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
 
     const menuItems = [
       "Login",
@@ -95,7 +105,7 @@ const NavBar = () => {
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         {
                             notifications.map((notification)=>(
-                                <DropdownItem key={notification.id}>
+                                <DropdownItem key={notification.id} onClick={() => onDelete(notification.id)}>
                                     {notification.message}
                                 </DropdownItem>                            
                             ))

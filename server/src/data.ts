@@ -158,24 +158,24 @@ export const notifications: Notification[] = [
   },
   {
     id: "2",
-    userId: "1",
+    userId: "2",
     time: new Date('2024-12-01'),
     eventId: "2",
     message: "Your Homeless Shelter Shift is coming up!",
   },
   {
     id: "3",
-    userId: "2",
+    userId: "1",
     time: new Date('2024-12-01'),
     eventId: "3",
     message: "Your Shift at the Public Library is coming up!",
   },
   {
     id: "4",
-    userId: "2",
+    userId: "3",
     time: new Date('2024-12-01'),
     eventId: "1",
-    message: "Your Houston Food Bank Shift is coming up!",
+    message: "Your Shift at the Blood Drive is coming up!",
   },
   {
     id: "5",
@@ -183,30 +183,7 @@ export const notifications: Notification[] = [
     time: new Date('2024-12-01'),
     eventId: "3",
     message: "Your Shift at the Public Library is coming up!",
-  },
-
-  {
-    id: "6",
-    userId: "3",
-    time: new Date('2024-12-01'),
-    eventId: "4",
-    message: "Your Blood Drive Shift is coming up!",
-  },
-  {
-    id: "7",
-    userId: "3",
-    time: new Date('2024-12-01'),
-    eventId: "5",
-    message: "Your Donation Shift is coming up!",
-  },
-  {
-    id: "8",
-    userId: "3",
-    time: new Date('2024-12-01'),
-    eventId: "5",
-    message: "Donation Shift is coming up!",
-  },
-
+  }
 
    ];
 

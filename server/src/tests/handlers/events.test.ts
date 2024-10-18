@@ -1,7 +1,7 @@
 import { events } from "../../data";
-import { createEvent, deleteEventByIndex, getEvents, getEventsById } from "../../handlers/events";
+import { createEvent, deleteEventById, getEvents, getEventsById } from "../../handlers/events";
 import { mockRequest, mockResponse } from "../mocks";
-import { mockCreateEventFailure, mockCreateEventSuccess, mockCreateExistingEvent, mockDeleteEventByIdRequestFailure, mockDeleteEventByIdRequestSuccess, mockGetEventByIdRequestFailure, mockGetEventByIdRequestSuccess } from "../mocks/events";
+import { mockCreateEventFailure, mockCreateEventSuccess, mockCreateExistingEvent, mockDeleteEventByIdRequestFailure, mockDeleteEventByIdRequestSuccess1, mockGetEventByIdRequestFailure, mockGetEventByIdRequestSuccess } from "../mocks/events";
 
 describe('getEvents', () =>{
     it('should return an array of events', () =>{
@@ -42,13 +42,17 @@ describe('createEvent', () => {
 })
 
 describe('deleteEvent', () =>{
-    it('should delete a event by id', () =>{
-        deleteEventByIndex(mockDeleteEventByIdRequestSuccess, mockResponse);
+    it('should delete a event by id wihtout history', () =>{
+        deleteEventById(mockDeleteEventByIdRequestSuccess1, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    })
+    it('should delete a event by id with history', () =>{
+        deleteEventById(mockDeleteEventByIdRequestSuccess1, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(200);
     })
 
     it('should call deleteEvent with 404 when user not found', () =>{
-        deleteEventByIndex(mockDeleteEventByIdRequestFailure, mockResponse);
+        deleteEventById(mockDeleteEventByIdRequestFailure, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(404);
     });
 })

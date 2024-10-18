@@ -35,8 +35,11 @@ export const mockCreateExistingEvent = {
     }
 } as Request<{}, {}, CreateEventRequest>;
 
-export const mockDeleteEventByIdRequestSuccess = {
-    params: { id: 2 },
+export const mockDeleteEventByIdRequestSuccess1 = {
+    params: { id: 5 },
+  } as Request<{ id: number }>;
+  export const mockDeleteEventByIdRequestSuccess4 = {
+    params: { id: 4 },
   } as Request<{ id: number }>;
 
 export const mockDeleteEventByIdRequestFailure = {
