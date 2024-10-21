@@ -135,7 +135,8 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
             render={({ field }) => (
               <Input
                 label="Address 1"
-                placeholder="enter address"
+                {...field}  // Spread the field object from useController to use value and onChange
+                value={field.value || volunteer?.address1 || ''}  // Use field's value or volunteer name
                 variant="bordered"
                 onClear={() => setValue('name', '')}  // Clear the field when needed
                 errorMessage={errors.name?.message}
