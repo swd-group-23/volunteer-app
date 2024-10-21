@@ -1,7 +1,7 @@
-import { Request, response, Response } from "express";
-import { CreateUserRequest, LoginUserRequest, LoginUserResponse, UpdateUserRequest, User } from "../models/users.model";
-import { users } from "../data";
-import {query, validationResult} from 'express-validator';
+import { Request, Response } from "express";
+import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User } from "../models/users.model";
+import { histories, users, volunteers } from "../data";
+import {validationResult} from 'express-validator';
 
 
 export function getUsers(request: Request, response: Response<User[]>) {
@@ -48,7 +48,7 @@ export function createUser(request: Request<{}, {}, CreateUserRequest>, response
     else {
         console.log("Created new user: ", newUser);
         const user = {
-            id: Math.floor((Math.random() * 100) + 1).toString(),
+            id: (users.length+1).toString(),
             email: newUser.email,
             password: newUser.password,
             role: newUser.role
@@ -67,24 +67,18 @@ export function deleteUser(request: Request<{id: number}>, response: Response<Us
     if(user){
         const index = users.indexOf(user);
         users.splice(index, 1);
-        return response.status(200).send(user);
-    }
-    return response.status(404);
-}
-
-export function updateUser(request: Request<{id: number}, {}, UpdateUserRequest>, response: Response<User>){
-    const id = request.params.id;
-    const updateUser = request.body
-
-    const user = users.find((user) => user.id == id.toString())
-    if(user){
-        const index = users.indexOf(user);
-        users[index] = {
-            ...user,
-            email: updateUser.email,
-            password: updateUser.password
+        const volunteer = volunteers.find((volunteer) => volunteer.userId == user.id)
+        if(volunteer){
+            const index = volunteers.indexOf(volunteer)
+            volunteers.splice(index, 1);
+            const history_list = histories.filter((history) => history.volunteerId == volunteer.id)
+            if(history_list){
+                history_list.map((history) => {
+                    histories.splice(histories.indexOf(history),1)
+                })
+            }
         }
-        return response.status(200).send(users[index]);
+        return response.status(200).send(user);
     }
     return response.status(404);
 }

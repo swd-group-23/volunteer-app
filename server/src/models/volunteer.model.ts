@@ -43,3 +43,19 @@ export interface CreateVolunteerRequest {
     preferences?: string;
     availability: Date[];
 }
+
+export interface UpdateVolunteerRequest {
+    userId: string;
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: number;
+    skills: string[];
+    preferences?: string;
+    availability: Date[];
+}

@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {getNotifications ,getNotifsById ,createNotifications, deleteNotification } from "../handlers/notifications";
+import {getNotifications ,getNotifsById ,createNotifications, deleteNotification} from "../handlers/notifications";
 
 
 const router = Router();

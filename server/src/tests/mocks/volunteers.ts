@@ -1,5 +1,5 @@
-import { Request,Response } from "express";
-import { CreateVolunteerRequest } from "../../models/volunteer.model";
+import { Request } from "express";
+import { CreateVolunteerRequest, MatchVolunteerRequest } from "../../models/volunteer.model";
 
 export const mockGetVolunteerByIdRequestSuccess = {
     params: { id: "1" },
@@ -47,3 +47,66 @@ export const mockCreateExistingVolunteer = {
         availability: [new Date('2024-09-12'), new Date('2024-09-14')]
     }
 } as Request<{}, {}, CreateVolunteerRequest>;
+
+export const mockMatchVolunteerRequestSuccess  = {
+    body:{
+        volunteerId: '2',
+        eventId: '3'
+    }
+
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestFailure  = {
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestFailure2  = {
+    body:{
+        volunteerId: '2'
+    }
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestDuplicate  = {
+    body:{
+        volunteerId: '1',
+        eventId: '1'
+    }
+
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockUpdateVolunteerSuccess = {
+    params: { id: 1 },
+    body: {
+        userId: "1",
+        name: "Testing User Six",
+        email: "volunteer@gmail.com",
+        address1: "Testing new address",
+        address2: "testing2",
+        city: "Houston",
+        state: "AR",
+        zip: "77089",
+        skills: "Project Management",
+        preferences: "testing1234",
+        availability: [
+            "2024-10-19T05:00:00.000Z"
+        ]
+    }
+  } as Request<{ id: number }>;
+
+export const mockUpdateVolunteerFailure = {
+    params: { id: 200 },
+    body: {
+        userId: "1",
+        name: "Testing User",
+        email: "volunteer@gmail.com",
+        address1: "Testing new address",
+        address2: "testing2",
+        city: "Houston",
+        state: "AR",
+        zip: "77089",
+        skills: "Project Management",
+        preferences: "testing1234",
+        availability: [
+            "2024-10-19T05:00:00.000Z"
+        ]
+    }
+} as Request<{ id: number }>;

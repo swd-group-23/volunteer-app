@@ -48,20 +48,38 @@ export const skills = [
 export const users: User[] = [
   {
     id: '1',
-    email: 'admin@gmail.com',
+    email: 'alan@gmail.com',
     password: '12345678',
-    role: 'admin'
+    role: 'volunteer'
   },
   {
     id: '2',
-    email: 'volunteer@gmail.com',
+    email: 'alina@gmail.com',
     password: '12345678',
     role: 'volunteer'
   },
   {
     id: '3',
-    email: 'test3@gmail.com',
-    password: '3456',
+    email: 'josh@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
+  },
+  {
+    id: '4',
+    email: 'jusvin@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
+  },
+  {
+    id: '5',
+    email: 'admin@gmail.com',
+    password: '12345678',
+    role: 'admin'
+  },
+  {
+    id: '6',
+    email: 'volunteer@gmail.com',
+    password: '12345678',
     role: 'volunteer'
   },
 
@@ -132,51 +150,66 @@ export const volunteers: Volunteer[] = [
 
 export const notifications: Notification[] = [
   {
-    id: "string",
-    userId: "string",
+    id: "1",
+    userId: "1",
     time: new Date('2024-12-01'),
-    eventId: "string",
+    eventId: "1",
     message: "Your Houston Food Bank Shift is coming up!",
   },
   {
-    id: "string1",
-    userId: "string1",
+    id: "2",
+    userId: "2",
     time: new Date('2024-12-01'),
-    eventId: "string1",
-    message: "Your Alzheimer's Walk Shift is coming up!",
+    eventId: "2",
+    message: "Your Homeless Shelter Shift is coming up!",
   },
   {
-    id: "string2",
-    userId: "string2",
+    id: "3",
+    userId: "1",
     time: new Date('2024-12-01'),
-    eventId: "string2",
-    message: "Your Heart Smart Race Shift is coming up!",
+    eventId: "3",
+    message: "Your Shift at the Public Library is coming up!",
   },
+  {
+    id: "4",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "1",
+    message: "Your Shift at the Blood Drive is coming up!",
+  },
+  {
+    id: "5",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "3",
+    message: "Your Shift at the Public Library is coming up!",
+  }
+
    ];
 
    export const histories: History[] = [
     {
-      id: "1",
-      volunteerId: "1",
-      eventId: "1",
+      id: '1',
+      volunteerId: '1',
+      eventId: '1',
       status: ["Participated"],
     },
     {
-      id: "2",
-      volunteerId: "2",
-      eventId: "2",
+      id: '2',
+      volunteerId: '2',
+      eventId: '2',
       status: ["Participated"],
     },
     {
-      id: "3",
-      volunteerId: "1",
-      eventId: "3",
+      id: '3',
+      volunteerId: '1',
+      eventId: '3',
       status: ["Canceled"],
     },
     {
-      id: "4",
-      volunteerId: "3",
-      eventId: "4",
+      id: '4',
+      volunteerId: '3',
+      eventId: '4',
       status: ["No show"],
     },
   ];
@@ -184,14 +217,11 @@ export const notifications: Notification[] = [
 
 
 
-
-
-/*
-export const histories: History[] = [
+export const historyResponse: GetHistoryResponse[] = [
   {
     id: '1',
     volunteerId: '1',
-    volunteerName: "Lindsey Lohan",
+    volunteerName: 'Alan',
     eventName: 'Houston Food Bank', 
     eventDescription: 'To provide food assistance to those in need and alleviate hunger in the community.',
     location: '535 Portwall St, Houston, TX 77029',
@@ -204,6 +234,7 @@ export const histories: History[] = [
   {
     id: '2',
     volunteerId: '2',
+    volunteerName: 'Alina',
     eventName: 'Homeless Shelter', 
     eventDescription: 'Providing meals, shelter, and support services for individuals experiencing homelessness.',
     location: '101 Homeless Way, Houston, TX 77001',
@@ -216,6 +247,7 @@ export const histories: History[] = [
   {
     id: '3',
     volunteerId: '1',
+    volunteerName: 'Alan',
     eventName: 'Public Library', 
     eventDescription: 'Hosting a reading event for children in the community to promote literacy and education.',
     location: '4500 Library Ln, Houston, TX 77002',
@@ -228,6 +260,7 @@ export const histories: History[] = [
   {
     id: '4',
     volunteerId: '3',
+    volunteerName: 'Josh',
     eventName: 'Blood Drive', 
     eventDescription: 'Organizing a blood donation drive to support local hospitals and medical facilities.',
     location: '500 Donation Dr, Houston, TX 77003',
@@ -237,10 +270,8 @@ export const histories: History[] = [
     status: ['No show']
   
   }
-
-  
   ];
-*/
+
  
   
   export const events: Event[] = [
@@ -248,10 +279,7 @@ export const histories: History[] = [
     id: '1',
     name: 'Houston Food Bank',
     description: 'Feeding the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Portwall, Houston, Texas. 77546',
     dateTime: new Date('2024-09-14'),
     skills: ['packing', 'carrying'],
     urgency: 'mild'
@@ -260,10 +288,7 @@ export const histories: History[] = [
     id: '2',
     name: 'Homeless Shelter',
     description: 'Feeding the homeless',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Westhiemer, Houston, Texas. 77546',
     dateTime: new Date('2024-10-15'),
     skills: ['packing', 'carrying'],
     urgency: 'mild'
@@ -272,10 +297,7 @@ export const histories: History[] = [
     id: '3',
     name: 'Public Library',
     description: 'Knowledge for the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Smith Street, Houston, Texas. 77546',
     dateTime: new Date('2024-11-08'),
     skills: ['organizing', 'helping'],
     urgency: 'low'
@@ -284,10 +306,7 @@ export const histories: History[] = [
     id: '4',
     name: 'Blood Drive',
     description: 'Saving lives',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Midtown, Houston, Texas. 77546',
     dateTime: new Date('2024-12-01'),
     skills: ['packing', 'assisting'],
     urgency: 'high'
@@ -296,10 +315,7 @@ export const histories: History[] = [
     id: '5',
     name: 'Donation',
     description: 'Donate',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Downtown, Houston, Texas. 77546',
     dateTime: new Date('2024-12-01'),
     skills: ['packing', 'assisting'],
     urgency: 'high'
