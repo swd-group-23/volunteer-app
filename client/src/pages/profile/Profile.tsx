@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import NavBar from '../../components/NavBar';
 import '../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
-import ProfileManagementForm from './ProfileManagementForm';
+import ProfilePage from './ProfilePage';
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -13,7 +13,7 @@ if (rootElement) {
             <main className='green text-foreground bg-background'>
                 <NavBar />
                 <div className='flex flex-col'>
-                    <ProfileManagementForm/>
+                   <ProfilePage/>
                 </div>
             </main>
         </React.StrictMode>

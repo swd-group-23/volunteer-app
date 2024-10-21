@@ -8,23 +8,78 @@ import { GetHistoryResponse, History } from "./models/history.model";
 
 import { Event } from "./models/events.model";
 
+export const states = [
+  { value: 'AL'}, { value: 'AK'}, { value: 'AZ'}, { value: 'AR'}, 
+  { value: 'CA'}, { value: 'CO'}, { value: 'CT'}, { value: 'DE'}, 
+  { value: 'FL'}, { value: 'GA'}, { value: 'HI'}, { value: 'ID'}, 
+  { value: 'IL'}, { value: 'IN'}, { value: 'IA'}, { value: 'KS'}, 
+  { value: 'KY'}, { value: 'LA'}, { value: 'ME'}, { value: 'MD'}, 
+  { value: 'MA'}, { value: 'MI'}, { value: 'MN'}, { value: 'MS'}, 
+  { value: 'MO'}, { value: 'MT'}, { value: 'NE'}, { value: 'NV'}, 
+  { value: 'NH'}, { value: 'NJ'}, { value: 'NM'}, { value: 'NY'}, 
+  { value: 'NC'}, { value: 'ND'}, { value: 'OH'}, { value: 'OK'}, 
+  { value: 'OR'}, { value: 'PA'}, { value: 'RI'}, { value: 'SC'}, 
+  { value: 'SD'}, { value: 'TN'}, { value: 'TX'}, { value: 'UT'}, 
+  { value: 'VT'}, { value: 'VA'}, { value: 'WA'}, { value: 'WV'}, 
+  { value: 'WI'}, { value: 'WY'}
+];
+
+export const skills = [
+  { value: 'Project Management' },
+  { value: 'Fundraising' },
+  { value: 'Event Planning' },
+  { value: 'Public Speaking' },
+  { value: 'Marketing and Social Media' },
+  { value: 'Grant Writing' },
+  { value: 'Community Outreach' },
+  { value: 'Volunteer Coordination' },
+  { value: 'Conflict Resolution' },
+  { value: 'Teaching and Mentoring' },
+  { value: 'Web Development' },
+  { value: 'Graphic Design' },
+  { value: 'Data Analysis' },
+  { value: 'First Aid and CPR' },
+  { value: 'Nonprofit Administration' }
+];
+
+
+
+
 export const users: User[] = [
   {
     id: '1',
-    email: 'admin@gmail.com',
+    email: 'alan@gmail.com',
     password: '12345678',
-    role: 'admin'
+    role: 'volunteer'
   },
   {
     id: '2',
-    email: 'volunteer@gmail.com',
+    email: 'alina@gmail.com',
     password: '12345678',
     role: 'volunteer'
   },
   {
     id: '3',
-    email: 'test3@gmail.com',
-    password: '3456',
+    email: 'josh@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
+  },
+  {
+    id: '4',
+    email: 'jusvin@gmail.com',
+    password: '12345678',
+    role: 'volunteer'
+  },
+  {
+    id: '5',
+    email: 'admin@gmail.com',
+    password: '12345678',
+    role: 'admin'
+  },
+  {
+    id: '6',
+    email: 'volunteer@gmail.com',
+    password: '12345678',
     role: 'volunteer'
   },
 
@@ -57,7 +112,7 @@ export const volunteers: Volunteer[] = [
     city: 'houston',
     state: 'tx',
     zip: 1234,
-    skills: ['code', 'review'],
+    skills: [skills[2].value],
     preferences: 'evening',
     availability: [new Date('2024-09-14'), new Date('2024-10-07')]
   },
@@ -95,26 +150,41 @@ export const volunteers: Volunteer[] = [
 
 export const notifications: Notification[] = [
   {
-    id: "string",
-    userId: "string",
+    id: "1",
+    userId: "1",
     time: new Date('2024-12-01'),
-    eventId: "string",
+    eventId: "1",
     message: "Your Houston Food Bank Shift is coming up!",
   },
   {
-    id: "string1",
-    userId: "string1",
+    id: "2",
+    userId: "2",
     time: new Date('2024-12-01'),
-    eventId: "string1",
-    message: "Your Alzheimer's Walk Shift is coming up!",
+    eventId: "2",
+    message: "Your Homeless Shelter Shift is coming up!",
   },
   {
-    id: "string2",
-    userId: "string2",
+    id: "3",
+    userId: "1",
     time: new Date('2024-12-01'),
-    eventId: "string2",
-    message: "Your Heart Smart Race Shift is coming up!",
+    eventId: "3",
+    message: "Your Shift at the Public Library is coming up!",
   },
+  {
+    id: "4",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "1",
+    message: "Your Shift at the Blood Drive is coming up!",
+  },
+  {
+    id: "5",
+    userId: "3",
+    time: new Date('2024-12-01'),
+    eventId: "3",
+    message: "Your Shift at the Public Library is coming up!",
+  }
+
    ];
 
    export const histories: History[] = [
@@ -209,10 +279,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '1',
     name: 'Houston Food Bank',
     description: 'Feeding the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Portwall, Houston, Texas. 77546',
     dateTime: new Date('2024-09-14'),
     skills: ['packing', 'carrying'],
     urgency: 'mild'
@@ -221,10 +288,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '2',
     name: 'Homeless Shelter',
     description: 'Feeding the homeless',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Westhiemer, Houston, Texas. 77546',
     dateTime: new Date('2024-10-15'),
     skills: ['packing', 'carrying'],
     urgency: 'mild'
@@ -233,10 +297,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '3',
     name: 'Public Library',
     description: 'Knowledge for the community',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Smith Street, Houston, Texas. 77546',
     dateTime: new Date('2024-11-08'),
     skills: ['organizing', 'helping'],
     urgency: 'low'
@@ -245,10 +306,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '4',
     name: 'Blood Drive',
     description: 'Saving lives',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Midtown, Houston, Texas. 77546',
     dateTime: new Date('2024-12-01'),
     skills: ['packing', 'assisting'],
     urgency: 'high'
@@ -257,10 +315,7 @@ export const historyResponse: GetHistoryResponse[] = [
     id: '5',
     name: 'Donation',
     description: 'Donate',
-    address: 'Portwall',
-    city: 'Houston',
-    state: 'Texas',
-    zip: 77546,
+    location: 'Downtown, Houston, Texas. 77546',
     dateTime: new Date('2024-12-01'),
     skills: ['packing', 'assisting'],
     urgency: 'high'

@@ -1,12 +1,13 @@
-import { Button, Input} from '@nextui-org/react';
+import { Button, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {EyeFilledIcon} from "../../assets/EyeFilledIcon";
 import {EyeSlashFilledIcon} from "../../assets/EyeSlashFilledIcon";
 import { useUser } from '../../hooks/useUser';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { User } from '../../../types';
 
 interface LoginUserResponse {
   id: string;
@@ -34,7 +35,23 @@ const LoginComponent = () => {
   });
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
+  const [users, setUsers] = useState<User[]>();
 
+
+    useEffect(() => {
+    axios.get<User[]>(`${base_url}/api/users`)
+        .then(response => {
+
+            if (response.data) {
+                setUsers(response.data);
+            }
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+}
+    , [users]);
   const onSubmit = (data: Schema) => {
       axios.post<LoginUserResponse> (`${base_url}/api/users/login`, {
         email: data.email,
@@ -65,11 +82,11 @@ const LoginComponent = () => {
 
     const toggleVisibility = () => setIsVisible(!isVisible);
   return (
-    <div className="flex flex-col gap-2 items-center justify-center h-96">
+    <div className="flex flex-col gap-2 items-center justify-center">
       <h2 className='text-xl'>Login</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-start gap-4"
+        className="flex flex-col items-start gap-4 mb-4"
       >
         <div className="flex flex-col mt-4 w-full max-w-xs gap-4">
           <Controller
@@ -125,6 +142,32 @@ const LoginComponent = () => {
           Login
         </Button>
       </form>
+        {
+          (users) ? 
+          <Table aria-label="Example static collection table" className='w-50'>
+          <TableHeader>
+            <TableColumn>EMAIL</TableColumn>
+            <TableColumn>PASSWORD</TableColumn>
+            <TableColumn>ROLE</TableColumn>
+          </TableHeader>
+          <TableBody>
+            {
+              users.map((user) => (
+                <TableRow key={user.id}>
+                <TableCell>{user.email}</TableCell>
+              <TableCell>{user.password}</TableCell>
+                <TableCell>{user.role}</TableCell>
+              </TableRow>
+              ))
+            }
+         
+          </TableBody>
+        </Table>
+          :
+          <></>
+
+        }
+     
     </div>
   );
 };

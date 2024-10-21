@@ -3,15 +3,10 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Navbar
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 import { NotificationIcon } from '../assets/NotificationIcon';
 import {useUser} from '../hooks/useUser';
+import { Notification } from '../../types';
 import axios from 'axios';
 
-interface Notification {
-    id: string;
-    userId: string;
-    eventId: string;
-    time: Date;
-    message: string;
-  }
+
 
 const NavBar = () => {
     const user = useUser();
@@ -19,22 +14,34 @@ const NavBar = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
     const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
-
-
-
+   
     useEffect(() => {
-        axios.get<Notification[]>(`${base_url}/api/notifications`)
+        if (user && user.userRole == 'volunteer'){
+        axios.get<Notification[]>(`${base_url}/api/notifications/${user.userId}`)
             .then(response => {
                 if (response.data) {
                     setNotifications(response.data);
                 }
             })
             .catch(error => {
-                console.log(base_url);
-                alert(error);
+                if(error.response && error.response.status === 404){
+                    setNotifications([])
+                }
             })
+            }
+        }, [user]);
+    
+    const onDelete = (id: string) => {
+        axios.delete<Notification>(`${base_url}/api/notifications/${id}`)
+        .then(_ => {
+            alert("Deleted Notification with ID " + id);
+            window.location.href = '/'
+            
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
-        , []);
 
     const menuItems = [
       "Login",
@@ -98,7 +105,7 @@ const NavBar = () => {
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         {
                             notifications.map((notification)=>(
-                                <DropdownItem key={notification.id}>
+                                <DropdownItem key={notification.id} onClick={() => onDelete(notification.id)}>
                                     {notification.message}
                                 </DropdownItem>                            
                             ))

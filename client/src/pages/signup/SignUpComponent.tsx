@@ -1,4 +1,4 @@
-import { Button, Input} from '@nextui-org/react';
+import { Button, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -174,19 +174,32 @@ const SignUpComponent = () => {
         </form>
       </div>
       <div>
-        <h1 className='text-xl'>User List (From backend):</h1>
         <div>
-          {
-            (users) ? 
-            <ul className="list-disc">
-              {
-              users.map((user) => <li key={user.id}>{user.email}</li>)
-              }
-          
-            </ul>
-           :
-            <></>
-          }
+        {
+          (users) ? 
+          <Table aria-label="Example static collection table" className='w-50'>
+          <TableHeader>
+            <TableColumn>EMAIL</TableColumn>
+            <TableColumn>PASSWORD</TableColumn>
+            <TableColumn>ROLE</TableColumn>
+          </TableHeader>
+          <TableBody>
+            {
+              users.map((user) => (
+                <TableRow key={user.id}>
+                <TableCell>{user.email}</TableCell>
+              <TableCell>{user.password}</TableCell>
+                <TableCell>{user.role}</TableCell>
+              </TableRow>
+              ))
+            }
+         
+          </TableBody>
+        </Table>
+          :
+          <></>
+
+        }
         </div>
       </div>
     
