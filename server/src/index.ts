@@ -25,7 +25,7 @@ app.use(express.json());
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World, from express');
+  res.send('Express server');
 })
 app.use('/api/users', usersRouter)
 app.use('/api/volunteers', volunteersRouter)
