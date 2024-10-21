@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { createNotif, Notification} from "../../models/notifications.model";
 
 

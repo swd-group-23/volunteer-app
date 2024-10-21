@@ -48,6 +48,8 @@ jobs:
     needs: build-client
     runs-on: self-hosted 
     steps:
+      - name: Clean up docker system
+        run: docker system prune -af
       - name: Pull image from docker hub
         run: docker pull 04aj/volunteer-app-client:latest 
       - name: Delete old container

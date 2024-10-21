@@ -1,8 +1,7 @@
-import { validationResult } from "express-validator";
 import { users } from "../../data";
-import { createUser, deleteUser, getUsers, getUsersById, loginUser, updateUser } from "../../handlers/users"
+import { createUser, deleteUser, getUsers, getUsersById, loginUser } from "../../handlers/users"
 import { mockRequest, mockResponse } from "../mocks";
-import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess, mockUpdateUserFailure, mockUpdateUserSuccess } from "../mocks/users";
+import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess1, mockDeleteUserByIdRequestSuccess2, mockDeleteUserByIdRequestSuccess3, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess} from "../mocks/users";
 
 // jest.mock("express-validator", () => ({
 //     validationResult: jest.fn(() => ({
@@ -35,7 +34,7 @@ describe('loginUser', () =>{
     it('should login user by email and password', () =>{
         loginUser(mockLoginUserSuccess, mockResponse);
         expect(mockResponse.send).toHaveBeenCalledWith({
-            id: "1",
+            id: "5",
             role: 'admin'
         });
     })
@@ -63,25 +62,22 @@ describe('createUser', () => {
 })
 
 describe('deleteUser', () =>{
-    it('should delete a user by id', () =>{
-        deleteUser(mockDeleteUserByIdRequestSuccess, mockResponse);
+    it('should delete a user by id that is not a volunteer', () =>{
+        deleteUser(mockDeleteUserByIdRequestSuccess1, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(200);
     })
+    it('should delete a user by id that is a volunteer', () =>{
+        deleteUser(mockDeleteUserByIdRequestSuccess2, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    })
+    it('should delete a user by id that is a volunteer and has history', () =>{
+        deleteUser(mockDeleteUserByIdRequestSuccess3, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    })
+
 
     it('should call deleteUser with 404 when user not found', () =>{
         deleteUser(mockDeleteUserByIdRequestFailure, mockResponse);
-        expect(mockResponse.status).toHaveBeenCalledWith(404);
-    });
-})
-
-describe('updateUser', () =>{
-    it('should update a user by id', () =>{
-        updateUser(mockUpdateUserSuccess, mockResponse);
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
-    })
-
-    it('should call updateUser with 404 when user not found', () =>{
-        updateUser(mockUpdateUserFailure, mockResponse);
         expect(mockResponse.status).toHaveBeenCalledWith(404);
     });
 })

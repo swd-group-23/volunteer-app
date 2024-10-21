@@ -21,15 +21,19 @@ export interface Volunteer {
     availability: Date[];
 };
 
+export interface Notification {
+    id: string;
+    userId: string;
+    eventId: string;
+    time: Date;
+    message: string;
+  }
 
 export interface Event {
     id: string;
     name: string;
     description: string;
-    address: string;
-    city: string;
-    state: string;
-    zip: number;
+    location: string;
     dateTime: Date;
     skills: string[];
     urgency: string;
