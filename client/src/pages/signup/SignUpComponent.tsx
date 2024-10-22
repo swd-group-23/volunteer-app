@@ -53,7 +53,7 @@ const SignUpComponent = () => {
           console.log(error);
         })
 }
-    , [users]);
+    , []);
 
   const onSubmit = (data: Schema) => {
     axios.post<User> (`${base_url}/api/users`, {
@@ -68,7 +68,7 @@ const SignUpComponent = () => {
               user.setUserId(response.data.id);
               user.setUserRole(response.data.role);
               user.setUserEmail(data.email)
-              // window.location.href = "/";
+              window.location.href = "/";
 
             }
 

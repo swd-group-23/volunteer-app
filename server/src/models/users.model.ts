@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface User {
     id: string;
     email: string;
@@ -24,4 +26,11 @@ export interface LoginUserResponse {
 export interface UpdateUserRequest {
     email: string;
     password: string;
+}
+
+export interface MongoUser {
+    email: string;
+    password: string;
+    role: 'volunteer' | 'admin';
+    id?: ObjectId;
 }

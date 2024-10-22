@@ -24,7 +24,7 @@ const ProfilePage = () => {
               setVolunteer(undefined)
             })
         }
-        } , [volunteer]);
+        } , []);
   return (
     <div>
     {
