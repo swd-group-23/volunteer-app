@@ -51,7 +51,8 @@ const LoginComponent = () => {
           console.log(error);
         })
 }
-    , [users]);
+    , []);
+
   const onSubmit = (data: Schema) => {
       axios.post<LoginUserResponse> (`${base_url}/api/users/login`, {
         email: data.email,

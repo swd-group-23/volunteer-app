@@ -1,7 +1,15 @@
 import { users } from "../../data";
-import { createUser, deleteUser, getUsers, getUsersById, loginUser } from "../../handlers/users"
+import { createUser, deleteUser, getUsersMongo, getUsersById, loginUser } from "../../handlers/users"
 import { mockRequest, mockResponse } from "../mocks";
 import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, mockDeleteUserByIdRequestFailure, mockDeleteUserByIdRequestSuccess1, mockDeleteUserByIdRequestSuccess2, mockDeleteUserByIdRequestSuccess3, mockGetUserByIdRequestFailure, mockGetUserByIdRequestSuccess, mockLoginUserFailure, mockLoginUserSuccess} from "../mocks/users";
+import { closeDatabaseConnection, collections } from "../../configs/database.service";
+import { connectToDatabase } from "../../configs/database.service";
+import { MongoUser } from "../../models/users.model";
+
+declare global{
+    var __MONGO_URI__: string;
+    var __MONGO_DB_NAME__: string
+}
 
 // jest.mock("express-validator", () => ({
 //     validationResult: jest.fn(() => ({
@@ -10,12 +18,29 @@ import { mockCreateExistingUser, mockCreateUserFailure, mockCreateUserSuccess, m
 //     }))
 // }))
 
-describe('getUsers', () =>{
-    it('should return an array of users', () =>{
-        getUsers(mockRequest, mockResponse);
-        expect(mockResponse.send).toHaveBeenCalledWith(users);
+
+describe('MongoDB User Service Tests', () => {
+    connectToDatabase()
+    .then(() => {
+        describe('getUsers', () => {
+            it('should return an array of users', async () => {
+                const users = await collections.user?.find({}).toArray() as unknown as MongoUser[];
+                getUsersMongo(mockRequest, mockResponse);
+                expect(mockResponse.send).toEqual(users);
+                });
+        });
     })
-})
+    .catch((error: Error) => {
+        console.error("Database connection failed", error);
+        process.exit();
+    });
+
+    closeDatabaseConnection()
+    .then(() => {})
+    .catch(() => {})
+
+  });
+
 
 describe('getUsersById', () =>{
     it('should get a user by id', () =>{

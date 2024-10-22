@@ -1,8 +1,20 @@
 import { Request, Response } from "express";
-import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User } from "../models/users.model";
+import { CreateUserRequest, LoginUserRequest, LoginUserResponse, User} from "../models/users.model";
 import { histories, users, volunteers } from "../data";
 import {validationResult} from 'express-validator';
+import { collections } from "../configs/database.service";
+import {MongoUser} from "../models/users.model";
 
+export async function getUsersMongo(request: Request, response: Response<MongoUser[]>) {
+    try {
+        const users = await collections.user?.find({}).toArray() as unknown as MongoUser[];
+        return response.status(users ? 200 : 500).send(users || []);
+    } catch {
+        return response.status(500);
+    }
+}
+
+// DUMMY DATA
 
 export function getUsers(request: Request, response: Response<User[]>) {
     return response.send(users);
