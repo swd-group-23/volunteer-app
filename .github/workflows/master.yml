@@ -29,7 +29,7 @@ jobs:
       - name: Delete old container
         run: docker rm -f server-container  
       - name: Run Docker Container
-        run: docker run -d -p 4001:4000 --name server-dev-container -e __MONGO_URI__='${{ secrets.__MONGO_URI__ }}' -e __MONGO_DB_NAME__='${{ secrets.__MONGO_DB_NAME__ }}' 04aj/volunteer-app-server-dev
+        run: docker run -d -p 4001:4000 --name server-container -e __MONGO_URI__='${{ secrets.__MONGO_URI__ }}' -e __MONGO_DB_NAME__='${{ secrets.__MONGO_DB_NAME__ }}' 04aj/volunteer-app-server
   
   build-client:
     needs: deploy-server
