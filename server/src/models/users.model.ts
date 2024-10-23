@@ -24,13 +24,15 @@ export interface LoginUserResponse {
 }
 
 export interface UpdateUserRequest {
+    id: string;
     email: string;
     password: string;
+    role: 'volunteer' | 'admin';
 }
 
 export interface MongoUser {
     email: string;
     password: string;
     role: 'volunteer' | 'admin';
-    id?: ObjectId;
+    _id?: ObjectId;
 }

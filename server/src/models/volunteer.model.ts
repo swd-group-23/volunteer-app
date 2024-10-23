@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface Volunteer {
     id: string;
     userId: string;
@@ -59,3 +61,19 @@ export interface UpdateVolunteerRequest {
     preferences?: string;
     availability: Date[];
 }
+
+export interface MongoVolunteer {
+    userId: string;
+    name: string;
+    email: string;
+    password: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: number;
+    skills: string[];
+    preferences?: string;
+    availability: Date[];
+    _id?: ObjectId;
+};
