@@ -29,7 +29,7 @@ jobs:
       - name: Delete old container
         run: docker rm -f server-container  
       - name: Run Docker Container
-        run: docker run -d -p 4000:4000 --name server-container -e MONGO_PASSWORD='${{ secrets.MONGO_PASSWORD }}' 04aj/volunteer-app-server
+        run: docker run -d -p 4000:4000 --name server-container -e __MONGO_URI__='${{ secrets.__MONGO_URI__ }}' -e __MONGO_DB_NAME__='${{ secrets.__MONGO_DB_NAME__ }}' 04aj/volunteer-app-server
   
   build-client:
     needs: deploy-server
@@ -48,8 +48,6 @@ jobs:
     needs: build-client
     runs-on: self-hosted 
     steps:
-      - name: Clean up docker system
-        run: docker system prune -af
       - name: Pull image from docker hub
         run: docker pull 04aj/volunteer-app-client:latest 
       - name: Delete old container

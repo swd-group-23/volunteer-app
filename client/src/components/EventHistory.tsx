@@ -21,7 +21,7 @@ const EventHistory = () => {
       .catch(error => {
       console.log(error);
       })
-  } , [events]);
+  } , []);
     
     const onDelete = (id: string | undefined) => {
         axios.delete<Event>(`${base_url}/api/events/${id}`)
