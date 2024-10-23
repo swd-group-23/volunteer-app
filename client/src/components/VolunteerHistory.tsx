@@ -40,12 +40,11 @@ const VolunteerHistory = () => {
         }
       })
       .catch(error => {
-        console.log(base_url);
         alert(error);
       });
     }
       
-  }, [base_url]);
+  }, []);
 
   return (
     <>
