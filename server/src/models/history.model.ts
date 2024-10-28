@@ -1,3 +1,5 @@
+
+import { ObjectId } from "mongodb";
 export interface History {
     id: string;
     volunteerId: string;
@@ -18,3 +20,10 @@ export interface GetHistoryResponse {
     eventDate: Date;
     status: string[];
   }
+
+  export interface MongoHistory {
+    volunteerId: string;
+    eventId: string;
+    status: string[];
+    _id?: ObjectId;
+}
