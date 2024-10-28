@@ -1,10 +1,16 @@
 import {Router} from "express";
-import { getVolunteerById, getVolunteers, createVolunteer, postVolunteerMatch, updateVolunteer } from "../handlers/volunteer";
+import { getVolunteerById, getVolunteers, createVolunteer, postVolunteerMatch, updateVolunteer, getVolunteersMongo, getVolunteerByIdMongo, createVolunteerMongo, updateVolunteerMongo } from "../handlers/volunteer";
 import { checkSchema } from "express-validator";
 import { createVolunteerValidation } from "../utils/validationSchemas";
 
 
 const router = Router();
+
+router.get('/mongo',getVolunteersMongo)
+router.get('/mongo/:id',getVolunteerByIdMongo)
+router.post('/mongo',checkSchema(createVolunteerValidation),createVolunteerMongo)
+router.patch('/mongo',updateVolunteerMongo)
+
 
 router.get('/', getVolunteers);
 router.get('/:id', getVolunteerById);
