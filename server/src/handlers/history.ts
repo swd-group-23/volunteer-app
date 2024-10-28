@@ -4,26 +4,24 @@ import { GetHistoryResponse } from "../models/history.model";
 import { collections } from "../configs/database.service";
 import {MongoHistory} from "../models/history.model";
 import { ObjectId } from "mongodb";
-import { MongoVolunteer } from "../models/volunteer.model";
+import { MongoVolunteer, MongoEvent } from "../models/history.model";
 
 
 export async function getHistoryByIdMongo(request: Request<{ id: string }>, response: Response<GetHistoryResponse[] | string>) {
     const volunteerId = request.params.id;
-
     try {
-        const historyRecords = await collections.history?.find({ volunteerId }).toArray();
+        const historyRecords = await collections.history?.find({ volunteerId: new ObjectId(volunteerId) }).toArray() as unknown as MongoHistory[];
         
         if (historyRecords && historyRecords.length > 0) {
-            const eventIds = historyRecords.map((record) => record.eventId);
-            const volunteer = await collections.volunteer?.findOne({ id: volunteerId });
-            const events = await collections.event?.find({ id: { $in: eventIds } }).toArray();
+            const volunteer = await collections.volunteer?.findOne({ _id: new ObjectId(volunteerId) });
+            const events = await collections.event?.find({}).toArray() as unknown as MongoEvent[];
 
             const historyResponse: GetHistoryResponse[] = historyRecords.map((record) => {
-                const event = events?.find((e) => e.id.toString() === record.eventId.toString());
+                const event = events?.find((e) => e._id.toString() === record.eventId.toString());
                 if (event && volunteer) {
                     return {
-                        id: record._id.toString(),  //CONVERT TO STRINGGGG
-                        volunteerId: record.volunteerId,
+                        id: record._id!.toString(),  //CONVERT TO STRINGGGG
+                        volunteerId: record.volunteerId.toString(),
                         volunteerName: volunteer.name,
                         eventName: event.name,
                         eventDescription: event.description,
@@ -35,8 +33,8 @@ export async function getHistoryByIdMongo(request: Request<{ id: string }>, resp
                     };
                 } else {
                     return {
-                        id: record._id.toString(),  //CONVERT TO STRING
-                        volunteerId: record.volunteerId,
+                        id: record._id!.toString(),  //CONVERT TO STRING
+                        volunteerId: record.volunteerId.toString(),
                         volunteerName: "Unknown",
                         eventName: "Unknown",
                         eventDescription: "No description",
@@ -51,7 +49,7 @@ export async function getHistoryByIdMongo(request: Request<{ id: string }>, resp
 
             return response.send(historyResponse);
         } else {
-            return response.status(404).send('Event History not found');
+            return response.status(404).send('Volunteer History not found');
         }
     } catch (error) {
         console.error("Error fetching history by ID:", error);
@@ -63,21 +61,19 @@ export async function getHistoryByIdMongo(request: Request<{ id: string }>, resp
 
 export async function getHistoryMongo(request: Request, response: Response<GetHistoryResponse[] | string>) {
     try {
-        const histories = await collections.history?.find({}).toArray();
-        if (histories && histories.length > 0) {
-            const volunteerIds = histories.map((record) => record.volunteerId);
-            const eventIds = histories.map((record) => record.eventId);
-            
-            const volunteers = await collections.volunteer?.find({ id: { $in: volunteerIds } }).toArray();
-            const events = await collections.event?.find({ id: { $in: eventIds } }).toArray();
+        const histories = await collections.history?.find({}).toArray() as unknown as MongoHistory[];
+        if (histories && histories.length > 0) {     
+
+            const volunteers = await collections.volunteer?.find({}).toArray() as unknown as MongoVolunteer[];
+            const events = await collections.event?.find({}).toArray() as unknown as MongoEvent[];
 
             const historyResponse: GetHistoryResponse[] = histories.map((record) => {
-                const volunteer = volunteers?.find((v) => v.id.toString() === record.volunteerId.toString());
-                const event = events?.find((e) => e.id.toString() === record.eventId.toString());
+                const volunteer = volunteers?.find((v) => v._id?.toString() === record.volunteerId.toString());
+                const event = events?.find((e) => e._id?.toString() === record.eventId.toString());
                 if (event && volunteer) {
                     return {
-                        id: record._id.toString(),  //TO STRING NOW
-                        volunteerId: record.volunteerId,
+                        id: record._id!.toString(),  //TO STRING NOW
+                        volunteerId: record.volunteerId.toString(),
                         volunteerName: volunteer.name,
                         eventName: event.name,
                         eventDescription: event.description,
@@ -89,8 +85,8 @@ export async function getHistoryMongo(request: Request, response: Response<GetHi
                     };
                 } else {
                     return {
-                        id: record._id.toString(),  //STRING STRING
-                        volunteerId: record.volunteerId,
+                        id: record._id!.toString(),  //STRING STRING
+                        volunteerId: record.volunteerId.toString(),
                         volunteerName: "Unknown",
                         eventName: "Unknown",
                         eventDescription: "No description",

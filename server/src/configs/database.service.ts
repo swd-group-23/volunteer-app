@@ -26,9 +26,9 @@ export async function connectToDatabase () {
    
     const userCollection: mongoDB.Collection = db.collection("user");
     const volunteerCollection: mongoDB.Collection = db.collection("volunteer");
-    const eventCollection: mongoDB.Collection = db.collection("volunteer");
+    const eventCollection: mongoDB.Collection = db.collection("event");
     const notificationCollection: mongoDB.Collection = db.collection("notification");
-    const historyCollection: mongoDB.Collection = db.collection("user");
+    const historyCollection: mongoDB.Collection = db.collection("history");
     const statesCollection: mongoDB.Collection = db.collection("states");
     const skillCollection: mongoDB.Collection = db.collection("skill");
  

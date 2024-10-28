@@ -22,8 +22,34 @@ export interface GetHistoryResponse {
   }
 
   export interface MongoHistory {
-    volunteerId: string;
-    eventId: string;
+    volunteerId: ObjectId;
+    eventId: ObjectId;
     status: string[];
     _id?: ObjectId;
 }
+
+export interface MongoVolunteer {
+  _id?: ObjectId;
+  userId: ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: number;
+  skills: string[];
+  preferences?: string;
+  availability: Date[];
+};
+
+export interface MongoEvent {
+  _id: ObjectId;
+  name: string;
+  description: string;
+  location: string;
+  dateTime: Date;
+  skills: string[];
+  urgency: string;
+};
