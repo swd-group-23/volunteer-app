@@ -16,13 +16,13 @@ export async function getUsersMongo(request: Request, response: Response<MongoUs
     }
 }
 
-export async function getUsersByIdMongo(request: Request<{id: number}>, response: Response<MongoUser | string>) { 
+export async function getUsersByIdMongo(request: Request<{id: string}>, response: Response<MongoUser | string>) { 
     const id = request.params.id
     try {
         const query = { _id: new ObjectId(id) };
         const user = (await collections.user?.findOne(query)) as unknown as MongoUser;
         if (user) {
-            return response.send(user);
+            return response.status(200).send(user);
         }
     } catch (error) {
         return response.status(404).send("User not found");
@@ -74,21 +74,21 @@ export async function createUserMongo(request: Request<{}, {}, CreateUserRequest
 
 }
 
-export async function deleteUserMongo(request: Request<{id: number}>, response: Response<DeleteResult | String>){
+export async function deleteUserMongo(request: Request<{id: string}>, response: Response<DeleteResult | String>){
     const id = request.params.id;
-
+ 
     try{
         // delete from users collection 
         const deleteUser = await collections.user?.deleteOne({ _id: new ObjectId(id) });
 
         if(deleteUser && deleteUser.deletedCount){
-            const volunteer = (await collections.user?.findOne({userId: new ObjectId(id)})) as unknown as MongoVolunteer;
+            const volunteer = (await collections.volunteer?.findOne({userId: new ObjectId(id)})) as unknown as MongoVolunteer;
             if(volunteer){
                 // delete from volunteer collection
-                const deleteVolunteer = await collections.volunteer?.deleteOne({userId: new ObjectId(id)})
+                await collections.volunteer?.deleteOne({userId: new ObjectId(id)})
 
                 // delete history
-                const history_list = await collections.history?.deleteMany({volunteerId: new ObjectId(volunteer._id)})
+                await collections.history?.deleteMany({volunteerId: new ObjectId(volunteer._id)})
             }
             return response.status(202).send(deleteUser);
 
@@ -108,11 +108,11 @@ export async function deleteUserMongo(request: Request<{id: number}>, response: 
 export async function updateUserMongo(request: Request<{}, {}, UpdateUserRequest>, response: Response<MongoUser | String>){
     const updateUser = request.body
     try{
-         const user = (await collections.user?.findOne({_id: new ObjectId(updateUser.id)})) as unknown as MongoUser;
+         const user = (await collections.user?.findOne({email: updateUser.email})) as unknown as MongoUser;
         if(user){
             const updatedUser: MongoUser = updateUser as unknown as MongoUser
-            const query = { _id: new ObjectId(updateUser.id) };
-            const result = await collections.user?.updateOne(query, { $set: updateUser });
+            const query = {email: updateUser.email};
+            const result = await collections.user?.updateOne(query, { $set: updatedUser });
     
             return result
                 ? response.status(200).send(updatedUser)

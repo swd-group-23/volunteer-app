@@ -1,5 +1,33 @@
 import { Request } from "express";
-import { CreateUserRequest, LoginUserRequest } from "../../models/users.model";
+import { CreateUserRequest, LoginUserRequest, UpdateUserRequest } from "../../models/users.model";
+import { ObjectId } from "mongodb";
+
+export const mockGetUserByIdRequestSuccessMongo = {
+    params: { id: '6716e1677e6f955f4a567f00' },
+  } as Request<{ id: string }>;
+
+export const mockGetUserByIdRequestFailureMongo = {
+    params: { id: '1' },
+} as Request<{ id: string }>;
+
+export const MockGetUserByIdResponseSucessMongo = {_id:  new ObjectId('6716e1677e6f955f4a567f00'), email: "alan@gmail.com", password: "12345678", role: "volunteer"}   
+
+export const mockDeleteUserByIdRequestSuccess1Mongo = {
+    params: { id: '6716e1677e6f955f4a567f05' },
+  } as Request<{ id: string }>;
+  export const mockDeleteUserByIdRequestSuccess2Mongo = {
+    params: { id: '6716e1677e6f955f4a567f03' },
+  } as Request<{ id: string }>;
+  export const mockDeleteUserByIdRequestSuccess3Mongo = {
+    params: { id: '6716e1677e6f955f4a567f00' },
+  } as Request<{ id: string }>;
+
+export const mockDeleteUserByIdRequestFailureMongo = {
+    params: { id: '200' },
+} as Request<{ id: string }>;
+
+
+// Dummy data mocks
 
 export const mockGetUserByIdRequestSuccess = {
     params: { id: 1 },
@@ -42,6 +70,21 @@ export const mockCreateExistingUser = {
         role: "admin"
     }
 } as Request<{}, {}, CreateUserRequest>;
+
+export const mockUpdateUserSuccess = {
+    body: {
+        email: "admin@gmail.com",
+        password: "12345678Update",
+        role: "volunteer"
+    }
+} as Request<{}, {}, UpdateUserRequest>;
+export const mockUpdateUserFailure = {
+    body: {
+        email: "tester@gmail.com",
+        password: "12345678Update",
+        role: "volunteer"
+    }
+} as Request<{}, {}, UpdateUserRequest>;
 
 export const mockDeleteUserByIdRequestSuccess1 = {
     params: { id: 6 },
