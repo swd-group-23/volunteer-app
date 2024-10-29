@@ -16,13 +16,13 @@ export const collections: {
 let client: mongoDB.MongoClient;
 
 // Initialize Connection
-export async function connectToDatabase () {
+export async function connectToDatabase (test: boolean = false) {
     dotenv.config();
     client = new mongoDB.MongoClient((process.env.__MONGO_URI__) ? process.env.__MONGO_URI__: "");
             
     await client.connect();
         
-    const db: mongoDB.Db = client.db(process.env.__MONGO_DB_NAME__);
+    const db: mongoDB.Db = client.db((test) ? process.env.__MONGO_DB_NAME_TEST__ : process.env.__MONGO_DB_NAME__);
    
     const userCollection: mongoDB.Collection = db.collection("user");
     const volunteerCollection: mongoDB.Collection = db.collection("volunteer");
@@ -47,7 +47,7 @@ export async function connectToDatabase () {
 export async function closeDatabaseConnection() {
     try {
         if (client) {
-            await client.close();
+            await client.close()
             console.log('Database connection closed successfully');
         }
     } catch (error) {
