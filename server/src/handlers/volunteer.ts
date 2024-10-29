@@ -1,7 +1,87 @@
 import { Request, Response } from "express";
 import { events, histories, volunteers } from "../data";
-import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, UpdateVolunteerRequest, Volunteer } from "../models/volunteer.model";
+import { CreateVolunteerRequest, CreateVolunteerRequestMongo, MatchVolunteerRequest, MatchVolunteerResponse, MongoVolunteer, UpdateVolunteerRequest, UpdateVolunteerRequestMongo, Volunteer } from "../models/volunteer.model";
 import { validationResult } from "express-validator";
+import { collections } from "../configs/database.service";
+import { ObjectId } from "mongodb";
+
+
+export async function getVolunteersMongo(request: Request, response: Response<MongoVolunteer[]>) {
+    try{
+        const volunteers = await collections.volunteer?.find({}).toArray() as unknown as MongoVolunteer[];
+        return response.status(volunteers ? 200 : 500).send(volunteers || []);
+
+    }catch {
+    return response.status(500);
+    }
+}
+
+
+export async function getVolunteerByIdMongo(request: Request<{id: string}>, response: Response<MongoVolunteer | string>) { 
+    const id = request.params.id
+    try {
+        const query = { _id: new ObjectId(id) };
+        const volunteer = (await collections.volunteer?.findOne(query)) as unknown as MongoVolunteer;
+        if (volunteer) {
+            return response.send(volunteer);
+        }
+    } catch (error) {
+        return response.status(404).send("Volunteer not found");
+    }
+}
+
+export async function createVolunteerMongo(request: Request<{}, {}, CreateVolunteerRequestMongo>, response: Response<String | String[]>){
+    const newVolunteer = request.body
+    const result = validationResult(request);
+    if(!newVolunteer){
+        return response.status(400).send("No body!");
+    }
+    
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        return response.status(400).send(errors)
+    }
+
+    const query = {email: newVolunteer.email };
+    const exist = (await collections.volunteer?.findOne(query)) as unknown as MongoVolunteer;
+
+    if(exist){
+        return response.status(400).send("Volunteer already exists");
+    } 
+    else {
+        try{
+            const newVolunteerMongo: MongoVolunteer = {...newVolunteer, userId: new ObjectId(newVolunteer.userId), state: new ObjectId(newVolunteer.state)}
+            const createResult = await collections.volunteer?.insertOne(newVolunteerMongo);
+            return response.status(201).send(createResult?.insertedId.toString());
+        } catch (error){
+            return response.status(400).send("Could not insert Volunteer")
+        }
+
+    }
+
+}
+
+export async function updateVolunteerMongo(request: Request<{}, {}, UpdateVolunteerRequestMongo>, response: Response<MongoVolunteer | String>){
+    const updateVolunteer = request.body
+    try{
+         const volunteer = (await collections.volunteer?.findOne({_id: new ObjectId(updateVolunteer._id)})) as unknown as MongoVolunteer;
+         if(volunteer){
+            const updatedVolunteer: MongoVolunteer = updateVolunteer as unknown as MongoVolunteer
+            const query = { _id: new ObjectId(updateVolunteer._id) };
+            const updateVolunteerMongo: MongoVolunteer = {...updateVolunteer, _id: new ObjectId(updateVolunteer._id), userId: new ObjectId(updateVolunteer.userId), state: new ObjectId(updateVolunteer.state)}
+            const result = await collections.volunteer?.updateOne(query, { $set: updateVolunteerMongo });
+    
+            return result
+                ? response.status(200).send(updatedVolunteer)
+                : response.status(304).send(`Volunteer with id: ${volunteer._id} not updated`);
+        }
+        return response.status(404);
+    } catch(error){
+        return response.status(404);
+    }
+    
+}
+
 
 export function getVolunteers(request: Request, response: Response<Volunteer[]>) {
     return response.send(volunteers);
