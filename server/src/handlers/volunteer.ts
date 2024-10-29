@@ -17,7 +17,7 @@ export async function getVolunteersMongo(request: Request, response: Response<Mo
 }
 
 
-export async function getVolunteerByIdMongo(request: Request<{id: number}>, response: Response<MongoVolunteer | string>) { 
+export async function getVolunteerByIdMongo(request: Request<{id: string}>, response: Response<MongoVolunteer | string>) { 
     const id = request.params.id
     try {
         const query = { _id: new ObjectId(id) };
@@ -50,7 +50,8 @@ export async function createVolunteerMongo(request: Request<{}, {}, CreateVolunt
     } 
     else {
         try{
-            const createResult = await collections.volunteer?.insertOne(newVolunteer);
+            const newVolunteerMongo: MongoVolunteer = {...newVolunteer, userId: new ObjectId(newVolunteer.userId), state: new ObjectId(newVolunteer.state)}
+            const createResult = await collections.volunteer?.insertOne(newVolunteerMongo);
             return response.status(201).send(createResult?.insertedId.toString());
         } catch (error){
             return response.status(400).send("Could not insert Volunteer")
@@ -67,7 +68,8 @@ export async function updateVolunteerMongo(request: Request<{}, {}, UpdateVolunt
          if(volunteer){
             const updatedVolunteer: MongoVolunteer = updateVolunteer as unknown as MongoVolunteer
             const query = { _id: new ObjectId(updateVolunteer._id) };
-            const result = await collections.volunteer?.updateOne(query, { $set: updateVolunteer });
+            const updateVolunteerMongo: MongoVolunteer = {...updateVolunteer, _id: new ObjectId(updateVolunteer._id), userId: new ObjectId(updateVolunteer.userId), state: new ObjectId(updateVolunteer.state)}
+            const result = await collections.volunteer?.updateOne(query, { $set: updateVolunteerMongo });
     
             return result
                 ? response.status(200).send(updatedVolunteer)

@@ -9,7 +9,7 @@ export interface MongoVolunteer {
     address1: string;
     address2: string;
     city: string;
-    state: string;
+    state: ObjectId;
     zip: number;
     skills: string[];
     preferences?: string;
