@@ -47,27 +47,34 @@ export async function getNotifsByIdMongo(request: Request<{ id: number }>,respon
 
 
 
-
-
-export async function createNotificationsMongo(request: Request<{}, {}, MongoCreateNotif>, response: Response<MongoNotification>){
-    const notification = request.body
-     try{
-    if(!notification){
-        return response.status(400).send(notification)
-    }
-    const newNotif = {
-        _id: new ObjectId(), 
-        userId: new ObjectId(notification.userId),
-        eventId: new ObjectId(notification.eventId),
-        time: notification.time,
-        message: notification.message
-    }
+export async function createNotificationsMongo(request: Request<{}, {}, MongoCreateNotif>,response: Response<MongoNotification | string>): Promise<Response<MongoNotification | string>> {
+    const notification = request.body;
     
-        return response.status(201).send(newNotif);
-    } catch(error){
-        return response.status(500);
+    try {
+        if (!notification) {
+            return response.status(400).send("Notification data is missing.");
+        }
+        const newNotif = {
+            _id: new ObjectId(), 
+            userId: new ObjectId(notification.userId),
+            eventId: new ObjectId(notification.eventId),
+            time: notification.time,
+            message: notification.message
+        };
+
+        // Insert the new notification into the notifications collection
+        const result = await collections.notification?.insertOne(newNotif);
+
+        if (result?.insertedId) {
+            // If insertion is successful, return the inserted notification
+            return response.status(201).send(newNotif);
+        } else {
+            return response.status(500).send("Failed to insert notification.");
+        }
+    } catch (error) {
+        console.error("Error inserting notification:", error);
+        return response.status(500).send("Error inserting notification.");
     }
- 
 }
 
 
