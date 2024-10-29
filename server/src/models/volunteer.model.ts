@@ -15,6 +15,38 @@ export interface MongoVolunteer {
     preferences?: string;
     availability: Date[];
 };
+
+export interface CreateVolunteerRequestMongo {
+    userId: string;
+    name: string;
+    email: string;
+    password: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: number;
+    skills: string[];
+    preferences?: string;
+    availability: Date[];
+}
+
+export interface UpdateVolunteerRequestMongo {
+    userId: string;
+    _id: string;
+    name: string;
+    email: string;
+    password: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: number;
+    skills: string[];
+    preferences?: string;
+    availability: Date[];
+}
+
 export interface Volunteer {
     id: string;
     userId: string;

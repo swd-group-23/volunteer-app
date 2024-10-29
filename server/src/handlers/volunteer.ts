@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { events, histories, volunteers } from "../data";
-import { CreateVolunteerRequest, MatchVolunteerRequest, MatchVolunteerResponse, MongoVolunteer, UpdateVolunteerRequest, Volunteer } from "../models/volunteer.model";
+import { CreateVolunteerRequest, CreateVolunteerRequestMongo, MatchVolunteerRequest, MatchVolunteerResponse, MongoVolunteer, UpdateVolunteerRequest, UpdateVolunteerRequestMongo, Volunteer } from "../models/volunteer.model";
 import { validationResult } from "express-validator";
 import { collections } from "../configs/database.service";
 import { ObjectId } from "mongodb";
@@ -9,7 +9,6 @@ import { ObjectId } from "mongodb";
 export async function getVolunteersMongo(request: Request, response: Response<MongoVolunteer[]>) {
     try{
         const volunteers = await collections.volunteer?.find({}).toArray() as unknown as MongoVolunteer[];
-        console.log(volunteers)
         return response.status(volunteers ? 200 : 500).send(volunteers || []);
 
     }catch {
@@ -31,7 +30,7 @@ export async function getVolunteerByIdMongo(request: Request<{id: number}>, resp
     }
 }
 
-export async function createVolunteerMongo(request: Request<{}, {}, CreateVolunteerRequest>, response: Response<String | String[]>){
+export async function createVolunteerMongo(request: Request<{}, {}, CreateVolunteerRequestMongo>, response: Response<String | String[]>){
     const newVolunteer = request.body
     const result = validationResult(request);
     if(!newVolunteer){
@@ -61,13 +60,13 @@ export async function createVolunteerMongo(request: Request<{}, {}, CreateVolunt
 
 }
 
-export async function updateVolunteerMongo(request: Request<{}, {}, UpdateVolunteerRequest>, response: Response<MongoVolunteer | String>){
+export async function updateVolunteerMongo(request: Request<{}, {}, UpdateVolunteerRequestMongo>, response: Response<MongoVolunteer | String>){
     const updateVolunteer = request.body
     try{
-         const volunteer = (await collections.volunteer?.findOne({_id: new ObjectId(updateVolunteer.id)})) as unknown as MongoVolunteer;
-        if(volunteer){
+         const volunteer = (await collections.volunteer?.findOne({_id: new ObjectId(updateVolunteer._id)})) as unknown as MongoVolunteer;
+         if(volunteer){
             const updatedVolunteer: MongoVolunteer = updateVolunteer as unknown as MongoVolunteer
-            const query = { _id: new ObjectId(updateVolunteer.id) };
+            const query = { _id: new ObjectId(updateVolunteer._id) };
             const result = await collections.volunteer?.updateOne(query, { $set: updateVolunteer });
     
             return result
