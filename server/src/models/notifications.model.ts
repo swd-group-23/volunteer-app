@@ -10,10 +10,9 @@ export interface MongoNotification {
 };
 
 export interface MongoCreateNotif {
-    _id: ObjectId;
-    userId: ObjectId;
+    userId: string;
     time: Date;
-    eventId: ObjectId;
+    eventId: string;
     message: string;
 };
 

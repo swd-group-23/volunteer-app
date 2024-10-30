@@ -14,7 +14,7 @@ export async function getEventsMongo(request: Request, response: Response<MongoE
     }
 }
 
-export async function getEventsByIdMongo(request: Request<{id: number}>, response: Response<MongoEvent | string>) { 
+export async function getEventsByIdMongo(request: Request<{id: string}>, response: Response<MongoEvent | string>) { 
     const id = request.params.id
     try {
         const query = { _id: new ObjectId(id) };
@@ -40,14 +40,14 @@ export async function createEventMongo(request: Request<{}, {}, CreateEventReque
         return response.status(400).send(errors)
     }
     try{
-        const createResult = await collections.user?.insertOne(newEvent);
+        const createResult = await collections.event?.insertOne(newEvent);
         return response.status(201).send(createResult?.insertedId.toString());
     } catch (error){
         return response.status(400).send("Could not insert event")
     }
 }
 
-export async function deleteEventMongo(request: Request<{id: number}>, response: Response<DeleteResult | String>){
+export async function deleteEventMongo(request: Request<{id: string}>, response: Response<DeleteResult | String>){
     const id = request.params.id;
 
     try{
@@ -55,16 +55,8 @@ export async function deleteEventMongo(request: Request<{id: number}>, response:
         const deleteEvent = await collections.event?.deleteOne({ _id: new ObjectId(id) });
 
         if(deleteEvent && deleteEvent.deletedCount){
-            const event = (await collections.event?.findOne({eventId: new ObjectId(id)})) as unknown as MongoEvent;
-            if(event){
-                // delete from volunteer collection
-                const deleteEvent = await collections.event?.deleteOne({eventId: new ObjectId(id)})
-
-                // delete history
-                const history_list = await collections.history?.deleteMany({eventId: new ObjectId(event._id)})
-            }
+            await collections.history?.deleteMany({eventId: new ObjectId(id)})
             return response.status(202).send(deleteEvent);
-
         } else if (!deleteEvent) {
             return response.status(400).send(`Failed to remove event with id ${id}`);
         } else if (!deleteEvent.deletedCount) {
