@@ -1,6 +1,21 @@
 import { Request } from "express";
 import { CreateVolunteerRequest, MatchVolunteerRequest } from "../../models/volunteer.model";
 
+
+export const mockGetVolunteerByIdRequestSuccessMongo = {
+    params: { id: '6716e1677e6f955f4a567f00' },
+  } as Request<{ id: string }>;
+
+export const mockGetVolunteerByIdRequestFailureMongo = {
+    params: { id: '1' },
+ } as Request<{ id: string }>;
+
+
+
+
+
+
+//DUMMY
 export const mockGetVolunteerByIdRequestSuccess = {
     params: { id: "1" },
   } as Request<{ id: string }>;

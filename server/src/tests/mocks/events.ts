@@ -1,6 +1,19 @@
 import { Request } from "express";
 import { CreateEventRequest } from "../../models/events.model";
 
+export const mockGetUserByIdRequestSuccessMongo = {
+    params: { id: '6716e1677e6f955f4a567f00' },
+  } as Request<{ id: string }>;
+
+export const mockGetUserByIdRequestFailureMongo = {
+    params: { id: '1' },
+} as Request<{ id: string }>;
+
+
+
+
+
+
 export const mockGetEventByIdRequestSuccess = {
     params: { id: 1 },
   } as Request<{ id: number }>;
