@@ -1,15 +1,21 @@
 import { Request } from "express";
 import { CreateEventRequest } from "../../models/events.model";
 
-export const mockGetUserByIdRequestSuccessMongo = {
-    params: { id: '6716e1677e6f955f4a567f00' },
+export const mockGetEventByIdRequestSuccessMongo = {
+    params: { id: '6716e4ab2dd5346d39bdf320' },
   } as Request<{ id: string }>;
 
-export const mockGetUserByIdRequestFailureMongo = {
+export const mockGetEventByIdRequestFailureMongo = {
     params: { id: '1' },
 } as Request<{ id: string }>;
 
+export const mockDeleteEventByIdRequestSuccessMongo = {
+    params: { id: '6716e4ab2dd5346d39bdf320' },
+  } as Request<{ id: string }>;
 
+export const mockDeleteEventByIdRequestFailureMongo = {
+    params: { id: '200' },
+} as Request<{ id: string }>;
 
 
 
