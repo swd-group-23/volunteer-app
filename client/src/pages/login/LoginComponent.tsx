@@ -147,6 +147,7 @@ const LoginComponent = () => {
           <Table aria-label="Example static collection table" className='w-50'>
           <TableHeader>
             <TableColumn>EMAIL</TableColumn>
+            <TableColumn>ENCRYPTED PASSWORD</TableColumn>
             <TableColumn>PASSWORD</TableColumn>
             <TableColumn>ROLE</TableColumn>
           </TableHeader>
@@ -156,7 +157,15 @@ const LoginComponent = () => {
                 <TableRow key={user._id}>
                 <TableCell>{user.email}</TableCell>
               <TableCell>{user.password}</TableCell>
-                <TableCell>{user.role}</TableCell>
+              {
+                (user.email == 'admin@gmail.com' || user.email == 'volunteer@gmail.com') ?  <TableCell>12345678</TableCell> : 
+                (user.email == 'alan@gmail.com') ? <TableCell>87654321</TableCell> :
+                (user.email == 'josh@gmail.com') ? <TableCell>98765432</TableCell> :
+                (user.email == 'alina@gmail.com') ? <TableCell>23456789</TableCell> :
+                (user.email == 'jusvin@gmail.com') ? <TableCell>34567891</TableCell> : 
+                <TableCell>Encrypted</TableCell>
+              }
+              <TableCell>{user.role}</TableCell>
               </TableRow>
               ))
             }

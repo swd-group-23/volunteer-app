@@ -6,6 +6,7 @@ import { collections } from "../configs/database.service";
 import {MongoUser} from "../models/users.model";
 import { DeleteResult, ObjectId } from "mongodb";
 import { MongoVolunteer } from "../models/volunteer.model";
+import bcrypt from 'bcrypt'
 
 export async function getUsersMongo(request: Request, response: Response<MongoUser[]>) {
     try {
@@ -31,14 +32,18 @@ export async function getUsersByIdMongo(request: Request<{id: string}>, response
 
 export async function loginUserMongo(request: Request<{}, {}, LoginUserRequest>, response: Response<LoginUserResponse | string>){
     try {
-        const query = {email: request.body.email, password: request.body.password };
-        const user = (await collections.user?.findOne(query)) as unknown as MongoUser;
+        const {email: userEmail, password: userPassword} = request.body
+        const user = (await collections.user?.findOne({email: userEmail})) as unknown as MongoUser;
         if (user) {
-            return response.send({
-                id: user._id!.toString(),
-                role: user.role
-            });
+            const isValid = await bcrypt.compare(userPassword, user.password);
+            if(isValid){
+                return response.send({
+                    id: user._id!.toString(),
+                    role: user.role
+                });
+            }
         }
+        throw new Error;
     } catch (error) {
         return response.status(404).send("User not found");
     }
@@ -64,7 +69,8 @@ export async function createUserMongo(request: Request<{}, {}, CreateUserRequest
     } 
     else {
         try{
-            const createResult = await collections.user?.insertOne(newUser);
+            const hash = await bcrypt.hash(newUser.password, 10);
+            const createResult = await collections.user?.insertOne({...newUser, password: hash});
             return response.status(201).send(createResult?.insertedId.toString());
         } catch (error){
             return response.status(400).send("Could not insert user")
