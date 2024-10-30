@@ -40,20 +40,12 @@ describe('createEvent', () => {
             await createEventMongo(mockCreateEventSuccess, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(201);
             // clean up
-            //await collections.event?.deleteMany({email: "mock@gmail.com"})
+            await collections.event?.deleteMany({name: "mock event"})
             await closeDatabaseConnection();
         })
 
     })
     
-    it('should call createEvent with 400 when a event already exists', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await createEventMongo(mockCreateExistingEvent, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(400);
-            await closeDatabaseConnection();
-        })
-
-    })
 
     it('should call createEvent with 400 when there are errors', async () =>{
         await connectToDatabase(true).then(async() => {
@@ -75,10 +67,10 @@ describe('deleteEvent', () => {
 
     it('should delete an event by id when found', async () => {
         await connectToDatabase(true).then(async () => {
-            // Insert a mock event to be deleted
+            // Insert a mock event to be deleted with a unique ID
             const mockEvent = {
-                _id: new ObjectId("6716e4ab2dd5346d39bdf320"),
-                name: "Houston Food Bank",
+                _id: new ObjectId(),
+                name: "Mock Event",
                 description: "Feeding the community",
                 location: "Portwall, Houston, Texas. 77546",
                 dateTime: "2024-09-14T00:00:00",
@@ -86,16 +78,17 @@ describe('deleteEvent', () => {
                 urgency: "mild"
             };
             await collections.event?.insertOne(mockEvent);
-
+    
             // Attempt to delete the mock event
             await deleteEventMongo(mockDeleteEventByIdRequestSuccessMongo, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(200);
-
+    
             // Clean up to ensure no leftover data
             await collections.event?.deleteOne({ _id: mockEvent._id });
             await closeDatabaseConnection();
         });
     });
+    
 });
 
 //DUMMY

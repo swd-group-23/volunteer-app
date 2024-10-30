@@ -89,9 +89,9 @@ export const mockMatchVolunteerRequestDuplicate  = {
 } as Request<{}, {}, MatchVolunteerRequest>;
 
 export const mockUpdateVolunteerSuccess = {
-    params: { id: 1 },
     body: {
-        userId: "1",
+        _id:"6716e5dc2dd5346d39bdf33d",
+        userId: "6716e1677e6f955f4a567f00",
         name: "Testing User Six",
         email: "volunteer@gmail.com",
         address1: "Testing new address",
@@ -108,8 +108,8 @@ export const mockUpdateVolunteerSuccess = {
   } as Request<{ id: number }>;
 
 export const mockUpdateVolunteerFailure = {
-    params: { id: 200 },
     body: {
+        _id:"1",
         userId: "1",
         name: "Testing User",
         email: "volunteer@gmail.com",
