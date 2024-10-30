@@ -40,24 +40,20 @@ const VolunteerMatchingForm = () => {
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
 
   useEffect(() => {
-    axios.get<Volunteer[]>(`${base_url}/api/volunteers`)
+    axios.get<Volunteer[]>(`${base_url}/api/volunteers/mongo`)
         .then(response => {
-
             if (response.data) {
                 setVolunteers(response.data);
             }
-
         })
         .catch(error => {
             console.log(error);
         })
-    axios.get<Event[]>(`${base_url}/api/events`)
+    axios.get<Event[]>(`${base_url}/api/events/mongo`)
         .then(response => {
-
           if (response.data) {
             setEvents(response.data);
           }
-
       })
       .catch(error => {
           console.log(error);
@@ -66,24 +62,22 @@ const VolunteerMatchingForm = () => {
     , []);
 
   const onSubmit = (data: Schema) => {
-    axios.post<VolunteerMatchingRequest> (`${base_url}/api/volunteers/match`, {
+    axios.post<VolunteerMatchingRequest> (`${base_url}/api/volunteers/mongo/match`, {
       volunteerId: data.volunteers,
       eventId: data.events
     })
         .then(response => {
-
             if (response) {
               console.log(response.data);
             }
-
         })
         .catch(() => {
             alert("Invalid Match!");
         })
 
-        axios.post<Notification> (`${base_url}/api/notifications`, {
+        axios.post<Notification> (`${base_url}/api/notifications/mongo`, {
           userId: volunteer?.userId,
-          eventId: event?.id,
+          eventId: event?._id,
           time: new Date(),
           message: `You have been scheduled for the ${event?.name}!`
         })
@@ -126,7 +120,7 @@ const VolunteerMatchingForm = () => {
                 <DropdownMenu aria-label="Dynamic Actions" items={volunteers} onAction={(key) => field.onChange(key)}>
                   {(volunteer) => (
                     <DropdownItem
-                      key={volunteer.id}
+                      key={volunteer._id}
                       color="default"
                       className=""
                       onClick={() => setVolunteer(volunteer)}
@@ -164,8 +158,8 @@ const VolunteerMatchingForm = () => {
                       ))
                       .map((event) => (
                         <SelectItem
-                          key={event.id}
-                          value={event.id}
+                          key={event._id}
+                          value={event._id}
                           className="text-black"
                           textValue={event.name}
                           onClick={() => setEvent(event)}

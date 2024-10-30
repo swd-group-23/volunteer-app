@@ -10,7 +10,7 @@ const EventHistory = () => {
     const [event, setEvent] = useState<Event>();
     const [events, setEvents] = useState<Event[]>();
     useEffect(() => {
-      axios.get<Event[]>(`${base_url}/api/events`)
+      axios.get<Event[]>(`${base_url}/api/events/mongo`)
       .then(response => {
   
           if (response.data) {
@@ -24,7 +24,7 @@ const EventHistory = () => {
   } , []);
     
     const onDelete = (id: string | undefined) => {
-        axios.delete<Event>(`${base_url}/api/events/${id}`)
+        axios.delete<Event>(`${base_url}/api/events/mongo/${id}`)
         .then(response => {
             if (response.data) {
                 alert("Deleted Event with ID " + id);
@@ -54,7 +54,7 @@ const EventHistory = () => {
             <TableBody>
                 {
                  events.map((event) => (
-                    <TableRow key={event.id}>
+                    <TableRow key={event._id}>
                         <TableCell>{event.name}</TableCell>
                         <TableCell>{event.description}</TableCell>
                         <TableCell>{event.location}</TableCell>
@@ -86,7 +86,7 @@ const EventHistory = () => {
                 <Button onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="danger" onClick={() => onDelete(event?.id)} onPress={onClose}
+                <Button color="danger" onClick={() => onDelete(event?._id)} onPress={onClose}
                   >
                   Delete
                 </Button>

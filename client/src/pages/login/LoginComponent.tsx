@@ -39,7 +39,7 @@ const LoginComponent = () => {
 
 
     useEffect(() => {
-    axios.get<User[]>(`${base_url}/api/users`)
+    axios.get<User[]>(`${base_url}/api/users/mongo`)
         .then(response => {
 
             if (response.data) {
@@ -54,14 +54,13 @@ const LoginComponent = () => {
     , []);
 
   const onSubmit = (data: Schema) => {
-      axios.post<LoginUserResponse> (`${base_url}/api/users/login`, {
+      axios.post<LoginUserResponse> (`${base_url}/api/users/login/mongo`, {
         email: data.email,
         password: data.password
       })
           .then(response => {
   
               if (response) {
-                console.log(response.data);
                 user.setUserId(response.data.id);
                 user.setUserRole(response.data.role);
                 user.setUserEmail(data.email)
@@ -154,7 +153,7 @@ const LoginComponent = () => {
           <TableBody>
             {
               users.map((user) => (
-                <TableRow key={user.id}>
+                <TableRow key={user._id}>
                 <TableCell>{user.email}</TableCell>
               <TableCell>{user.password}</TableCell>
                 <TableCell>{user.role}</TableCell>

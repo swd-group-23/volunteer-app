@@ -1,9 +1,8 @@
 //Add table here
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
-//import { history } from "../../data";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { History } from '../../types';
+import { History, Volunteer } from '../../types';
 import { useUser } from "../hooks/useUser";
 
 
@@ -11,6 +10,7 @@ const VolunteerHistory = () => {
   const user = useUser();
   const [history, setHistory] = useState<History[]>([]);
   const [allhistory, setallHistory] = useState<History[]>([]);
+  const [volunteer, setVolunteer] = useState<Volunteer|null>(null);
 
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') 
@@ -20,20 +20,22 @@ const VolunteerHistory = () => {
 
   useEffect(() => {
     if(user.userRole == 'volunteer'){
-      axios.get<History[]>(`${base_url}/api/history/${user.userId}`) 
-      .then(response => {
+      axios.get<Volunteer>(`${base_url}/api/volunteers/mongo/${user.userId}`)
+      .then(response =>{
         if(response.data){
-          setHistory(response.data);
+          setVolunteer(response.data)
         }
       })
-      .catch(error => {
+      .catch(error =>{
         if(error.response && error.response.status === 404){
-          setHistory([]);
+          setVolunteer(null);
+          console.log(error.response)
       }
-      });
+      })
+
     }
     else if(user.userRole == 'admin'){
-      axios.get<History[]>(`${base_url}/api/history`) 
+      axios.get<History[]>(`${base_url}/api/history/mongo`) 
       .then(response => {
         if(response.data){
           setallHistory(response.data);
@@ -45,6 +47,24 @@ const VolunteerHistory = () => {
     }
       
   }, []);
+
+  useEffect(() => {
+    if(volunteer){
+      axios.get<History[]>(`${base_url}/api/history/mongo/${volunteer._id}`) 
+      .then(response => {
+        if(response.data){
+          console.log("test")
+          setHistory(response.data);
+        }
+      })
+      .catch(error => {
+        if(error.response && error.response.status === 404){
+          setHistory([]);
+      }
+      });
+    }
+
+  }, [volunteer])
 
   return (
     <>
@@ -61,7 +81,7 @@ const VolunteerHistory = () => {
             }}
     >
       <TableHeader>
-        <TableColumn>VOLUNTEER ID</TableColumn>
+        <TableColumn width={200}>VOLUNTEER ID</TableColumn>
         <TableColumn>VOLUNTEER NAME</TableColumn>
         <TableColumn>EVENT NAME</TableColumn>
         <TableColumn>EVENT DESCRIPTION</TableColumn>
