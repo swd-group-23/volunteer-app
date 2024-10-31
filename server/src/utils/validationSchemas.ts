@@ -71,8 +71,8 @@ export const createVolunteerValidation = {
             errorMessage: "State must be a string",
         },
         isLength: {
-            options: { min: 2, max: 2 },
-            errorMessage: "State must be a valid 2-letter abbreviation",
+            options: { min: 2},
+            errorMessage: "State must be a valid state id",
         }
     },
     zip: {

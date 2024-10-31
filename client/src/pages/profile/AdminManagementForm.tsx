@@ -10,7 +10,7 @@ const AdminManagementForm = () => {
     const [volunteers, setVolunteers] = useState<Volunteer[]>();
     const [volunteer, setVolunteer] = useState<Volunteer>();
     useEffect(() => {
-        axios.get<Volunteer[]>(`${base_url}/api/volunteers`)
+        axios.get<Volunteer[]>(`${base_url}/api/volunteers/mongo`)
             .then(response => {
   
                 if (response.data) {
@@ -34,7 +34,7 @@ const AdminManagementForm = () => {
                 <DropdownMenu aria-label="Dynamic Actions" items={volunteers}>
                   {(volunteer) => (
                     <DropdownItem
-                      key={volunteer.id}
+                      key={volunteer._id}
                       color="default"
                       className=""
                       description={`User ID: ${volunteer.userId}`}

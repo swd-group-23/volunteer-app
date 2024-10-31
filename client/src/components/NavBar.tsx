@@ -17,7 +17,7 @@ const NavBar = () => {
    
     useEffect(() => {
         if (user && user.userRole == 'volunteer'){
-        axios.get<Notification[]>(`${base_url}/api/notifications/${user.userId}`)
+        axios.get<Notification[]>(`${base_url}/api/notifications/mongo/${user.userId}`)
             .then(response => {
                 if (response.data) {
                     setNotifications(response.data);
@@ -32,7 +32,7 @@ const NavBar = () => {
         }, [user]);
     
     const onDelete = (id: string) => {
-        axios.delete<Notification>(`${base_url}/api/notifications/${id}`)
+        axios.delete<Notification>(`${base_url}/api/notifications/mongo/${id}`)
         .then(_ => {
             alert("Deleted Notification with ID " + id);
             window.location.href = '/'
@@ -105,7 +105,7 @@ const NavBar = () => {
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         {
                             notifications.map((notification)=>(
-                                <DropdownItem key={notification.id} onClick={() => onDelete(notification.id)}>
+                                <DropdownItem key={notification._id} onClick={() => onDelete(notification._id)}>
                                     {notification.message}
                                 </DropdownItem>                            
                             ))
