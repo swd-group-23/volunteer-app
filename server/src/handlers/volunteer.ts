@@ -4,6 +4,7 @@ import { CreateVolunteerRequest, CreateVolunteerRequestMongo, MatchVolunteerRequ
 import { validationResult } from "express-validator";
 import { collections } from "../configs/database.service";
 import { ObjectId } from "mongodb";
+import { MongoEvent, MongoHistory } from "../models/history.model";
 
 
 export async function getVolunteersMongo(request: Request, response: Response<MongoVolunteer[]>) {
@@ -20,13 +21,50 @@ export async function getVolunteersMongo(request: Request, response: Response<Mo
 export async function getVolunteerByIdMongo(request: Request<{id: string}>, response: Response<MongoVolunteer | string>) { 
     const id = request.params.id
     try {
-        const query = { _id: new ObjectId(id) };
+        const query = { userId: new ObjectId(id) };
         const volunteer = (await collections.volunteer?.findOne(query)) as unknown as MongoVolunteer;
         if (volunteer) {
             return response.send(volunteer);
         }
     } catch (error) {
         return response.status(404).send("Volunteer not found");
+    }
+}
+
+export async function postVolunteerMatchMongo(request: Request<{}, {}, MatchVolunteerRequest>, response: Response<MatchVolunteerResponse>){
+    const newMatch = request.body
+    if(!newMatch){
+        return response.status(404);
+    }
+    try{
+        const volunteer = (await collections.volunteer?.findOne({_id: new ObjectId(newMatch.volunteerId)})) as unknown as MongoVolunteer;
+        const event = (await collections.event?.findOne({_id: new ObjectId(newMatch.eventId)})) as unknown as MongoEvent;
+        if(volunteer && event){
+            const history = (await collections.history?.findOne({volunteerId: volunteer._id, eventId: event._id})) as unknown as MongoHistory;
+            if(history){
+                return response.status(400);
+            }
+            // add to histories data
+            const newMatch: MongoHistory = {
+                volunteerId: volunteer._id!,
+                eventId: event._id,
+                status: ["Scheduled"]
+            }
+            const matchResult = await collections.history?.insertOne(newMatch);
+            return response.status(201).send(
+                {
+                    volunteer_id: volunteer._id!.toString(),
+                    volunteer_name: volunteer.name,
+                    event_id: event._id.toString(),
+                    event_name: event.name,
+                    event_time: event.dateTime,
+                    event_description: event.description
+                }
+            );
+        }
+
+    } catch {
+        return response.status(404);
     }
 }
 
@@ -64,7 +102,7 @@ export async function createVolunteerMongo(request: Request<{}, {}, CreateVolunt
 export async function updateVolunteerMongo(request: Request<{}, {}, UpdateVolunteerRequestMongo>, response: Response<MongoVolunteer | String>){
     const updateVolunteer = request.body
     try{
-         const volunteer = (await collections.volunteer?.findOne({_id: new ObjectId(updateVolunteer._id)})) as unknown as MongoVolunteer;
+         const volunteer = (await collections.volunteer?.findOne({userId: new ObjectId(updateVolunteer.userId)})) as unknown as MongoVolunteer;
          if(volunteer){
             const updatedVolunteer: MongoVolunteer = updateVolunteer as unknown as MongoVolunteer
             const query = { _id: new ObjectId(updateVolunteer._id) };

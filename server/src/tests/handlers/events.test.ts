@@ -5,6 +5,84 @@ import { createEvent, createEventMongo, deleteEventById, deleteEventMongo, getEv
 import { mockRequest, mockResponse } from "../mocks";
 import { mockCreateEventFailure, mockCreateEventSuccess, mockCreateExistingEvent, mockDeleteEventByIdRequestFailure, mockDeleteEventByIdRequestFailureMongo, mockDeleteEventByIdRequestSuccess1, mockDeleteEventByIdRequestSuccessMongo, mockGetEventByIdRequestFailure, mockGetEventByIdRequestFailureMongo, mockGetEventByIdRequestSuccess, mockGetEventByIdRequestSuccessMongo } from "../mocks/events";
 
+
+describe("Events Handlers with MongoDB", () => {
+    beforeAll(async() => {
+        await connectToDatabase(true);
+    })
+
+    afterAll(async () => {
+        await closeDatabaseConnection();
+    })
+
+    describe('getEvents', () =>{
+        it('should return an array of event', async () => {
+                await getEventsMongo(mockRequest, mockResponse)
+                expect(mockResponse.status).toHaveBeenCalledWith(200);
+        });
+    });
+
+    describe('getEventsById', () => {
+        it('should get a event by id', async () =>{
+            await getEventsByIdMongo(mockGetEventByIdRequestSuccessMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(200);
+        })
+
+        it('should call getEventsById with 404 when event not found', async () =>{
+            await getEventsByIdMongo(mockGetEventByIdRequestFailureMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(404);
+        });
+    });
+
+    //do i need to add the things you need to create event?
+    describe('createEvent', () => {
+        it('should create a event', async () =>{
+            await createEventMongo(mockCreateEventSuccess, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(201);
+            // clean up
+            await collections.event?.deleteMany({name: "mock event"})
+        })
+        
+
+        it('should call createEvent with 400 when there are errors', async () =>{
+            await createEventMongo(mockCreateEventFailure, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(400);
+        })
+    })
+
+    describe('deleteEvent', () => {
+        it('should call deleteEvent with 404 when event not found', async () => {
+            await deleteEventMongo(mockDeleteEventByIdRequestFailureMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(404);
+        });
+
+        it('should delete an event by id when found', async () => {
+            // Insert a mock event to be deleted with a unique ID
+            const mockEvent = {
+                _id: new ObjectId('6716e4ab2dd5346d39bdf325'),
+                name: "Mock Event",
+                description: "Feeding the community",
+                location: "Portwall, Houston, Texas. 77546",
+                dateTime: "2024-09-14T00:00:00",
+                skills: ["Organizing", "Logistics"],
+                urgency: "mild"
+            };
+            await collections.event?.insertOne(mockEvent);
+    
+            // Attempt to delete the mock event
+            await deleteEventMongo(mockDeleteEventByIdRequestSuccessMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(200);
+    
+            // Clean up to ensure no leftover data
+            await collections.event?.deleteOne({ _id: mockEvent._id });
+        });
+        
+    });
+
+})
+
+
+//DUMMY
 describe('getEvents', () =>{
     it('should return an array of event', async () => {
         await connectToDatabase(true).then(async () => {

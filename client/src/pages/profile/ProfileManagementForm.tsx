@@ -42,7 +42,8 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const onSubmit = (data: Schema) => {
       if(volunteer){
-        axios.patch<Volunteer> (`${base_url}/api/volunteers`, {
+        axios.patch<Volunteer> (`${base_url}/api/volunteers/mongo`, {
+          _id: volunteer._id,
           userId: user.userId,
           name: data.name,
           address1: data.address1,
@@ -65,7 +66,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
         })
       }
       else{
-        axios.post<Volunteer> (`${base_url}/api/volunteers`, {
+        axios.post<Volunteer> (`${base_url}/api/volunteers/mongo`, {
           userId: user.userId,
           name: data.name,
           address1: data.address1,
@@ -90,7 +91,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
   };
 
   const onDelete = () => {
-      axios.delete<User>(`${base_url}/api/users/${volunteer?.userId}`)
+      axios.delete<User>(`${base_url}/api/users/mongo/${volunteer?.userId}`)
       .then(response => {
           if (response.data) {
               alert("Deleted user " + volunteer?.name);
@@ -195,8 +196,8 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               >
               {states.map((state) => (
                 <SelectItem
-                  key={state.value}
-                  value={state.value}
+                  key={state.id}
+                  value={state.id}
                   className='text-black'
                 >
                   {state.value}
