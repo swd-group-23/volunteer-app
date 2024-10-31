@@ -1,70 +1,80 @@
 import { ObjectId } from "mongodb";
 import { closeDatabaseConnection, collections, connectToDatabase } from "../../configs/database.service";
 import { volunteers } from "../../data";
-import { createVolunteer, createVolunteerMongo, getVolunteerById, getVolunteerByIdMongo, getVolunteers, getVolunteersMongo, postVolunteerMatch, updateVolunteer, updateVolunteerMongo} from "../../handlers/volunteer";
+import { createVolunteer, createVolunteerMongo, getVolunteerById, getVolunteerByIdMongo, getVolunteers, getVolunteersMongo, postVolunteerMatch, postVolunteerMatchMongo, updateVolunteer, updateVolunteerMongo} from "../../handlers/volunteer";
 import { mockRequest,mockResponse } from "../mocks";
-import { mockCreateExistingVolunteer, mockCreateVolunteerFailure, mockCreateVolunteerSuccess, mockGetVolunteerByIdRequestFailure, mockGetVolunteerByIdRequestFailureMongo, mockGetVolunteerByIdRequestSuccess, mockGetVolunteerByIdRequestSuccessMongo, mockMatchVolunteerRequestDuplicate, mockMatchVolunteerRequestFailure, mockMatchVolunteerRequestFailure2, mockMatchVolunteerRequestSuccess, mockUpdateVolunteerFailure, mockUpdateVolunteerSuccess } from "../mocks/volunteers";
+import { mockCreateExistingVolunteer, mockCreateVolunteerFailure, mockCreateVolunteerSuccess, mockGetVolunteerByIdRequestFailure, mockGetVolunteerByIdRequestFailureMongo, mockGetVolunteerByIdRequestSuccess, mockGetVolunteerByIdRequestSuccessMongo, mockMatchVolunteerRequestDuplicate, mockMatchVolunteerRequestDuplicateMongo, mockMatchVolunteerRequestFailure, mockMatchVolunteerRequestFailure2, mockMatchVolunteerRequestFailure2Mongo, mockMatchVolunteerRequestSuccess, mockMatchVolunteerRequestSuccessMongo, mockUpdateVolunteerFailure, mockUpdateVolunteerSuccess } from "../mocks/volunteers";
 
-describe('getVolunteers', () => {
-    it('should return an array of volunteer', async () => {
-        await connectToDatabase(true).then(async () => {
-            await getVolunteersMongo(mockRequest, mockResponse)
-            expect(mockResponse.status).toHaveBeenCalledWith(200);
-            await closeDatabaseConnection();
-        });
-    });
-});
-
-describe('getVolunteersById', () => {
-    it('should get a volunteer by id', async () =>{
-        await connectToDatabase(true).then(async () => {
-            await getVolunteerByIdMongo(mockGetVolunteerByIdRequestSuccessMongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(200);
-            await closeDatabaseConnection();
-        })
+describe("Volunteer Handlers with MongoDB", () => {
+    beforeAll(async() => {
+        await connectToDatabase(true);
     })
 
-    it('should call getVolunteersById with 404 when volunteer not found', async () =>{
-        await connectToDatabase(true).then(async() => {
+    afterAll(async () => {
+        await closeDatabaseConnection();
+    })
+
+    describe('getVolunteers', () => {
+        it('should return an array of volunteer', async () => {
+            await getVolunteersMongo(mockRequest, mockResponse)
+            expect(mockResponse.status).toHaveBeenCalledWith(200);
+        });
+    });
+
+    describe('getVolunteersById', () => {
+        it('should get a volunteer by id', async () =>{
+            await getVolunteerByIdMongo(mockGetVolunteerByIdRequestSuccessMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(200);
+        })
+
+        it('should call getVolunteersById with 404 when volunteer not found', async () =>{
             await getVolunteerByIdMongo(mockGetVolunteerByIdRequestFailureMongo, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(404);
-            await closeDatabaseConnection();
-        })
+        });
     });
-});
-describe('createVolunteer', () => {
-    it('should create a volunteer given the email and password', async () =>{
-        await connectToDatabase(true).then(async() => {
+    describe('createVolunteer', () => {
+        it('should create a volunteer given the email and password', async () =>{
             await createVolunteerMongo(mockCreateVolunteerSuccess, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(201);
             // clean up
             await collections.volunteer?.deleteMany({email: "mock@gmail.com"})
-            await closeDatabaseConnection();
         })
-
-    })
-    
-    it('should call createVolunteer with 400 when a volunteer already exists', async () =>{
-        await connectToDatabase(true).then(async() => {
+        
+        it('should call createVolunteer with 400 when a volunteer already exists', async () =>{
             await createVolunteerMongo(mockCreateExistingVolunteer, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(400);
-            await closeDatabaseConnection();
         })
 
-    })
-
-    it('should call createVolunteer with 400 when there are errors', async () =>{
-        await connectToDatabase(true).then(async() => {
+        it('should call createVolunteer with 400 when there are errors', async () =>{
             await createVolunteerMongo(mockCreateVolunteerFailure, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(400);
-            await closeDatabaseConnection();
         })
     })
-})
 
-describe('updateVolunteer', () => {
-    it('should update a volunteer by id', async () => {
-        await connectToDatabase(true).then(async () => {
+    describe('matchVolunteer', () => {
+        it('should match a volunteer given the corresponding data', async () =>{
+            await postVolunteerMatchMongo(mockMatchVolunteerRequestSuccessMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(201);
+            // clean up
+            await collections.history?.deleteMany({volunteerId: "6716e5dc2dd5346d39bdf33e"})
+
+        })
+        it('should call matchVolunteer with 400 when there are errors', async () =>{
+            await postVolunteerMatchMongo(mockMatchVolunteerRequestFailure, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(404);
+        })
+        it('should call matchVolunteer with 400 when there are errors', async () =>{
+            await postVolunteerMatchMongo(mockMatchVolunteerRequestFailure2Mongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(404);
+        })
+        it('should call matchVolunteer with 400 when the volunteer is already matched for the event', async () =>{
+            await postVolunteerMatchMongo(mockMatchVolunteerRequestDuplicateMongo, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(400);
+        })
+    })
+
+    describe('updateVolunteer', () => {
+        it('should update a volunteer by id', async () => {
             await updateVolunteerMongo(mockUpdateVolunteerSuccess, mockResponse);
             expect(mockResponse.status).toHaveBeenCalledWith(200);
 
@@ -86,18 +96,16 @@ describe('updateVolunteer', () => {
                     }
                 }
             );
-            await closeDatabaseConnection();
+        });
+
+        it('should call updateVolunteer with 404 for unknown volunteer', async () => {
+            await updateVolunteerMongo(mockUpdateVolunteerFailure, mockResponse);
+            expect(mockResponse.status).toHaveBeenCalledWith(404);
         });
     });
 
-    it('should call updateVolunteer with 404 for unknown volunteer', async () => {
-        await connectToDatabase(true).then(async () => {
-            await updateVolunteerMongo(mockUpdateVolunteerFailure, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(404);
-            await closeDatabaseConnection();
-        });
-    });
-});
+})
+
 
 
 

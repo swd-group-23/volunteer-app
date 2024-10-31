@@ -86,7 +86,7 @@ describe("Users Handlers with MongoDB", () => {
                 // clean up
                 await collections.user?.insertOne({
                     email: "volunteer@gmail.com",
-                    password: "12345678",
+                    password: "$2b$10$TKOVMEgEdzIpbYDB4vJDB.cmELcuPHvDpQ/Z7FUpxyE6jd4lBVqZq",
                     role: "volunteer",
                     _id: new ObjectId("6716e1677e6f955f4a567f05")
                 })
@@ -98,7 +98,7 @@ describe("Users Handlers with MongoDB", () => {
                 // clean up
                 await collections.user?.insertOne({
                     email: "jusvin@gmail.com",
-                    password: "12345678",
+                    password: "$2b$10$1Yku8WZ.AyayI4SZvSfVAePB16Metrii72Tnt2xk8r6w44PcE/LhS",
                     role: "volunteer",
                     _id: new ObjectId("6716e1677e6f955f4a567f03")
                 })
@@ -129,7 +129,7 @@ describe("Users Handlers with MongoDB", () => {
                 await collections.user?.insertOne({
                     _id: new ObjectId("6716e1677e6f955f4a567f00"),
                     email: "alan@gmail.com",
-                    password: "12345678",
+                    password: "$2b$10$OM3ImU7atYxvqdAgZ8CYV.r.dWTYR5uDv11/S.Z/AMBVtlUuo8ku2",
                     role: "volunteer"
                 })
                 await collections.volunteer?.insertOne({
@@ -180,7 +180,7 @@ describe("Users Handlers with MongoDB", () => {
                 await collections.user?.updateOne({_id: new ObjectId('6716e1677e6f955f4a567f04')}, {
                     $set: {
                         email: "admin@gmail.com",
-                        password: "12345678",
+                        password: "$2b$10$TKOVMEgEdzIpbYDB4vJDB.cmELcuPHvDpQ/Z7FUpxyE6jd4lBVqZq",
                         role: "admin"
                     } 
                 })

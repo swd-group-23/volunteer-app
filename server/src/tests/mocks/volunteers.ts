@@ -62,6 +62,29 @@ export const mockCreateExistingVolunteer = {
     }
 } as Request<{}, {}, CreateVolunteerRequest>;
 
+
+export const mockMatchVolunteerRequestSuccessMongo  = {
+    body:{
+        volunteerId: '6716e5dc2dd5346d39bdf33e',
+        eventId: '6716e4ab2dd5346d39bdf322'
+    }
+
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestFailure2Mongo  = {
+    body:{
+        volunteerId: '6716e5dc2dd5346d39bdf33e'
+    }
+} as Request<{}, {}, MatchVolunteerRequest>;
+
+export const mockMatchVolunteerRequestDuplicateMongo  = {
+    body:{
+        volunteerId: '6716e5dc2dd5346d39bdf33d',
+        eventId: '6716e4ab2dd5346d39bdf320'
+    }
+
+} as Request<{}, {}, MatchVolunteerRequest>;
+
 export const mockMatchVolunteerRequestSuccess  = {
     body:{
         volunteerId: '2',
