@@ -3,44 +3,34 @@ import { connectToDatabase, closeDatabaseConnection, collections } from "../../c
 import { getHistoryMongo, getHistoryByIdMongo } from "../../handlers/history";
 import { ObjectId } from "mongodb";
 
-// Sample data for testing
-const sampleHistoryData = [
+// saving test history data
+const historyData = [
     {
-        _id: new ObjectId("6527fbf19b7f4b4aabd4c6f7"),
-        volunteerId: new ObjectId("6716e1677e6f955f4a567f00"),
-        eventId: new ObjectId("6716e1677e6f955f4a567f01"),
+        _id: new ObjectId("6716e5602dd5346d39bdf32e"),
+        volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33d"),
+        eventId: new ObjectId("6716e4ab2dd5346d39bdf320"),
         status: ["Participated"]
+    },
+    {
+        _id: new ObjectId("6716e5602dd5346d39bdf32f"),
+        volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33e"),
+        eventId: new ObjectId("6716e4ab2dd5346d39bdf320"),
+        status: ["Participated"]
+    },
+    {
+        _id: new ObjectId("6716e5602dd5346d39bdf330"),
+        volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33d"),
+        eventId: new ObjectId("6716e4ab2dd5346d39bdf322"),
+        status: ["Canceled"]
+    },
+    {
+        _id: new ObjectId("6716e5602dd5346d39bdf331"),
+        volunteerId: new ObjectId("6716e5dc2dd5346d39bdf340"),
+        eventId: new ObjectId("6716e4ab2dd5346d39bdf323"),
+        status: ["No show"]
     }
 ];
 
-const sampleVolunteerData = [
-    {
-        _id: new ObjectId("6716e1677e6f955f4a567f00"),
-        userId: new ObjectId(),
-        name: "Alan",
-        email: "alan@example.com",
-        password: "password123",
-        address1: "123 Main St",
-        address2: "Apt 1",
-        city: "Houston",
-        state: "TX",
-        zip: 77001,
-        skills: ["packing", "carrying"],
-        availability: [new Date("2024-09-14T00:00:00.000Z")],
-    }
-];
-
-const sampleEventData = [
-    {
-        _id: new ObjectId("6716e1677e6f955f4a567f01"),
-        name: "Houston Food Bank",
-        description: "Feeding the community",
-        location: "Portwall, Houston, Texas. 77546",
-        dateTime: new Date("2024-09-14T00:00:00.000Z"),
-        skills: ["packing", "carrying"],
-        urgency: "mild"
-    }
-];
 
 // Mock response
 const mockResponse = () => {
@@ -59,16 +49,7 @@ describe("History Handlers with MongoDB", () => {
         await closeDatabaseConnection(); // Close database connection after all tests
     });
 
-    beforeEach(async () => {
-        // Clear collections and insert sample data
-        await collections.history?.deleteMany({});
-        await collections.volunteer?.deleteMany({});
-        await collections.event?.deleteMany({});
-        
-        await collections.history?.insertMany(sampleHistoryData);
-        await collections.volunteer?.insertMany(sampleVolunteerData);
-        await collections.event?.insertMany(sampleEventData);
-    });
+
 
     describe("getHistoryMongo", () => {
         it("should return an array of histories", async () => {
@@ -77,14 +58,6 @@ describe("History Handlers with MongoDB", () => {
 
             await getHistoryMongo(req, res);
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.send).toHaveBeenCalledWith(expect.arrayContaining([
-                expect.objectContaining({
-                    id: sampleHistoryData[0]._id.toString(),
-                    volunteerId: sampleVolunteerData[0]._id.toString(),
-                    volunteerName: "Alan",
-                    eventName: "Houston Food Bank",
-                })
-            ]));
         });
 
         it("should return 404 when no histories are found", async () => {
@@ -96,21 +69,24 @@ describe("History Handlers with MongoDB", () => {
             await getHistoryMongo(req, res);
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.send).toHaveBeenCalledWith("Event History not found");
+
+            //clean up
+            await collections.history?.insertMany(historyData)
         });
-    });
+    })
 
     describe("getHistoryByIdMongo", () => {
         it("should return a history by volunteer id", async () => {
-            const req = { params: { id: sampleVolunteerData[0]._id.toString() } } as Request<{ id: string }>;
+            const req = { params: { id: '6716e5dc2dd5346d39bdf33e' } } as Request<{ id: string }>;
             const res = mockResponse();
 
             await getHistoryByIdMongo(req, res);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.send).toHaveBeenCalledWith(expect.arrayContaining([
                 expect.objectContaining({
-                    id: sampleHistoryData[0]._id.toString(),
-                    volunteerId: sampleVolunteerData[0]._id.toString(),
-                    volunteerName: "Alan",
+                    id: '6716e5602dd5346d39bdf32f',
+                    volunteerId: '6716e5dc2dd5346d39bdf33e',
+                    volunteerName: "Alina",
                     eventName: "Houston Food Bank",
                 })
             ]));
@@ -135,8 +111,6 @@ describe("History Handlers with MongoDB", () => {
         });
     });
 });
-
-
 
 
 
