@@ -14,220 +14,187 @@ import { ObjectId } from "mongodb";
 //     }))
 // }))
 
+describe("Users Handlers with MongoDB", () => {
+    beforeAll(async() => {
+        await connectToDatabase(true);
+    })
 
-describe('getUsers', () => {
-    it('should return an array of users', async () => {
-        await connectToDatabase(true).then(async () => {
+    afterAll(async () => {
+        await closeDatabaseConnection();
+    })
+
+    describe('getUsers', () => {
+        it('should return an array of users', async () => {
             await getUsersMongo(mockRequest, mockResponse)
             expect(mockResponse.status).toHaveBeenCalledWith(200);
-            await closeDatabaseConnection();
         });
     });
-});
 
-describe('getUsersById', () => {
-    it('should get a user by id', async () =>{
-        await connectToDatabase(true).then(async () => {
-            await getUsersByIdMongo(mockGetUserByIdRequestSuccessMongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(200);
-            await closeDatabaseConnection();
+    describe('getUsersById', () => {
+        it('should get a user by id', async () =>{
+                await getUsersByIdMongo(mockGetUserByIdRequestSuccessMongo, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(200);
         })
-    })
 
-    it('should call getUsersById with 404 when user not found', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await getUsersByIdMongo(mockGetUserByIdRequestFailureMongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(404);
-            await closeDatabaseConnection();
-        })
+        it('should call getUsersById with 404 when user not found', async () =>{
+                await getUsersByIdMongo(mockGetUserByIdRequestFailureMongo, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(404);
+        });
     });
-});
 
-describe('loginUser', () =>{
-    it('should login user by email and password', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await loginUserMongo(mockLoginUserSuccess, mockResponse);
-            expect(mockResponse.send).toHaveBeenCalledWith({
-                id: "6716e1677e6f955f4a567f04",
-                role: 'admin'
-            });
-            await closeDatabaseConnection();
+    describe('loginUser', () =>{
+        it('should login user by email and password', async () =>{
+                await loginUserMongo(mockLoginUserSuccess, mockResponse);
+                expect(mockResponse.send).toHaveBeenCalledWith({
+                    id: "6716e1677e6f955f4a567f04",
+                    role: 'admin'
+                });
+        })
+
+        it('should call loginUser with 404 when user not found', async () =>{
+                await loginUserMongo(mockLoginUserFailure, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(404);
+        });
+    })
+
+    describe('createUser', () => {
+        it('should create a user given the email and password', async () =>{
+                await createUserMongo(mockCreateUserSuccess, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(201);
+                // clean up
+                await collections.user?.deleteMany({email: "mock@gmail.com"})
+
+        })
+        
+        it('should call createUser with 400 when a user already exists', async () =>{
+                await createUserMongo(mockCreateExistingUser, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(400);
+
+        })
+
+        it('should call createUser with 400 when there are errors', async () =>{
+                await createUserMongo(mockCreateUserFailure, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(400);
         })
     })
 
-    it('should call loginUser with 404 when user not found', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await loginUserMongo(mockLoginUserFailure, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(404);
-            await closeDatabaseConnection();
-        })
-    });
-})
 
-describe('createUser', () => {
-    it('should create a user given the email and password', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await createUserMongo(mockCreateUserSuccess, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(201);
-            // clean up
-            await collections.user?.deleteMany({email: "mock@gmail.com"})
-            await closeDatabaseConnection();
-        })
-
-    })
-    
-    it('should call createUser with 400 when a user already exists', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await createUserMongo(mockCreateExistingUser, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(400);
-            await closeDatabaseConnection();
-        })
-
-    })
-
-    it('should call createUser with 400 when there are errors', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await createUserMongo(mockCreateUserFailure, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(400);
-            await closeDatabaseConnection();
-        })
-    })
-})
-
-
-describe('deleteUser', () =>{
-    it('should delete a user by id that is not a volunteer', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await deleteUserMongo(mockDeleteUserByIdRequestSuccess1Mongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(202);
-            // clean up
-            await collections.user?.insertOne({
-                email: "volunteer@gmail.com",
-                password: "12345678",
-                role: "volunteer",
-                _id: new ObjectId("6716e1677e6f955f4a567f05")
-            })
-            await closeDatabaseConnection();
-        })
-    })
-
-    it('should delete a user by id that is a volunteer', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await deleteUserMongo(mockDeleteUserByIdRequestSuccess2Mongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(202);
-            // clean up
-            await collections.user?.insertOne({
-                email: "jusvin@gmail.com",
-                password: "12345678",
-                role: "volunteer",
-                _id: new ObjectId("6716e1677e6f955f4a567f03")
-            })
-            await collections.volunteer?.insertOne({
-                _id: new ObjectId("6716e5dc2dd5346d39bdf340"),
-                userId: new ObjectId("6716e1677e6f955f4a567f03"),
-                name: "Jusvin",
-                email: "jusvin@gmail.com",
-                password: "test",
-                address1: "123",
-                address2: "drive",
-                city: "houston",
-                state: "tx",
-                zip: 1234,
-                skills: ["deploy", "code"],
-                preferences: "night",
-                availability: [
-                  "2024-12-01T00:00:00",
-                  "2024-12-05T00:00:00"
-                ]
-            });
-            await closeDatabaseConnection();
-        })
-    })
-
-    it('should delete a user by id that is a volunteer and has history', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await deleteUserMongo(mockDeleteUserByIdRequestSuccess3Mongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(202);
-            // clean up
-            await collections.user?.insertOne({
-                _id: new ObjectId("6716e1677e6f955f4a567f00"),
-                email: "alan@gmail.com",
-                password: "12345678",
-                role: "volunteer"
-            })
-            await collections.volunteer?.insertOne({
-                _id: new ObjectId("6716e5dc2dd5346d39bdf33d"),
-                userId: new ObjectId("6716e1677e6f955f4a567f00"),
-                name: "Alan",
-                email: "alan@gmail.com",
-                password: "test",
-                address1: "123",
-                address2: "drive",
-                city: "houston",
-                state: "tx",
-                zip: 1234,
-                skills: ["sleep", "eat"],
-                preferences: "morning",
-                availability: [
-                  "2024-09-12T00:00:00",
-                  "2024-09-14T00:00:00"
-                ]
-            })
-            await collections.history?.insertMany([
-                {
-                    _id: new ObjectId("6716e5602dd5346d39bdf32e"),
-                    volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33d"),
-                    eventId: new ObjectId("6716e4ab2dd5346d39bdf320"),
-                    status: ["Participated"]
-                  },
-                  {
-                    _id: new ObjectId("6716e5602dd5346d39bdf330"),
-                    volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33d"),
-                    eventId: new ObjectId("6716e4ab2dd5346d39bdf322"),
-                    status: ["Canceled"]
-                  }
-            ])
-            await closeDatabaseConnection();
-        })
-
-    })
-
-    it('should call deleteUser with 404 when user not found', async () =>{
-        await connectToDatabase(true).then(async() => {
-            await deleteUserMongo(mockDeleteUserByIdRequestFailureMongo, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(404);
-            await closeDatabaseConnection();
-        })
-
-    });
-})
-
-describe('updateUser', () => {
-    it('should update a user by id', async () => {
-        await connectToDatabase(true).then(async() => {
-            await updateUserMongo(mockUpdateUserSuccess, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(200);
-            // clean up
-            await collections.user?.updateOne({_id: new ObjectId('6716e1677e6f955f4a567f04')}, {
-                $set: {
-                    email: "admin@gmail.com",
+    describe('deleteUser', () =>{
+        it('should delete a user by id that is not a volunteer', async () =>{
+                await deleteUserMongo(mockDeleteUserByIdRequestSuccess1Mongo, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(202);
+                // clean up
+                await collections.user?.insertOne({
+                    email: "volunteer@gmail.com",
                     password: "12345678",
-                    role: "admin"
-                } 
-            })
-            await closeDatabaseConnection();
+                    role: "volunteer",
+                    _id: new ObjectId("6716e1677e6f955f4a567f05")
+                })
         })
+
+        it('should delete a user by id that is a volunteer', async () =>{
+                await deleteUserMongo(mockDeleteUserByIdRequestSuccess2Mongo, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(202);
+                // clean up
+                await collections.user?.insertOne({
+                    email: "jusvin@gmail.com",
+                    password: "12345678",
+                    role: "volunteer",
+                    _id: new ObjectId("6716e1677e6f955f4a567f03")
+                })
+                await collections.volunteer?.insertOne({
+                    _id: new ObjectId("6716e5dc2dd5346d39bdf340"),
+                    userId: new ObjectId("6716e1677e6f955f4a567f03"),
+                    name: "Jusvin",
+                    email: "jusvin@gmail.com",
+                    password: "test",
+                    address1: "123",
+                    address2: "drive",
+                    city: "houston",
+                    state: "tx",
+                    zip: 1234,
+                    skills: ["deploy", "code"],
+                    preferences: "night",
+                    availability: [
+                    "2024-12-01T00:00:00",
+                    "2024-12-05T00:00:00"
+                    ]
+                });
+        })
+
+        it('should delete a user by id that is a volunteer and has history', async () =>{
+                await deleteUserMongo(mockDeleteUserByIdRequestSuccess3Mongo, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(202);
+                // clean up
+                await collections.user?.insertOne({
+                    _id: new ObjectId("6716e1677e6f955f4a567f00"),
+                    email: "alan@gmail.com",
+                    password: "12345678",
+                    role: "volunteer"
+                })
+                await collections.volunteer?.insertOne({
+                    _id: new ObjectId("6716e5dc2dd5346d39bdf33d"),
+                    userId: new ObjectId("6716e1677e6f955f4a567f00"),
+                    name: "Alan",
+                    email: "alan@gmail.com",
+                    password: "test",
+                    address1: "123",
+                    address2: "drive",
+                    city: "houston",
+                    state: "tx",
+                    zip: 1234,
+                    skills: ["sleep", "eat"],
+                    preferences: "morning",
+                    availability: [
+                    "2024-09-12T00:00:00",
+                    "2024-09-14T00:00:00"
+                    ]
+                })
+                await collections.history?.insertMany([
+                    {
+                        _id: new ObjectId("6716e5602dd5346d39bdf32e"),
+                        volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33d"),
+                        eventId: new ObjectId("6716e4ab2dd5346d39bdf320"),
+                        status: ["Participated"]
+                    },
+                    {
+                        _id: new ObjectId("6716e5602dd5346d39bdf330"),
+                        volunteerId: new ObjectId("6716e5dc2dd5346d39bdf33d"),
+                        eventId: new ObjectId("6716e4ab2dd5346d39bdf322"),
+                        status: ["Canceled"]
+                    }
+                ])
+        })
+
+        it('should call deleteUser with 404 when user not found', async () =>{
+                await deleteUserMongo(mockDeleteUserByIdRequestFailureMongo, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(404);
+        });
     })
 
-    it('should call updateUser with 404 for unknown user', async () => {
-        await connectToDatabase(true).then(async() => {
-            await updateUserMongo(mockUpdateUserFailure, mockResponse);
-            expect(mockResponse.status).toHaveBeenCalledWith(404);
-            await closeDatabaseConnection();
+    describe('updateUser', () => {
+        it('should update a user by id', async () => {
+                await updateUserMongo(mockUpdateUserSuccess, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(200);
+                // clean up
+                await collections.user?.updateOne({_id: new ObjectId('6716e1677e6f955f4a567f04')}, {
+                    $set: {
+                        email: "admin@gmail.com",
+                        password: "12345678",
+                        role: "admin"
+                    } 
+                })
         })
+
+        it('should call updateUser with 404 for unknown user', async () => {
+                await updateUserMongo(mockUpdateUserFailure, mockResponse);
+                expect(mockResponse.status).toHaveBeenCalledWith(404);
+        })
+
     })
 
 })
+
 
 // DUMMY DATA - IGNORE
 describe('getUsersById', () =>{
