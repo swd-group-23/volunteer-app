@@ -69,7 +69,7 @@ describe('deleteEvent', () => {
         await connectToDatabase(true).then(async () => {
             // Insert a mock event to be deleted with a unique ID
             const mockEvent = {
-                _id: new ObjectId(),
+                _id: new ObjectId('6716e4ab2dd5346d39bdf325'),
                 name: "Mock Event",
                 description: "Feeding the community",
                 location: "Portwall, Houston, Texas. 77546",

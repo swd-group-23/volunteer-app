@@ -26,15 +26,14 @@ export const mockGetVolunteerByIdRequestFailure = {
 
 export const mockCreateVolunteerSuccess = {
     body: {
-        id: '1',
-        userId: '1',
+        userId: '6716e1677e6f955f4a567f01',
         name: 'mock',
         email: 'mock@gmail.com',
         password: 'test',
-        address1: '123',
+        address1: '12345678',
         address2: 'drive',
         city: 'houston',
-        state: 'tx',
+        state: '6716e4d6daa3a6f650baf855',
         zip: 1234,
         skills: ['test', 'code'],
         preferences: 'afternoon',

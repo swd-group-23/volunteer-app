@@ -10,7 +10,7 @@ export const mockGetEventByIdRequestFailureMongo = {
 } as Request<{ id: string }>;
 
 export const mockDeleteEventByIdRequestSuccessMongo = {
-    params: { id: '6716e4ab2dd5346d39bdf320' },
+    params: { id: '6716e4ab2dd5346d39bdf325' },
   } as Request<{ id: string }>;
 
 export const mockDeleteEventByIdRequestFailureMongo = {
