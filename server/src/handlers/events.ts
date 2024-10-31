@@ -1,7 +1,76 @@
 import { Request, Response } from "express";
-import { CreateEventRequest, Event } from "../models/events.model";
+import { CreateEventRequest, Event, MongoEvent } from "../models/events.model";
 import { events, histories } from "../data";
 import { validationResult } from "express-validator";
+import { collections } from "../configs/database.service";
+import { DeleteResult, ObjectId } from "mongodb";
+
+export async function getEventsMongo(request: Request, response: Response<MongoEvent[]>) {
+    try {
+        const events = await collections.event?.find({}).toArray() as unknown as MongoEvent[];
+        return response.status(events ? 200 : 500).send(events || []);
+    } catch {
+        return response.status(500);
+    }
+}
+
+export async function getEventsByIdMongo(request: Request<{id: string}>, response: Response<MongoEvent | string>) { 
+    const id = request.params.id
+    try {
+        const query = { _id: new ObjectId(id) };
+        const event = (await collections.event?.findOne(query)) as unknown as MongoEvent;
+        if (event) {
+            return response.send(event);
+        }
+    } catch (error) {
+        return response.status(404).send("Event not found");
+    }
+}
+
+
+export async function createEventMongo(request: Request<{}, {}, CreateEventRequest>, response: Response<String | String[]>){
+    const newEvent = request.body
+    const result = validationResult(request);
+    if(!newEvent){
+        return response.status(400).send("No body!");
+    }
+    
+    if(!result.isEmpty()){
+        const errors = result.array().map((error) => error.msg)
+        return response.status(400).send(errors)
+    }
+    try{
+        const createResult = await collections.event?.insertOne(newEvent);
+        return response.status(201).send(createResult?.insertedId.toString());
+    } catch (error){
+        return response.status(400).send("Could not insert event")
+    }
+}
+
+export async function deleteEventMongo(request: Request<{id: string}>, response: Response<DeleteResult | String>){
+    const id = request.params.id;
+
+    try{
+        // delete from events collection 
+        const deleteEvent = await collections.event?.deleteOne({ _id: new ObjectId(id) });
+
+        if(deleteEvent && deleteEvent.deletedCount){
+            await collections.history?.deleteMany({eventId: new ObjectId(id)})
+            return response.status(202).send(deleteEvent);
+        } else if (!deleteEvent) {
+            return response.status(400).send(`Failed to remove event with id ${id}`);
+        } else if (!deleteEvent.deletedCount) {
+            return response.status(404).send(`Event with id ${id} does not exist`);
+        }
+        return response.status(404);
+
+    } catch (error) {
+        return response.status(404);
+    }
+
+}
+
+
 
 export function getEvents(request: Request, response: Response<Event[]>) {
     return response.send(events);
