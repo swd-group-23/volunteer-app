@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.88% </span>
+                <span class="strong">9.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/45</span>
+                <span class='fraction'>4/41</span>
             </div>
         
             
@@ -212,7 +212,8 @@
 <a name='L147'></a><a href='#L147'>147</a>
 <a name='L148'></a><a href='#L148'>148</a>
 <a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -269,6 +270,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -381,9 +383,9 @@ export async function <span class="fstat-no" title="function not covered" >getNo
 &nbsp;
 &nbsp;
 &nbsp;
-export async function <span class="fstat-no" title="function not covered" >getNotifsByIdMongo(</span>request: Request&lt;{ id: string }&gt;,response: Response&lt;MongoNotification[] | string&gt;): Promise&lt;Response&lt;MongoNotification[] | string&gt;&gt; {
+export async function <span class="fstat-no" title="function not covered" >getNotifsByIdMongo(</span>request: Request&lt;{ id: number }&gt;,response: Response&lt;MongoNotification[] | string&gt;): Promise&lt;Response&lt;MongoNotification[] | string&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-        const id = <span class="cstat-no" title="statement not covered" >request.params.id</span>
+        const { id } = <span class="cstat-no" title="statement not covered" >request.params;</span>
 &nbsp;
         // Check if the provided ID is a valid ObjectId
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!ObjectId.isValid(id)) {</span>
@@ -418,6 +420,7 @@ export async function <span class="fstat-no" title="function not covered" >creat
 <span class="cstat-no" title="statement not covered" >            return response.status(400).send("Notification data is missing.");</span>
         }
         const newNotif = <span class="cstat-no" title="statement not covered" >{</span>
+            _id: new ObjectId(), 
             userId: new ObjectId(notification.userId),
             eventId: new ObjectId(notification.eventId),
             time: notification.time,
@@ -429,7 +432,7 @@ export async function <span class="fstat-no" title="function not covered" >creat
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (result?.insertedId) {</span>
             // If insertion is successful, return the inserted notification
-<span class="cstat-no" title="statement not covered" >            return response.status(201).send(result?.insertedId.toString());</span>
+<span class="cstat-no" title="statement not covered" >            return response.status(201).send(newNotif);</span>
         } else {
 <span class="cstat-no" title="statement not covered" >            return response.status(500).send("Failed to insert notification.");</span>
         }
@@ -440,12 +443,12 @@ export async function <span class="fstat-no" title="function not covered" >creat
 }
 &nbsp;
 &nbsp;
-export async function <span class="fstat-no" title="function not covered" >deleteNotificationMongo(</span>request: Request&lt;{ id: string }&gt;,response: Response&lt;DeleteResult | string&gt;): Promise&lt;Response&lt;DeleteResult | string&gt;&gt; {
-    const notifId = <span class="cstat-no" title="statement not covered" >request.params.id;</span>
+export async function <span class="fstat-no" title="function not covered" >deleteNotificationMongo(</span>request: Request&lt;{ id: ObjectId }&gt;,response: Response&lt;DeleteResult | string&gt;): Promise&lt;Response&lt;DeleteResult | string&gt;&gt; {
+    const { id } = <span class="cstat-no" title="statement not covered" >request.params;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
         // Delete the notification from MongoDB using the provided ObjectId directly
-        const result = <span class="cstat-no" title="statement not covered" >await collections.notification?.deleteOne({ _id: new ObjectId(notifId) });</span>
+        const result = <span class="cstat-no" title="statement not covered" >await collections.notification?.deleteOne({ _id: id });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (result?.deletedCount === 0) {</span>
 <span class="cstat-no" title="statement not covered" >            return response.status(404).send("Notification not found");</span>
@@ -517,7 +520,7 @@ export function deleteNotification(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-31T06:39:21.105Z
+                at 2024-10-31T01:12:37.463Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
