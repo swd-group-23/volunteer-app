@@ -1,12 +1,13 @@
 //Add table here
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button} from "@nextui-org/react";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { History, Volunteer } from '../../types';
 import { useUser } from "../hooks/useUser";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import VolunteerHistoryDocument from './VolunteerHistoryDocument';
 
-
-const VolunteerHistory = () => {
+const VolunteerHistory: React.FC = () => {
   const user = useUser();
   const [history, setHistory] = useState<History[]>([]);
   const [allhistory, setallHistory] = useState<History[]>([]);
@@ -67,7 +68,14 @@ const VolunteerHistory = () => {
   }, [volunteer])
 
   return (
-    <>
+    <div>
+      <div className="mt-5 mr-5 flex flex-row-reverse">
+        <PDFDownloadLink document={<VolunteerHistoryDocument />} fileName="Volunteer_History_Report">
+            <Button color="default">
+              Download Volunteer History Report
+            </Button>
+          </PDFDownloadLink>
+      </div>
       <h2 className='text-xl text-center m-2'>Volunteer History</h2>
 
     <Table aria-label="Example static collection table"
@@ -126,7 +134,7 @@ const VolunteerHistory = () => {
       }
       </TableBody>
     </Table>
-    </>
+    </div>
   );
 }
 
