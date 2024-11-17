@@ -28,6 +28,17 @@ Project for COSC 4353
 VITE_REACT_APP_NODE_ENV = development
 VITE_REACT_APP_SERVER_BASE_URL_DEV = http://localhost:4000
 ```
+> The server directory requires a .env configuration file to run
+- cd into the server
+    `cd ../server`
+- create a `.env` file in the root level of the `server` directory
+- **NOTE**: The MongoURI connection string will not be shown in the README to not expose the Database password. Please view the Assignment 4 document to get the MongoDB Connection string
+- add the following information to the .env (__MONGO_URI__ will NOT be included - please check Assignment 4 document for details)
+```.env
+__MONGO_URI__= --------------------
+__MONGO_DB_NAME__="Volunteer-db"
+__MONGO_DB_NAME_TEST__="Volunteer-db-TEST"
+```
 
 # Running the Project: 
 - cd into the server

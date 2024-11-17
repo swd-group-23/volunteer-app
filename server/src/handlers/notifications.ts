@@ -18,9 +18,9 @@ export async function getNotificationsMongo(request: Request, response: Response
 
 
 
-export async function getNotifsByIdMongo(request: Request<{ id: number }>,response: Response<MongoNotification[] | string>): Promise<Response<MongoNotification[] | string>> {
+export async function getNotifsByIdMongo(request: Request<{ id: string }>,response: Response<MongoNotification[] | string>): Promise<Response<MongoNotification[] | string>> {
     try {
-        const { id } = request.params;
+        const id = request.params.id
 
         // Check if the provided ID is a valid ObjectId
         if (!ObjectId.isValid(id)) {
@@ -55,7 +55,6 @@ export async function createNotificationsMongo(request: Request<{}, {}, MongoCre
             return response.status(400).send("Notification data is missing.");
         }
         const newNotif = {
-            _id: new ObjectId(), 
             userId: new ObjectId(notification.userId),
             eventId: new ObjectId(notification.eventId),
             time: notification.time,
@@ -67,7 +66,7 @@ export async function createNotificationsMongo(request: Request<{}, {}, MongoCre
 
         if (result?.insertedId) {
             // If insertion is successful, return the inserted notification
-            return response.status(201).send(newNotif);
+            return response.status(201).send(result?.insertedId.toString());
         } else {
             return response.status(500).send("Failed to insert notification.");
         }
@@ -78,12 +77,12 @@ export async function createNotificationsMongo(request: Request<{}, {}, MongoCre
 }
 
 
-export async function deleteNotificationMongo(request: Request<{ id: ObjectId }>,response: Response<DeleteResult | string>): Promise<Response<DeleteResult | string>> {
-    const { id } = request.params;
+export async function deleteNotificationMongo(request: Request<{ id: string }>,response: Response<DeleteResult | string>): Promise<Response<DeleteResult | string>> {
+    const notifId = request.params.id;
 
     try {
         // Delete the notification from MongoDB using the provided ObjectId directly
-        const result = await collections.notification?.deleteOne({ _id: id });
+        const result = await collections.notification?.deleteOne({ _id: new ObjectId(notifId) });
 
         if (result?.deletedCount === 0) {
             return response.status(404).send("Notification not found");

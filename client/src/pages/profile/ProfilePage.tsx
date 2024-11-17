@@ -12,7 +12,7 @@ const ProfilePage = () => {
     const [volunteer, setVolunteer] = useState<Volunteer>();
     useEffect(() => {
         if(user.userRole == 'volunteer'){
-            axios.get<Volunteer>(`${base_url}/api/volunteers/${user.userId}`)
+            axios.get<Volunteer>(`${base_url}/api/volunteers/mongo/${user.userId}`)
             .then(response => {
   
                 if (response.data) {

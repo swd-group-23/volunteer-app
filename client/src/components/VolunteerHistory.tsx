@@ -1,16 +1,17 @@
 //Add table here
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
-//import { history } from "../../data";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button} from "@nextui-org/react";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { History } from '../../types';
+import { History, Volunteer } from '../../types';
 import { useUser } from "../hooks/useUser";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import VolunteerHistoryDocument from './VolunteerHistoryDocument';
 
-
-const VolunteerHistory = () => {
+const VolunteerHistory: React.FC = () => {
   const user = useUser();
   const [history, setHistory] = useState<History[]>([]);
   const [allhistory, setallHistory] = useState<History[]>([]);
+  const [volunteer, setVolunteer] = useState<Volunteer|null>(null);
 
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') 
@@ -20,20 +21,22 @@ const VolunteerHistory = () => {
 
   useEffect(() => {
     if(user.userRole == 'volunteer'){
-      axios.get<History[]>(`${base_url}/api/history/${user.userId}`) 
-      .then(response => {
+      axios.get<Volunteer>(`${base_url}/api/volunteers/mongo/${user.userId}`)
+      .then(response =>{
         if(response.data){
-          setHistory(response.data);
+          setVolunteer(response.data)
         }
       })
-      .catch(error => {
+      .catch(error =>{
         if(error.response && error.response.status === 404){
-          setHistory([]);
+          setVolunteer(null);
+          console.log(error.response)
       }
-      });
+      })
+
     }
     else if(user.userRole == 'admin'){
-      axios.get<History[]>(`${base_url}/api/history`) 
+      axios.get<History[]>(`${base_url}/api/history/mongo`) 
       .then(response => {
         if(response.data){
           setallHistory(response.data);
@@ -46,8 +49,33 @@ const VolunteerHistory = () => {
       
   }, []);
 
+  useEffect(() => {
+    if(volunteer){
+      axios.get<History[]>(`${base_url}/api/history/mongo/${volunteer._id}`) 
+      .then(response => {
+        if(response.data){
+          console.log("test")
+          setHistory(response.data);
+        }
+      })
+      .catch(error => {
+        if(error.response && error.response.status === 404){
+          setHistory([]);
+      }
+      });
+    }
+
+  }, [volunteer])
+
   return (
-    <>
+    <div>
+      <div className="mt-5 mr-5 flex flex-row-reverse">
+        <PDFDownloadLink document={<VolunteerHistoryDocument />} fileName="Volunteer_History_Report">
+            <Button color="default">
+              Download Volunteer History Report
+            </Button>
+          </PDFDownloadLink>
+      </div>
       <h2 className='text-xl text-center m-2'>Volunteer History</h2>
 
     <Table aria-label="Example static collection table"
@@ -61,7 +89,7 @@ const VolunteerHistory = () => {
             }}
     >
       <TableHeader>
-        <TableColumn>VOLUNTEER ID</TableColumn>
+        <TableColumn width={200}>VOLUNTEER ID</TableColumn>
         <TableColumn>VOLUNTEER NAME</TableColumn>
         <TableColumn>EVENT NAME</TableColumn>
         <TableColumn>EVENT DESCRIPTION</TableColumn>
@@ -106,7 +134,7 @@ const VolunteerHistory = () => {
       }
       </TableBody>
     </Table>
-    </>
+    </div>
   );
 }
 
