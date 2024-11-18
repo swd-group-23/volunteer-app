@@ -68,7 +68,7 @@ const SignUpComponent = () => {
               user.setUserId(response.data);
               user.setUserRole("volunteer");
               user.setUserEmail(data.email)
-              window.location.href = "/";
+              window.location.href = "/pages/profile/";
 
             }
 

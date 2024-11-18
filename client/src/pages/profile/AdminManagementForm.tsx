@@ -21,7 +21,7 @@ const AdminManagementForm = () => {
             .catch(error => {
               console.log(error);
             })
-    } , [volunteers]);
+    } , [volunteer]);
     return (
         <div className="flex flex-col gap-2 items-center justify-center h-max mt-4 mb-8">
             <h2 className='text-3xl'>Volunteer Profiles</h2>
@@ -38,7 +38,7 @@ const AdminManagementForm = () => {
                       color="default"
                       className=""
                       description={`User ID: ${volunteer.userId}`}
-                      onClick={() => setVolunteer(volunteer)}
+                      onClick={() => {setVolunteer(volunteer)}}
                     >
                       {volunteer.name}
                     </DropdownItem>
