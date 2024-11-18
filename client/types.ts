@@ -42,6 +42,7 @@ export interface Event {
 export interface History {
     id: string;
     volunteerId: string;
+    eventId: string;
     volunteerName: string;
     eventName: string;
     eventDescription: string;
