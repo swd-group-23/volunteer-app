@@ -2,12 +2,12 @@ import { Page, Text, View, Document } from "@react-pdf/renderer";
 import {Style} from "@react-pdf/types"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Event} from "../../types";
+import { Event, History} from "../../types";
 
 
 const EventHistoryDocument = () => {
   const [events, setEvents] = useState<Event[]>();
-  
+  const [history, setHistories] = useState<History[]>();
 
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL 
@@ -24,9 +24,26 @@ const EventHistoryDocument = () => {
         .catch(error => {
             console.log(error);
         })
+
       
   }, []);
 
+  const getVolunteersByEvent = (eventId: string) =>{
+    axios.get<History[]>(`${base_url}/api/history/mongo`) 
+      .then(response => {
+        if(response.data){
+          setHistories(response.data);
+        }
+      })
+      .catch(error => {
+        alert(error);
+    });
+
+    const filter_history = history?.filter((history_item) => history_item.eventId == eventId)
+    const volunteers = filter_history?.map((history) => history.volunteerName)
+
+    return volunteers
+  }
   const createTableHeader = () => {
     return (
       <View style={tableRowStyle} fixed>
@@ -80,7 +97,7 @@ const EventHistoryDocument = () => {
             events?.map(event => 
             (  <View style={tableRowStyle}>
                   <View style={firstTableColStyle}>
-                    <Text style={tableCellStyle}>{event.name}</Text>
+                    <Text style={tableCellDStyle}>{event.name}</Text>
                   </View>
 
                   <View style={tableColStyle}>
@@ -104,11 +121,11 @@ const EventHistoryDocument = () => {
                   </View>
 
                   <View style={tableColStyle}>
-                    <Text style={tableCellStyle}>{event.urgency}</Text>
+                    <Text style={tableCellDStyle}>{event.urgency}</Text>
                   </View>
 
                   <View style={tableColStyle}>
-                    <Text style={tableCellStyle}>Element</Text>
+                    <Text style={tableCellStyle}>{getVolunteersByEvent(event._id)?.toString()}</Text>
                   </View>
                 </View>)
 
@@ -182,10 +199,16 @@ const tableCellHeaderStyle: Style = {
   fontWeight: "bold"
 };
 
-const tableCellStyle: Style = {
+const tableCellDStyle: Style = {
   textAlign: "center",
   margin: 3,
   fontSize: 9
+};
+
+const tableCellStyle: Style = {
+  textAlign: "left",
+  margin: 3,
+  fontSize: 7
 };
 
 const tableCellIDStyle: Style = {

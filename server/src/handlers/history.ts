@@ -29,6 +29,7 @@ export async function getHistoryByIdMongo(request: Request<{ id: string }>, resp
                     return {
                         id: record._id!.toString(),
                         volunteerId: record.volunteerId.toString(),
+                        eventId: record.eventId.toString(),
                         volunteerName: volunteer.name,
                         eventName: event.name,
                         eventDescription: event.description,
@@ -42,6 +43,7 @@ export async function getHistoryByIdMongo(request: Request<{ id: string }>, resp
                     return {
                         id: record._id!.toString(),
                         volunteerId: record.volunteerId.toString(),
+                        eventId: record.eventId.toString(),
                         volunteerName: "Unknown",
                         eventName: "Unknown",
                         eventDescription: "No description",
@@ -134,6 +136,7 @@ export async function getHistoryMongo(request: Request, response: Response<GetHi
                     return {
                         id: record._id!.toString(),
                         volunteerId: record.volunteerId.toString(),
+                        eventId: record.eventId.toString(),
                         volunteerName: volunteer.name,
                         eventName: event.name,
                         eventDescription: event.description,
@@ -147,6 +150,7 @@ export async function getHistoryMongo(request: Request, response: Response<GetHi
                     return {
                         id: record._id!.toString(),
                         volunteerId: record.volunteerId.toString(),
+                        eventId: record.eventId.toString(),
                         volunteerName: "Unknown",
                         eventName: "Unknown",
                         eventDescription: "No description",
@@ -237,6 +241,7 @@ export function getHistoryById(request: Request<{ id: string }>, response: Respo
                 return {
                     id: record.id,
                     volunteerId: record.volunteerId,
+                    eventId: record.eventId,
                     volunteerName: volunteer.name,
                     eventName: event.name,
                     eventDescription: event.description,
@@ -250,6 +255,7 @@ export function getHistoryById(request: Request<{ id: string }>, response: Respo
                 return {
                     id: record.id,
                     volunteerId: record.volunteerId,
+                    eventId: record.eventId,
                     volunteerName: "Unknown",
                     eventName:  "Unknown",
                     eventDescription: "No description",
@@ -277,6 +283,7 @@ export function getHistory(request: Request, response: Response<GetHistoryRespon
                 return {
                     id: record.id,
                     volunteerId: record.volunteerId,
+                    eventId: record.eventId,
                     volunteerName: volunteer.name,
                     eventName: event.name,
                     eventDescription: event.description,
@@ -290,6 +297,7 @@ export function getHistory(request: Request, response: Response<GetHistoryRespon
                 return {
                     id: record.id,
                     volunteerId: record.volunteerId,
+                    eventId: record.eventId,
                     volunteerName: "Unknown",
                     eventName:  "Unknown",
                     eventDescription: "No description",
