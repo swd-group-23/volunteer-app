@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react'
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, useDisclosure, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader} from "@nextui-org/react";
 import { Event } from '../../types';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import EventHistoryDocument from './EventHistoryDocument';
 
 const EventHistory = () => {
     const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
@@ -36,7 +38,16 @@ const EventHistory = () => {
         })
     }
   return (
+    
     <div>
+        
+      <div className="mt-5 mr-5 flex flex-row-reverse">
+        <PDFDownloadLink document={<EventHistoryDocument />} fileName="Event_History_Report">
+            <Button color="default">
+              Download Event History Report
+            </Button>
+          </PDFDownloadLink>
+      </div>
     {
         (events) ? 
         <div>

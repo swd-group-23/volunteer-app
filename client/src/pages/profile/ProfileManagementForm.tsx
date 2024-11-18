@@ -7,6 +7,7 @@ import { states,skills, User } from '../../../types';
 import axios from 'axios';
 import { Volunteer } from '../../../types';
 import { useUser } from '../../hooks/useUser';
+import { useEffect } from 'react';
 
 const schema = z.object({
   name: z.string().min(1, 'Invalid name').max(50, 'Name is too long'),
@@ -37,6 +38,20 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+
+  useEffect(() => {
+    if(volunteer){
+      setValue('name', volunteer.name)
+      setValue('address1', volunteer.address1)
+      setValue('address2', volunteer.address2)
+      setValue('city', volunteer.city)
+      setValue('zip', volunteer.zip.toString())
+      setValue('preferences', volunteer.preferences)
+
+    }
+  }, [volunteer, setValue])
+
+  
   const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
   const base_url = (env == 'production') ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -44,17 +59,17 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
       if(volunteer){
         axios.patch<Volunteer> (`${base_url}/api/volunteers/mongo`, {
           _id: volunteer._id,
-          userId: user.userId,
+          userId: volunteer.userId,
           name: data.name,
           address1: data.address1,
           address2: data.address2,
           city: data.city,
           state: data.state,
           zip: data.zip,
-          skills: data.skills,
+          skills: data.skills.split(","),
           preferences: data.preferences,
           availability: data.availability,
-          email: user.userEmail
+          email: volunteer.email
         })
         .then(response => {
           if (response) {
@@ -74,7 +89,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
           city: data.city,
           state: data.state,
           zip: data.zip,
-          skills: data.skills,
+          skills: data.skills.split(","),
           preferences: data.preferences,
           availability: data.availability,
           email: user.userEmail
@@ -117,7 +132,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               <Input
                 label="Full Name"
                 {...field}  // Spread the field object from useController to use value and onChange
-                value={field.value || volunteer?.name || ''}  // Use field's value or volunteer name
+                value={field.value}
                 variant="bordered"
                 onClear={() => setValue('name', '')}  // Clear the field when needed
                 errorMessage={errors.name?.message}
@@ -137,11 +152,11 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               <Input
                 label="Address 1"
                 {...field}  // Spread the field object from useController to use value and onChange
-                value={field.value || volunteer?.address1 || ''}  // Use field's value or volunteer name
+                value={field.value}  // Use field's value or volunteer name
                 variant="bordered"
-                onClear={() => setValue('name', '')}  // Clear the field when needed
-                errorMessage={errors.name?.message}
-                isInvalid={!!errors.name}  // Indicate if there is an error
+                onClear={() => setValue('address1', '')}  // Clear the field when needed
+                errorMessage={errors.address1?.message}
+                isInvalid={!!errors.address1}  // Indicate if there is an error
               />
 
 
@@ -155,7 +170,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               <Input
                 label="Address 2"
                 {...field}  // Spread the field object from useController to use value and onChange
-                value={field.value || volunteer?.address2 || ''}  // Use field's value or volunteer address2
+                value={field.value}  // Use field's value or volunteer address2
                 variant="bordered"
                 onClear={() => setValue('address2', '')}  // Clear the field when needed
                 errorMessage={errors.address2?.message}
@@ -172,7 +187,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               <Input
                 label="City"
                 {...field}  // Spread the field object from useController to use value and onChange
-                value={field.value || volunteer?.city || ''}  // Use field's value or volunteer city
+                value={field.value}  // Use field's value or volunteer city
                 variant="bordered"
                 onClear={() => setValue('city', '')}  // Clear the field when needed
                 errorMessage={errors.city?.message}
@@ -190,7 +205,12 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               {...field}
               errorMessage={errors.state?.message}
               isInvalid={errors.state ? true : false}
-              // defaultSelectedKeys={(volunteer) ? [volunteer.state]: [""]}
+              placeholder={
+                volunteer
+                  ? states.find((state) => state.id == volunteer.state.toString())
+                      ?.value || "Select a state"
+                  : "Select a state"
+              }
               label="Select a state"
               className="max-w-xs" 
               >
@@ -215,7 +235,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               <Input
                 label="Zip-Code"
                 {...field}  // Spread the field object from useController to use value and onChange
-                value={String(field.value || volunteer?.zip || '')}  // Ensure the value is a string
+                value={String(field.value)}  // Ensure the value is a string
                 variant="bordered"
                 onClear={() => setValue('zip', '')}  // Clear the field when needed
                 errorMessage={errors.zip?.message}
@@ -238,7 +258,9 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               label="Select skills" 
               selectionMode='multiple'
               className="max-w-xs" {
-              ...field}>
+              ...field}
+              placeholder={volunteer?.skills.toString()}
+              >
               {skills.map((skill) => (
                 <SelectItem
                   key={skill.value}
@@ -260,7 +282,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
               <Textarea
                 label="Preferences"
                 {...field}  // Spread the field object from useController to use value and onChange
-                value={field.value || volunteer?.preferences || ''}  // Use field's value or volunteer preferences
+                value={field.value}  
                 variant="bordered"
                 onClear={() => setValue('preferences', '')}  // Clear the field when needed
                 errorMessage={errors.preferences?.message}
@@ -278,6 +300,7 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
                   <div className='border-2'>
                     <DatePicker
                     selectedDates={value} 
+                    placeholderText='Click to select dates'
                     showIcon
                     onChange={onChange} 
                     selectsMultiple
@@ -285,8 +308,6 @@ const ProfileManagementForm: React.FC<volunteerRequest> = ({
                     disabledKeyboardNavigation
                     />
                   </div>
-         
-
               </div>
            
             )}

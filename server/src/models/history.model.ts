@@ -11,6 +11,7 @@ export interface History {
 export interface GetHistoryResponse {
     id: string;
     volunteerId: string;
+    eventId: string;
     volunteerName: string;
     eventName: string;
     eventDescription: string;
