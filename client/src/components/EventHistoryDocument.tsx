@@ -42,7 +42,7 @@ const EventHistoryDocument = () => {
     const filter_history = history?.filter((history_item) => history_item.eventId == eventId)
     const volunteers = filter_history?.map((history) => history.volunteerName)
 
-    return volunteers
+    return volunteers?.toString() != "" ? volunteers?.toString() : "None"
   }
   const createTableHeader = () => {
     return (
@@ -125,7 +125,7 @@ const EventHistoryDocument = () => {
                   </View>
 
                   <View style={tableColStyle}>
-                    <Text style={tableCellStyle}>{getVolunteersByEvent(event._id)?.toString()}</Text>
+                    <Text style={tableCellStyle}>{getVolunteersByEvent(event._id)}</Text>
                   </View>
                 </View>)
 
@@ -213,7 +213,7 @@ const tableCellStyle: Style = {
 
 const tableCellIDStyle: Style = {
   textAlign: "left",
-  margin: 0,
+  margin: 1,
   fontSize: 6
 };
 
