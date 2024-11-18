@@ -69,13 +69,6 @@ const VolunteerHistory: React.FC = () => {
 
   return (
     <div>
-      <div className="mt-5 mr-5 flex flex-row-reverse">
-        <PDFDownloadLink document={<VolunteerHistoryDocument />} fileName="Volunteer_History_Report">
-            <Button color="default">
-              Download Volunteer History Report
-            </Button>
-          </PDFDownloadLink>
-      </div>
       <h2 className='text-xl text-center m-2'>Volunteer History</h2>
 
     <Table aria-label="Example static collection table"
