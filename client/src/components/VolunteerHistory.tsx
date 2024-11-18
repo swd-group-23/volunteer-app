@@ -1,11 +1,9 @@
 //Add table here
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { History, Volunteer } from '../../types';
 import { useUser } from "../hooks/useUser";
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import VolunteerHistoryDocument from './VolunteerHistoryDocument';
 
 const VolunteerHistory: React.FC = () => {
   const user = useUser();
