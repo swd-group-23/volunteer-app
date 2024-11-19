@@ -1,56 +1,42 @@
-//Add table here
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { History, Volunteer } from '../../types';
-import { useUser } from "../hooks/useUser";
-import IndividualVolunteerHistory from "./IndividualVolunteerHistory";
 
-const VolunteerHistory: React.FC = () => {
-  const user = useUser();
-  const [allhistory, setallHistory] = useState<History[]>([]);
-  const [volunteer, setVolunteer] = useState<Volunteer|null>(null);
 
-  const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
-  const base_url = (env == 'production') 
-  ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL 
-  : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE 
-  : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;
+interface volunteerRequest {
+    volunteer: Volunteer | null
+  }
+  
+const IndividualVolunteerHistory: React.FC<volunteerRequest> = ({
+    volunteer
+}) => {
+    const env = import.meta.env.VITE_REACT_APP_NODE_ENV;
+    const base_url = (env == 'production') 
+    ?  import.meta.env.VITE_REACT_APP_SERVER_BASE_URL 
+    : (env == 'staging') ? import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_STAGE 
+    : import.meta.env.VITE_REACT_APP_SERVER_BASE_URL_DEV;  
+    const [history, setHistory] = useState<History[]>([]);
 
-  useEffect(() => {
-    if(user.userRole == 'volunteer'){
-      axios.get<Volunteer>(`${base_url}/api/volunteers/mongo/${user.userId}`)
-      .then(response =>{
-        if(response.data){
-          setVolunteer(response.data)
+    useEffect(() => {
+        console.log("test2")
+        if(volunteer){
+          axios.get<History[]>(`${base_url}/api/history/mongo/${volunteer._id}`) 
+          .then(response => {
+            if(response.data){
+              setHistory(response.data);
+            }
+          })
+          .catch(error => {
+            if(error.response && error.response.status === 404){
+              setHistory([]);
+          }
+          });
         }
-      })
-      .catch(error =>{
-        if(error.response && error.response.status === 404){
-          setVolunteer(null);
-          console.log(error.response)
-      }
-      })
-
-    }
-    else if(user.userRole == 'admin'){
-      axios.get<History[]>(`${base_url}/api/history/mongo`) 
-      .then(response => {
-        if(response.data){
-          setallHistory(response.data);
-        }
-      })
-      .catch(error => {
-        alert(error);
-      });
-    }
-      
-  }, []);
-
+    
+      }, [volunteer])
 
   return (
-    (user.userRole == 'admin') ?
-
     <div>
       <h2 className='text-xl text-center m-2'>Volunteer History</h2>
 
@@ -78,7 +64,7 @@ const VolunteerHistory: React.FC = () => {
       <TableBody>
 
       {
-        allhistory.map((event) => (
+        history.map((event) => (
           <TableRow key={event.id}>
             <TableCell>{event.volunteerId}</TableCell>
             <TableCell>{event.volunteerName}</TableCell>
@@ -87,20 +73,17 @@ const VolunteerHistory: React.FC = () => {
             <TableCell>{event.location}</TableCell>
             <TableCell>{event.skills.toString()}</TableCell>
             <TableCell>{event.urgency}</TableCell>
-            <TableCell>{event.eventDate.toString().split('T')[0]}</TableCell>
+            <TableCell>{event.eventDate.toString()}</TableCell>
             <TableCell>{event.status}</TableCell>
         </TableRow>
         ))
-
+        
       }
       </TableBody>
     </Table>
     </div>
-
-    :
-    <IndividualVolunteerHistory volunteer={volunteer}/>
   );
 }
 
 
-export default VolunteerHistory
+export default IndividualVolunteerHistory
