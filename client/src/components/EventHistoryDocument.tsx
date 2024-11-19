@@ -24,21 +24,19 @@ const EventHistoryDocument = () => {
         .catch(error => {
             console.log(error);
         })
-
+    axios.get<History[]>(`${base_url}/api/history/mongo`) 
+    .then(response => {
+      if(response.data){
+        setHistories(response.data);
+      }
+    })
+    .catch(error => {
+      alert(error);
+      });
       
   }, []);
 
   const getVolunteersByEvent = (eventId: string) =>{
-    axios.get<History[]>(`${base_url}/api/history/mongo`) 
-      .then(response => {
-        if(response.data){
-          setHistories(response.data);
-        }
-      })
-      .catch(error => {
-        alert(error);
-    });
-
     const filter_history = history?.filter((history_item) => history_item.eventId == eventId)
     const volunteers = filter_history?.map((history) => history.volunteerName)
 
@@ -95,7 +93,7 @@ const EventHistoryDocument = () => {
           {createTableHeader()}
           {
             events?.map(event => 
-            (  <View style={tableRowStyle}>
+            (  <View style={tableRowStyle} key={event._id}>
                   <View style={firstTableColStyle}>
                     <Text style={tableCellDStyle}>{event.name}</Text>
                   </View>

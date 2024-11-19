@@ -7,6 +7,8 @@ import VolunteerMatchingForm from './components/VolunteerMatchingForm';
 import VolunteerHistory from './components/VolunteerHistory';
 import EventManagementForm from './components/EventManagementForm';
 import EventHistory from './components/EventHistory';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import VolunteerHistoryDocument from './components/VolunteerHistoryDocument';
 
 function App() {
   const user = useUser();
@@ -30,6 +32,13 @@ function App() {
                       <VolunteerMatchingForm/>
                     </div>
                     <EventHistory/>
+                    <div className="mt-5 mr-5 flex flex-row-reverse">
+                      <PDFDownloadLink document={<VolunteerHistoryDocument />} fileName="Volunteer_History_Report">
+                          <Button color="default">
+                            Download Volunteer History Report
+                          </Button>
+                        </PDFDownloadLink>
+                    </div>
                     <VolunteerHistory/>
                   </> :
                   <>

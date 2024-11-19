@@ -166,6 +166,7 @@ const EventManagementForm = () => {
                 <div className='border-2 w-min mb-2'>  
                   <DatePicker
                   selected={value} 
+                  placeholderText='Click to select a date'
                   showIcon
                   onChange={onChange} 
                 /></div>

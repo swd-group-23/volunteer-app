@@ -61,42 +61,41 @@ const VolunteerMatchingForm = () => {
 }
     , []);
 
-  const onSubmit = (data: Schema) => {
-    axios.post<VolunteerMatchingRequest> (`${base_url}/api/volunteers/mongo/match`, {
-      volunteerId: data.volunteers,
-      eventId: data.events
-    })
-        .then(response => {
-            if (response) {
-              console.log(response.data);
-            }
-        })
-        .catch(() => {
-            alert("Invalid Match!");
-        })
-
-        axios.post<Notification> (`${base_url}/api/notifications/mongo`, {
+    const onSubmit = (data: Schema) => {
+      const matchPromise = axios.post<VolunteerMatchingRequest>(
+        `${base_url}/api/volunteers/mongo/match`,
+        {
+          volunteerId: data.volunteers,
+          eventId: data.events
+        }
+      );
+    
+      const notificationPromise = axios.post<Notification>(
+        `${base_url}/api/notifications/mongo`,
+        {
           userId: volunteer?.userId,
           eventId: event?._id,
           time: new Date(),
           message: `You have been scheduled for the ${event?.name}!`
+        }
+      );
+    
+      Promise.all([matchPromise, notificationPromise])
+        .then(([matchResponse, notificationResponse]) => {
+          console.log('Match response:', matchResponse.data);
+          console.log('Notification response:', notificationResponse.data);
+          reset();
+          setVolunteer(undefined);
+          window.location.href = '/';
         })
-            .then(response => {
-    
-                if (response) {
-                  console.log(response.data);
-                }
-    
-            })
-            .catch(() => {
-                alert("Could not send notification to user");
-            })
-
-
-    reset(); 
-    setVolunteer(undefined);
-    window.location.href='/';
-  };
+        .catch((error) => {
+          if (error.config.url.includes('/match')) {
+            alert('Invalid Match!');
+          } else {
+            alert('Could not send notification to user');
+          }
+        });
+    };
 
   return (
     <div className="flex flex-col gap-2 items-center overflow-auto mt-10">
